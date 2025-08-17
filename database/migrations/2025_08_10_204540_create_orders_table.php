@@ -13,16 +13,20 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->decimal('total_amount', 8, 2);
+            $table->string('customer_name');
+            $table->string('customer_phone', 20);
+            $table->string('customer_email');
+            $table->string('delivery_address', 500);
+            $table->decimal('total_amount', 10, 2);
             $table->enum('status', [
-                'new',
+                'pending',
                 'confirmed',
                 'in_progress',
                 'delivered',
                 'cancelled'
-            ])->default('new');
-            $table->text('comment')->nullable(); // комментарии к заказу
+            ])->default('pending');
+            $table->datetime('delivery_date');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
