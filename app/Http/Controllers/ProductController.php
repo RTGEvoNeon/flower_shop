@@ -37,7 +37,10 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with(['activeImages' => function($query) {
+            $query->ordered();
+        }, 'primaryImage'])->findOrFail($id);
+        
         return view('products.show', compact('product'));
     }
 
