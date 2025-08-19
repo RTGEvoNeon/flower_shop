@@ -12,8 +12,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::where('is_available', true)->get();
-        return view('products.index', compact('products'));
+        $products = Product::available()
+            ->withImages()
+            ->paginate(12);
+        return view('products.catalog', compact('products'));
     }
 
     /**
