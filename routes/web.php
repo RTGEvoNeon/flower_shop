@@ -4,8 +4,21 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ProductController::class, 'index']);
+Route::get('/', function () {
+    return view('home');
+});
+
+Route::get('/products', [ProductController::class, 'index']);
 Route::get('/product/{id}', [ProductController::class, 'show']);
+
+// Custom bouquet
+Route::get('/custom-bouquet', function () {
+    return view('custom-bouquet');
+});
+Route::post('/custom-bouquet/submit', function () {
+    // Пока просто редирект с сообщением
+    return redirect('/custom-bouquet')->with('success', 'Спасибо! Мы скоро с вами свяжемся!');
+});
 
 // Cart routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
