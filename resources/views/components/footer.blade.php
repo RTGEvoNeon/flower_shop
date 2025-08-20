@@ -90,7 +90,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
                     <p class="text-sm text-gray-400">
-                        © 2024 iTulip. Все права защищены.
+                        © 2025 Mindale. Все права защищены.
                     </p>
                 </div>
                 
@@ -106,9 +106,9 @@
             
             <div class="mt-6 text-center">
                 <p class="text-xs text-gray-500">
-                    ИП Цветочкин Иван Иванович<br>
-                    ИНН: 123456789012 ОГРНИП: 123456789012345<br>
-                    Адрес: г. Москва, ул. Цветочная, д. 1
+                    ИП Редин Дмитрий Витальеивч<br>
+                    <!-- ИНН: 123456789012 ОГРНИП: 123456789012345<br>
+                    Адрес: г. Москва, ул. Цветочная, д. 1 -->
                 </p>
             </div>
         </div>

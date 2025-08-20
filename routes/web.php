@@ -8,8 +8,8 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/product/{id}', [ProductController::class, 'show']);
+//Route::get('/products', [ProductController::class, 'index']);
+//Route::get('/product/{id}', [ProductController::class, 'show']);
 
 // Custom bouquet
 Route::get('/custom-bouquet', function () {

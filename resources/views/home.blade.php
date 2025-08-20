@@ -114,11 +114,11 @@
             </div>
         </div>
         
-        <div class="text-center mt-12">
+        <!-- <div class="text-center mt-12">
             <a href="/products" class="border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white px-8 py-3 rounded-lg transition-colors inline-block">
                 Смотреть все букеты
             </a>
-        </div>
+        </div> -->
     </div>
 </section>
 
