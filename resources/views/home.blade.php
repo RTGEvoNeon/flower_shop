@@ -73,9 +73,9 @@
                     <p class="text-gray-600 mb-4">Романтичный букет из розовых роз и пионов</p>
                     <div class="flex justify-between items-center">
                         <span class="text-2xl font-bold text-pink-500">2 500 ₽</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <!-- <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
                             Заказать
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -90,9 +90,9 @@
                     <p class="text-gray-600 mb-4">Яркий букет из подсолнухов и хризантем</p>
                     <div class="flex justify-between items-center">
                         <span class="text-2xl font-bold text-pink-500">1 800 ₽</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <!-- <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
                             Заказать
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -106,9 +106,9 @@
                     <p class="text-gray-600 mb-4">Изысканный букет из орхидей и лилий</p>
                     <div class="flex justify-between items-center">
                         <span class="text-2xl font-bold text-pink-500">3 200 ₽</span>
-                        <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <!-- <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
                             Заказать
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>

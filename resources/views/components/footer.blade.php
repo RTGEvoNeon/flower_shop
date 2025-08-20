@@ -39,7 +39,7 @@
             </div>
             
             <!-- Каталог -->
-            <div>
+            <!-- <div>
                 <h3 class="text-lg font-semibold mb-6">Каталог</h3>
                 <ul class="space-y-3">
                     <li><a href="/products" class="text-gray-300 hover:text-white transition-colors">Все букеты</a></li>
@@ -49,10 +49,10 @@
                     <li><a href="/products?category=luxury" class="text-gray-300 hover:text-white transition-colors">Премиум</a></li>
                     <li><a href="/custom-bouquet" class="text-gray-300 hover:text-white transition-colors">Собери свой букет</a></li>
                 </ul>
-            </div>
+            </div> -->
             
             <!-- Информация -->
-            <div>
+            <!-- <div>
                 <h3 class="text-lg font-semibold mb-6">Информация</h3>
                 <ul class="space-y-3">
                     <li><a href="/about" class="text-gray-300 hover:text-white transition-colors">О нас</a></li>
@@ -61,7 +61,7 @@
                     <li><a href="/guarantee" class="text-gray-300 hover:text-white transition-colors">Гарантии</a></li>
                     <li><a href="/contacts" class="text-gray-300 hover:text-white transition-colors">Контакты</a></li>
                 </ul>
-            </div>
+            </div> -->
             
             <!-- Социальные сети -->
             <div>

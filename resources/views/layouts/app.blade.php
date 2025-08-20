@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="text-gray-700 hover:text-gray-900 transition-colors">
-                    <a href="tel:+79532929246">Звоните: <b>8 (953) 292-92-46</b></a>
+                    <a href="tel:+79532929246"><b>8 (953) 292-92-46</b></a>
                 </div>
                 
                 <!-- Cart & Mobile menu -->
