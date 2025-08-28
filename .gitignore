@@ -23,6 +23,11 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 /storage/products
+bootstrap/cache/
+storage/*.key
+storage/pail
+storage/products
+
 
 # SSL / LetsEncrypt
 docker/letsencrypt/
