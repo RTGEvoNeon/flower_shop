@@ -53,6 +53,16 @@ services:
       - db_data_prod:/var/lib/mysql
     networks:
       - laravel
+    
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: laravel_mysql_prod
+      PMA_USER: root
+      PMA_PASSWORD: yourpassword
+    ports:
+      - 8081:80
 
 volumes:
   db_data_prod:
