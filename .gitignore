@@ -34,4 +34,5 @@ docker/letsencrypt/
 get-ssl.sh
 *.pem
 *.crt
-*.keystorage/framework/.gitignore
+*.key
+storage/framework/.gitignore
