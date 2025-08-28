@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 
 class ProductImagesSeeder extends Seeder
 {
@@ -32,25 +33,55 @@ class ProductImagesSeeder extends Seeder
                 continue;
             }
 
-            // Добавляем от 2 до 5 изображений к каждому продукту
-            $imageCount = fake()->numberBetween(2, 5);
+            // Путь к папке с изображениями для этого продукта
+            $productImagePath = storage_path("products/{$product->id}");
             
-            echo "🎨 Добавляем {$imageCount} изображений к '{$product->name}'...\n";
-
-            // Создаем изображения
-            $images = [];
-            for ($i = 0; $i < $imageCount; $i++) {
-                $images[] = ProductImage::factory()
-                    ->forProduct($product)
-                    ->state([
-                        'is_primary' => $i === 0, // Первое изображение главное
-                        'sort_order' => $i,
-                        'is_active' => true,
-                    ])
-                    ->create();
+            if (!File::exists($productImagePath)) {
+                echo "⚠️ Папка с изображениями для продукта {$product->id} не найдена, пропускаем...\n";
+                continue;
             }
 
-            echo "✅ Добавлено {$imageCount} изображений\n";
+            // Получаем все JPG файлы из папки продукта
+            $imageFiles = File::glob($productImagePath . '/*.jpg');
+            
+            if (empty($imageFiles)) {
+                echo "⚠️ Изображения для продукта {$product->id} не найдены, пропускаем...\n";
+                continue;
+            }
+
+            echo "🎨 Найдено " . count($imageFiles) . " изображений для '{$product->name}'...\n";
+
+            // Создаем записи в БД для каждого найденного файла
+            foreach ($imageFiles as $index => $filePath) {
+                $filename = basename($filePath);
+                $fileSize = File::size($filePath);
+                
+                // Получаем размеры изображения
+                $imageInfo = getimagesize($filePath);
+                $width = $imageInfo[0] ?? null;
+                $height = $imageInfo[1] ?? null;
+                
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'filename' => $filename,
+                    'original_name' => $filename,
+                    'path' => "{$product->id}/{$filename}",
+                    'url' => null, // Будем использовать локальные файлы
+                    'mime_type' => 'image/jpeg',
+                    'file_size' => $fileSize,
+                    'width' => $width,
+                    'height' => $height,
+                    'sort_order' => $index,
+                    'is_primary' => $index === 0, // Первое изображение главное
+                    'is_active' => true,
+                    'alt_text' => $product->name . ' - фото ' . ($index + 1),
+                    'description' => null,
+                ]);
+                
+                echo "  ✅ Добавлено изображение: {$filename}\n";
+            }
+
+            echo "✅ Обработан продукт '{$product->name}' - " . count($imageFiles) . " изображений\n";
         }
 
         echo "🎉 Готово! Изображения добавлены ко всем продуктам.\n";

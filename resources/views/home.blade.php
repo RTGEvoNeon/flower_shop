@@ -55,7 +55,7 @@
     </div>
 </section>
 
-<!-- Популярные букеты (пока заглушка) -->
+<!-- Популярные букеты -->
 <section id="catalog" class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
@@ -63,62 +63,59 @@
         </h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Карточка букета (пока заглушка) -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div class="h-64 bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center">
-                    <span class="text-gray-600">Фото букета</span>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Букет "Нежность"</h3>
-                    <p class="text-gray-600 mb-4">Романтичный букет из розовых роз и пионов</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-pink-500">2 500 ₽</span>
-                        <!-- <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            Заказать
-                        </button> -->
-                    </div>
-                </div>
-            </div>
+            @php
+                $featuredProducts = \App\Models\Product::available()
+                    ->withImages()
+                    ->inRandomOrder()
+                    ->limit(6)
+                    ->get();
+            @endphp
             
-            <!-- Еще 2 карточки-заглушки -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div class="h-64 bg-gradient-to-br from-yellow-200 to-orange-300 flex items-center justify-center">
-                    <span class="text-gray-600">Фото букета</span>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Букет "Солнечный"</h3>
-                    <p class="text-gray-600 mb-4">Яркий букет из подсолнухов и хризантем</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-pink-500">1 800 ₽</span>
-                        <!-- <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            Заказать
-                        </button> -->
+            @forelse($featuredProducts as $product)
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="h-64 bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center overflow-hidden">
+                        @if($product->main_image && $product->main_image !== '/images/placeholder.jpg')
+                            <img src="{{ $product->main_image }}" 
+                                 alt="{{ $product->name }}" 
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @else
+                            <span class="text-gray-600">🌹</span>
+                        @endif
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">{{ $product->name }}</h3>
+                        <p class="text-gray-600 mb-4">{{ Str::limit($product->description, 60) }}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-pink-500">{{ number_format($product->price, 0) }} ₽</span>
+                            <a href="{{ route('products.show', $product->id) }}" 
+                               class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                Смотреть
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div class="h-64 bg-gradient-to-br from-purple-200 to-blue-300 flex items-center justify-center">
-                    <span class="text-gray-600">Фото букета</span>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Букет "Мечта"</h3>
-                    <p class="text-gray-600 mb-4">Изысканный букет из орхидей и лилий</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-pink-500">3 200 ₽</span>
-                        <!-- <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
-                            Заказать
-                        </button> -->
+            @empty
+                <!-- Fallback карточки если нет продуктов -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="h-64 bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center">
+                        <span class="text-gray-600">🌹</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Скоро здесь будут букеты!</h3>
+                        <p class="text-gray-600 mb-4">Мы работаем над наполнением каталога</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-pink-500">от 2 000 ₽</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforelse
         </div>
         
-        <!-- <div class="text-center mt-12">
-            <a href="/products" class="border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white px-8 py-3 rounded-lg transition-colors inline-block">
+        <div class="text-center mt-12">
+            <a href="{{ route('products.index') }}" class="border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white px-8 py-3 rounded-lg transition-colors inline-block">
                 Смотреть все букеты
             </a>
-        </div> -->
+        </div>
     </div>
 </section>
 

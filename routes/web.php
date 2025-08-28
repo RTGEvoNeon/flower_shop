@@ -8,8 +8,19 @@ Route::get('/', function () {
     return view('home');
 });
 
-//Route::get('/products', [ProductController::class, 'index']);
-//Route::get('/product/{id}', [ProductController::class, 'show']);
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+
+// Маршрут для отображения изображений продуктов (fallback если nginx не обработал)
+Route::get('/storage/products/{product_id}/{filename}', function ($product_id, $filename) {
+    $path = storage_path("products/{$product_id}/{$filename}");
+    
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    
+    return response()->file($path);
+})->where(['product_id' => '[0-9]+', 'filename' => '[^/]+\.(jpg|jpeg|png|gif|webp)'])->name('product.image');
 
 // Custom bouquet
 Route::get('/custom-bouquet', function () {

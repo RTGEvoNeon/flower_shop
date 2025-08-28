@@ -76,7 +76,25 @@ class ProductImage extends Model
     protected function fullUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->url ?: Storage::url($this->path)
+            get: function () {
+                // Если есть внешний URL, используем его
+                if ($this->url) {
+                    return $this->url;
+                }
+                
+                // Если есть filename, строим относительный путь
+                if ($this->filename && $this->product_id) {
+                    return "/storage/products/{$this->product_id}/{$this->filename}";
+                }
+                
+                // Если есть path, используем его через Storage (но тоже делаем относительным)
+                if ($this->path) {
+                    return "/storage/products/{$this->path}";
+                }
+                
+                // Fallback на placeholder
+                return '/images/placeholder.jpg';
+            }
         );
     }
 
