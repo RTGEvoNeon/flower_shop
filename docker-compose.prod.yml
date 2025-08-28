@@ -3,7 +3,7 @@ version: "3.9"
 # Продакшн конфигурация с SSL для mindale.ru
 
 services:
-  app:
+  laravel_app_prod:
     build:
       context: .
       dockerfile: Dockerfile
@@ -27,7 +27,7 @@ services:
       - ./docker/certbot-webroot:/var/www/certbot
       - ./docker/letsencrypt:/etc/letsencrypt:ro
     depends_on:
-      - app
+      - laravel_app_prod
     networks:
       - laravel
 
