@@ -56,13 +56,19 @@ services:
     
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: laravel_phpmyadmin_prod
     restart: always
     environment:
       PMA_HOST: laravel_mysql_prod
       PMA_USER: root
-      PMA_PASSWORD: yourpassword
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-Admin1337}
+      PMA_ARBITRARY: 1
     ports:
       - 8081:80
+    depends_on:
+      - mysql
+    networks:
+      - laravel
 
 volumes:
   db_data_prod:
