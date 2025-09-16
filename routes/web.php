@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,3 +40,7 @@ Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remov
 Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::post('/order', [CartController::class, 'placeOrder'])->name('order.place');
 Route::get('/order/success/{id}', [CartController::class, 'orderSuccess'])->name('order.success');
+
+// Страницы
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/terms', [PageController::class, 'terms'])->name('terms');
