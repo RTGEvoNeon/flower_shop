@@ -51,6 +51,9 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-itulip}
     volumes:
       - db_data_prod:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
     networks:
       - laravel
     
