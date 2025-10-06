@@ -47,7 +47,23 @@ class ImportController extends Controller
             return redirect()->back()
                 ->with('success', 'Товары успешно импортированы!');
 
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $errorMessages = [];
+            
+            foreach ($failures as $failure) {
+                $errorMessages[] = "Строка {$failure->row()}: " . implode(', ', $failure->errors());
+            }
+            
+            return redirect()->back()
+                ->with('error', 'Ошибки валидации: ' . implode('; ', $errorMessages));
+                
         } catch (\Exception $e) {
+            \Log::error('Import error: ' . $e->getMessage(), [
+                'file' => $request->file('file')->getClientOriginalName(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return redirect()->back()
                 ->with('error', 'Ошибка при импорте: ' . $e->getMessage());
         }

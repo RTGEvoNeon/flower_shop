@@ -17,18 +17,41 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation
     */
     public function model(array $row)
     {
+        // Поддерживаем различные форматы заголовков
+        $name = $row['name'] ?? $row['name_nazvanie'] ?? null;
+        $slug = $row['slug'] ?? null;
+        $description = $row['description'] ?? $row['description_opisanie'] ?? null;
+        $category = $row['category'] ?? $row['category_kategoriia'] ?? 'bouquets';
+        $amount = $row['amount'] ?? $row['amount_kolicestvo'] ?? null;
+        $price = $row['price'] ?? $row['price_cena'] ?? 0;
+        $isAvailable = $row['is_available'] ?? $row['is_available_10'] ?? true;
+        $altText = $row['alt_text'] ?? $row['alt_text_dlia_seo'] ?? null;
+
+        // Пропускаем строки без названия
+        if (empty($name)) {
+            return null;
+        }
+
         // Генерируем slug из названия, если он не указан
-        $slug = $row['slug'] ?? Str::slug($row['name']);
-        
+        $slug = $slug ?? Str::slug($name);
+
+        // Проверяем уникальность slug и добавляем суффикс если нужно
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Product::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
         return new Product([
-            'name' => $row['name'],
+            'name' => $name,
             'slug' => $slug,
-            'description' => $row['description'] ?? null,
-            'category' => $row['category'] ?? 'bouquets',
-            'amount' => $row['amount'] ?? null,
-            'price' => $row['price'] ?? 0,
-            'is_available' => (bool) ($row['is_available'] ?? true),
-            'alt_text' => $row['alt_text'] ?? null,
+            'description' => $description,
+            'category' => $category,
+            'amount' => $amount,
+            'price' => $price,
+            'is_available' => (bool) $isAvailable,
+            'alt_text' => $altText,
         ]);
     }
 
