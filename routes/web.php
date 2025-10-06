@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ImportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,3 +45,8 @@ Route::get('/order/success/{id}', [CartController::class, 'orderSuccess'])->name
 // Страницы
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
+
+// Админка - импорт товаров
+Route::get('/admin/import', [ImportController::class, 'index'])->name('admin.import');
+Route::post('/admin/import', [ImportController::class, 'import'])->name('admin.import.store');
+Route::get('/admin/import/template', [ImportController::class, 'downloadTemplate'])->name('admin.import.template');

@@ -44,14 +44,17 @@ services:
     container_name: laravel_mysql_prod
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-Admin1337}
-      MYSQL_DATABASE: ${DB_DATABASE:-itulip}
-      MYSQL_USER: ${DB_USERNAME:-itulip}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-itulip}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data_prod:/var/lib/mysql
+    ports:
+      - "3306:3306"
     networks:
       - laravel
+
     
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

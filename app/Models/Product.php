@@ -14,15 +14,18 @@ class Product extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'slug',
         'description',
-        'price',
-        'image', // Оставляем для обратной совместимости
         'category',
-        'is_available'
+        'amount',
+        'price',
+        'is_available',
+        'alt_text'
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
+        'amount' => 'integer',
         'is_available' => 'boolean',
     ];
 
