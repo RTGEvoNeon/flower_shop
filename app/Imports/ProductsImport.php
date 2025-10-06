@@ -61,14 +61,21 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug',
+            'name' => 'nullable|string|max:255',
+            'name_nazvanie' => 'nullable|string|max:255',
+            'slug' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'description_opisanie' => 'nullable|string',
             'category' => 'nullable|string|max:255',
+            'category_kategoriia' => 'nullable|string|max:255',
             'amount' => 'nullable|integer|min:0',
+            'amount_kolicestvo' => 'nullable|integer|min:0',
             'price' => 'nullable|numeric|min:0',
-            'is_available' => 'nullable|boolean',
+            'price_cena' => 'nullable|numeric|min:0',
+            'is_available' => 'nullable',
+            'is_available_10' => 'nullable',
             'alt_text' => 'nullable|string',
+            'alt_text_dlia_seo' => 'nullable|string',
         ];
     }
 
