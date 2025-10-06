@@ -27,6 +27,7 @@ bootstrap/cache/
 storage/*.key
 storage/pail
 storage/products
+/docker/nginx/default.conf
 
 
 # SSL / LetsEncrypt
