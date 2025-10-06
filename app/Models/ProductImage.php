@@ -93,7 +93,7 @@ class ProductImage extends Model
                 }
                 
                 // Fallback на placeholder
-                return '/images/placeholder.jpg';
+                return '/images/placeholder.svg';
             }
         );
     }

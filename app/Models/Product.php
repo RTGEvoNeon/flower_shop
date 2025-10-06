@@ -88,19 +88,25 @@ class Product extends Model
                 if ($this->primaryImage) {
                     return $this->primaryImage->full_url;
                 }
-                
+
                 // Если есть любое активное изображение
                 if ($this->activeImages->isNotEmpty()) {
                     return $this->activeImages->first()->full_url;
                 }
-                
+
+                // Проверяем файлы в папке напрямую
+                $filesystemImages = $this->getFilesystemImages();
+                if (!empty($filesystemImages)) {
+                    return $filesystemImages[0];
+                }
+
                 // Fallback на старое поле image
                 if ($this->image) {
                     return $this->image;
                 }
-                
+
                 // Placeholder
-                return '/images/placeholder.jpg';
+                return '/images/placeholder.svg';
             }
         );
     }
@@ -111,8 +117,45 @@ class Product extends Model
     protected function imageUrls(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->activeImages->pluck('full_url')->toArray()
+            get: function () {
+                $dbImages = $this->activeImages->pluck('full_url')->toArray();
+                $filesystemImages = $this->getFilesystemImages();
+
+                // Объединяем изображения из БД и файловой системы
+                return array_unique(array_merge($dbImages, $filesystemImages));
+            }
         );
+    }
+
+    /**
+     * Получить изображения из файловой системы
+     */
+    protected function getFilesystemImages(): array
+    {
+        $directory = storage_path("app/public/products/{$this->id}");
+
+        if (!is_dir($directory)) {
+            return [];
+        }
+
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        $images = [];
+
+        foreach (scandir($directory) as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if (in_array($extension, $allowedExtensions)) {
+                $images[] = "/storage/products/{$this->id}/{$file}";
+            }
+        }
+
+        // Сортируем по имени файла
+        sort($images);
+
+        return $images;
     }
 
     /**
@@ -131,7 +174,9 @@ class Product extends Model
     protected function hasImages(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->activeImages->isNotEmpty() || !empty($this->image)
+            get: fn () => $this->activeImages->isNotEmpty()
+                || !empty($this->image)
+                || !empty($this->getFilesystemImages())
         );
     }
 

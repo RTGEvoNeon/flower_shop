@@ -555,14 +555,14 @@
             <div class="product-gallery">
                 <div class="main-image-container">
                     <!-- Счетчик изображений -->
-                    @if($product->activeImages->count() > 1)
+                    @if(count($product->image_urls) > 1)
                         <div class="image-counter">
-                            <span id="current-image">1</span> / {{ $product->activeImages->count() }}
+                            <span id="current-image">1</span> / {{ count($product->image_urls) }}
                         </div>
                     @endif
 
                     <!-- Кнопки навигации -->
-                    @if($product->activeImages->count() > 1)
+                    @if(count($product->image_urls) > 1)
                         <button class="gallery-nav prev" onclick="changeImage(-1)">
                             <i class="fas fa-chevron-left"></i>
                         </button>
@@ -572,16 +572,10 @@
                     @endif
 
                     <!-- Главное изображение -->
-                    @if($product->activeImages->count() > 0)
-                        <img src="{{ $product->activeImages->first()->full_url }}" 
-                             alt="{{ $product->activeImages->first()->alt_text }}" 
-                             class="main-image" 
-                             id="main-image"
-                             onclick="openZoom(this.src)">
-                    @elseif($product->image)
-                        <img src="{{ $product->image }}" 
-                             alt="{{ $product->name }}" 
-                             class="main-image" 
+                    @if($product->has_images)
+                        <img src="{{ $product->main_image }}"
+                             alt="{{ $product->alt_text ?? $product->name }}"
+                             class="main-image"
                              id="main-image"
                              onclick="openZoom(this.src)">
                     @else
@@ -590,20 +584,14 @@
                 </div>
 
                 <!-- Миниатюры -->
-                @if($product->activeImages->count() > 1)
+                @if(count($product->image_urls) > 1)
                     <div class="thumbnails-container">
-                        @foreach($product->activeImages as $index => $image)
-                            <div class="thumbnail {{ $index === 0 ? 'active' : '' }}" 
-                                 onclick="setMainImage('{{ $image->full_url }}', '{{ $image->alt_text }}', {{ $index }})">
-                                <img src="{{ $image->full_url }}" alt="{{ $image->alt_text }}">
+                        @foreach($product->image_urls as $index => $imageUrl)
+                            <div class="thumbnail {{ $index === 0 ? 'active' : '' }}"
+                                 onclick="setMainImage('{{ $imageUrl }}', '{{ $product->alt_text ?? $product->name }}', {{ $index }})">
+                                <img src="{{ $imageUrl }}" alt="{{ $product->alt_text ?? $product->name }}">
                             </div>
                         @endforeach
-                    </div>
-                @elseif($product->image)
-                    <div class="thumbnails-container">
-                        <div class="thumbnail active">
-                            <img src="{{ $product->image }}" alt="{{ $product->name }}">
-                        </div>
                     </div>
                 @endif
             </div>
@@ -667,8 +655,8 @@
 
     <script>
         // Галерея изображений
-        const images = @json($product->activeImages->pluck('full_url'));
-        const imageAlts = @json($product->activeImages->pluck('alt_text'));
+        const images = @json($product->image_urls);
+        const imageAlts = @json(array_fill(0, count($product->image_urls), $product->alt_text ?? $product->name));
         let currentImageIndex = 0;
 
         // Функция переключения изображения
