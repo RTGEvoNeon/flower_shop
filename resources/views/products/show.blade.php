@@ -803,21 +803,24 @@
         function setMainImage(src, alt, index) {
             const mainImage = document.getElementById('main-image');
             const currentCounter = document.getElementById('current-image');
-            
+
+            // Преобразуем index в число
+            index = parseInt(index);
+
             // Обновляем главное изображение
             mainImage.src = src;
             mainImage.alt = alt;
-            
+
             // Обновляем счетчик
             if (currentCounter) {
                 currentCounter.textContent = index + 1;
             }
-            
+
             // Обновляем активную миниатюру
             document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
                 thumb.classList.toggle('active', i === index);
             });
-            
+
             currentImageIndex = index;
         }
 
