@@ -79,12 +79,10 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    command: --sslcert /certs/fullchain.pem --sslkey /certs/privkey.pem
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer_data:/data
-      - ./docker/letsencrypt/live/mindale.ru:/certs:ro
     ports:
       - "9000:9000"     # HTTP интерфейс
       - "9443:9443"     # HTTPS интерфейс
