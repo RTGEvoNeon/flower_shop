@@ -72,8 +72,26 @@ services:
     networks:
       - laravel
 
+  # Portainer - для удаленного управления Docker контейнерами
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: laravel_portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer_data:/data
+    ports:
+      - "9000:9000"     # HTTP интерфейс
+      - "9443:9443"     # HTTPS интерфейс
+    networks:
+      - laravel
+
 volumes:
   db_data_prod:
+  portainer_data:
 
 networks:
   laravel:
