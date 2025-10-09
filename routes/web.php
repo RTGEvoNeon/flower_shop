@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
 
 // Маршрут для отображения изображений продуктов (fallback если nginx не обработал)
 Route::get('/storage/products/{product_id}/{filename}', function ($product_id, $filename) {

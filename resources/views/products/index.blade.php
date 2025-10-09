@@ -307,7 +307,7 @@
                         </div>
 
                         <div class="product-actions">
-                            <a href="/product/{{ $product->id }}" class="btn btn-secondary">
+                            <a href="{{ route('products.show', $product->slug) }}" class="btn btn-secondary">
                                 <i class="fas fa-eye"></i> Подробнее
                             </a>
                             <button class="btn btn-primary" onclick="addToCart({{ $product->id }})">

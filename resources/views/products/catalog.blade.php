@@ -90,7 +90,7 @@
                         </div>
                         
                         <div class="flex gap-3">
-                            <a href="/product/{{ $product->id }}" class="flex-1 text-center px-4 py-2 border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-50 transition-colors">
+                            <a href="{{ route('products.show', $product->slug) }}" class="flex-1 text-center px-4 py-2 border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-50 transition-colors">
                                 Подробнее
                             </a>
                             

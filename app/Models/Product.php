@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -28,6 +29,44 @@ class Product extends Model
         'amount' => 'integer',
         'is_available' => 'boolean',
     ];
+
+    /**
+     * Boot метод для автоматической генерации slug
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($product) {
+            if (empty($product->slug)) {
+                $slug = Str::slug($product->name);
+                $originalSlug = $slug;
+                $counter = 1;
+
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $originalSlug . '-' . $counter;
+                    $counter++;
+                }
+
+                $product->slug = $slug;
+            }
+        });
+
+        static::updating(function ($product) {
+            if ($product->isDirty('name') && empty($product->slug)) {
+                $slug = Str::slug($product->name);
+                $originalSlug = $slug;
+                $counter = 1;
+
+                while (static::where('slug', $slug)->where('id', '!=', $product->id)->exists()) {
+                    $slug = $originalSlug . '-' . $counter;
+                    $counter++;
+                }
+
+                $product->slug = $slug;
+            }
+        });
+    }
 
     /**
      * Связь с изображениями (все изображения)

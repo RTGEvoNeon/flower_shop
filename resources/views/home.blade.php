@@ -87,7 +87,7 @@
                         <p class="text-gray-600 mb-4">{{ Str::limit($product->description, 60) }}</p>
                         <div class="flex justify-between items-center">
                             <span class="text-2xl font-bold text-pink-500">{{ number_format($product->price, 0) }} ₽</span>
-                            <a href="{{ route('products.show', $product->id) }}" 
+                            <a href="{{ route('products.show', $product->slug) }}"
                                class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
                                 Смотреть
                             </a>
