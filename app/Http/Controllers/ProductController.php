@@ -45,7 +45,21 @@ class ProductController extends Controller
             }, 'primaryImage'])
             ->firstOrFail();
 
-        return view('products.show', compact('product'));
+        // SEO данные для мета-тегов
+        $seoData = [
+            'title' => $product->name . ' - Купить букет цветов | Mindale',
+            'description' => mb_substr(strip_tags($product->description), 0, 155) . ' Цена: ' . number_format($product->price, 0) . '₽. Быстрая доставка.',
+            'keywords' => $product->name . ', купить ' . $product->name . ', букет ' . $product->category . ', доставка цветов',
+            'ogType' => 'product',
+            'ogTitle' => $product->name,
+            'ogDescription' => mb_substr(strip_tags($product->description), 0, 155),
+            'ogImage' => $product->main_image && $product->main_image !== '/images/placeholder.svg'
+                ? url($product->main_image)
+                : asset('images/og-default.jpg'),
+            'canonical' => route('products.show', $product->slug),
+        ];
+
+        return view('products.show', array_merge(compact('product'), $seoData));
     }
 
     /**

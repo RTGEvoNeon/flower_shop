@@ -3,14 +3,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? 'Mindale.ru' }}</title>
-    
+
+    <!-- SEO Meta Tags -->
+    <title>{{ $title ?? 'Mindale - Доставка букетов цветов' }}</title>
+    <meta name="description" content="{{ $description ?? 'Доставка свежих букетов цветов в день заказа. Широкий выбор композиций от 2000₽. Быстрая доставка, свежие цветы, доступные цены.' }}">
+    <meta name="keywords" content="{{ $keywords ?? 'букеты, цветы, доставка цветов, купить букет, цветы с доставкой' }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $ogTitle ?? $title ?? 'Mindale - Доставка букетов цветов' }}">
+    <meta property="og:description" content="{{ $ogDescription ?? $description ?? 'Доставка свежих букетов цветов в день заказа' }}">
+    <meta property="og:image" content="{{ $ogImage ?? asset('images/og-default.jpg') }}">
+    <meta property="og:site_name" content="Mindale">
+    <meta property="og:locale" content="ru_RU">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="{{ $ogTitle ?? $title ?? 'Mindale - Доставка букетов цветов' }}">
+    <meta name="twitter:description" content="{{ $ogDescription ?? $description ?? 'Доставка свежих букетов цветов' }}">
+    <meta name="twitter:image" content="{{ $ogImage ?? asset('images/og-default.jpg') }}">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ $canonical ?? url()->current() }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
-    
+
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Additional SEO Tags -->
+    @stack('seo')
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){
