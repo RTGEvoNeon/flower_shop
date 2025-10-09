@@ -3,9 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $product->name }} - iTulip</title>
+
+    <!-- SEO Meta Tags -->
+    <title>{{ $title ?? $product->name . ' - Купить букет | Mindale' }}</title>
+    <meta name="description" content="{{ $description ?? mb_substr(strip_tags($product->description), 0, 155) }}">
+    <meta name="keywords" content="{{ $keywords ?? $product->name . ', купить букет, доставка цветов' }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="{{ route('products.show', $product->slug) }}">
+    <meta property="og:title" content="{{ $product->name }}">
+    <meta property="og:description" content="{{ mb_substr(strip_tags($product->description), 0, 155) }}">
+    <meta property="og:image" content="{{ $product->main_image && $product->main_image !== '/images/placeholder.svg' ? url($product->main_image) : asset('images/og-default.jpg') }}">
+    <meta property="og:site_name" content="Mindale">
+    <meta property="og:locale" content="ru_RU">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $product->name }}">
+    <meta name="twitter:description" content="{{ mb_substr(strip_tags($product->description), 0, 155) }}">
+    <meta name="twitter:image" content="{{ $product->main_image && $product->main_image !== '/images/placeholder.svg' ? url($product->main_image) : asset('images/og-default.jpg') }}">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ route('products.show', $product->slug) }}">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/product-animations.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "Product",
+        "name": {{ json_encode($product->name) }},
+        "description": {{ json_encode(strip_tags($product->description)) }},
+        @if($product->main_image && $product->main_image !== '/images/placeholder.svg')
+        "image": {{ json_encode(url($product->main_image)) }},
+        @endif
+        "sku": "{{ $product->id }}",
+        "offers": {
+            "@@type": "Offer",
+            "url": {{ json_encode(route('products.show', $product->slug)) }},
+            "priceCurrency": "RUB",
+            "price": "{{ $product->price }}",
+            "availability": "{{ $product->is_available ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }}",
+            "priceValidUntil": "{{ now()->addYear()->format('Y-m-d') }}"
+        }
+    }
+    </script>
+
+    <!-- Breadcrumbs Schema -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@@type": "ListItem",
+                "position": 1,
+                "name": "Главная",
+                "item": {{ json_encode(url('/')) }}
+            },
+            {
+                "@@type": "ListItem",
+                "position": 2,
+                "name": {{ json_encode($product->name) }}
+            }
+        ]
+    }
+    </script>
     <style>
         * {
             margin: 0;
@@ -59,6 +126,47 @@
         .back-btn:hover {
             background: rgba(255,255,255,0.2);
             color: white;
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumbs-list {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumbs-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .breadcrumbs-list a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumbs-list a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .breadcrumbs-list .current {
+            color: #6c757d;
+        }
+
+        .breadcrumbs-separator {
+            color: #adb5bd;
         }
 
         .container {
@@ -550,6 +658,23 @@
         </div>
     </header>
 
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="breadcrumb">
+        <ol class="breadcrumbs-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a itemprop="item" href="/">
+                    <span itemprop="name">Главная</span>
+                </a>
+                <meta itemprop="position" content="1" />
+                <span class="breadcrumbs-separator">/</span>
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name" class="current">{{ $product->name }}</span>
+                <meta itemprop="position" content="2" />
+            </li>
+        </ol>
+    </nav>
+
     <div class="container">
         <div class="product-detail">
             <div class="product-gallery">
@@ -574,9 +699,13 @@
                     <!-- Главное изображение -->
                     @if($product->has_images)
                         <img src="{{ $product->main_image }}"
-                             alt="{{ $product->alt_text ?? $product->name }}"
+                             alt="{{ $product->alt_text ?? 'Букет цветов ' . $product->name . ' - купить с доставкой' }}"
+                             title="{{ $product->name }}"
                              class="main-image"
                              id="main-image"
+                             loading="eager"
+                             width="800"
+                             height="600"
                              onclick="openZoom(this.src)">
                     @else
                         <i class="fas fa-seedling product-placeholder"></i>
@@ -587,9 +716,20 @@
                 @if(count($product->image_urls) > 1)
                     <div class="thumbnails-container">
                         @foreach($product->image_urls as $index => $imageUrl)
+                            @php
+                                $altText = $product->alt_text ?? ($product->name . ' фото');
+                                $thumbAlt = $altText . ' ' . ($index + 1);
+                            @endphp
                             <div class="thumbnail {{ $index === 0 ? 'active' : '' }}"
-                                 onclick="setMainImage('{{ $imageUrl }}', '{{ $product->alt_text ?? $product->name }}', {{ $index }})">
-                                <img src="{{ $imageUrl }}" alt="{{ $product->alt_text ?? $product->name }}">
+                                 data-url="{{ $imageUrl }}"
+                                 data-alt="{{ $altText }}"
+                                 data-index="{{ $index }}"
+                                 onclick="setMainImage(this.dataset.url, this.dataset.alt, this.dataset.index)">
+                                <img src="{{ $imageUrl }}"
+                                     alt="{{ $thumbAlt }}"
+                                     loading="lazy"
+                                     width="150"
+                                     height="150">
                             </div>
                         @endforeach
                     </div>
@@ -817,25 +957,13 @@
 
         function showNotification(message) {
             const notification = document.createElement('div');
+            notification.className = 'notification';
             notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #28a745;
-                color: white;
-                padding: 1rem 2rem;
-                border-radius: 25px;
-                z-index: 1001;
-                animation: slideDown 0.3s ease;
-                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            `;
-            
+
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
-                notification.style.animation = 'slideUp 0.3s ease';
+                notification.classList.add('hiding');
                 setTimeout(() => notification.remove(), 300);
             }, 2500);
         }
@@ -846,21 +974,6 @@
 
         // Инициализация
         updateCartCount();
-
-        // CSS анимации
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideDown {
-                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
-                to { transform: translateX(-50%) translateY(0); opacity: 1; }
-            }
-            
-            @keyframes slideUp {
-                from { transform: translateX(-50%) translateY(0); opacity: 1; }
-                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>

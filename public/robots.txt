@@ -1,2 +1,11 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /order/
+
+Allow: /
+Allow: /products
+Allow: /product/
+
+Sitemap: https://mindale.ru/sitemap.xml

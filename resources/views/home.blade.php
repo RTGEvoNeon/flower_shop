@@ -72,28 +72,38 @@
             @endphp
             
             @forelse($featuredProducts as $product)
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" itemscope itemtype="https://schema.org/Product">
                     <div class="h-64 bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center overflow-hidden">
                         @if($product->main_image && $product->main_image !== '/images/placeholder.jpg')
-                            <img src="{{ $product->main_image }}" 
-                                 alt="{{ $product->name }}" 
+                            <img src="{{ $product->main_image }}"
+                                 alt="{{ $product->alt_text ?? 'Букет ' . $product->name . ' - купить с доставкой' }}"
+                                 title="{{ $product->name }}"
+                                 itemprop="image"
+                                 loading="lazy"
+                                 width="400"
+                                 height="300"
                                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                         @else
                             <span class="text-gray-600">🌹</span>
                         @endif
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">{{ $product->name }}</h3>
-                        <p class="text-gray-600 mb-4">{{ Str::limit($product->description, 60) }}</p>
+                        <h3 class="text-xl font-semibold mb-2" itemprop="name">{{ $product->name }}</h3>
+                        <p class="text-gray-600 mb-4" itemprop="description">{{ Str::limit($product->description, 60) }}</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-pink-500">{{ number_format($product->price, 0) }} ₽</span>
+                            <span class="text-2xl font-bold text-pink-500" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                <meta itemprop="price" content="{{ $product->price }}">
+                                <meta itemprop="priceCurrency" content="RUB">
+                                {{ number_format($product->price, 0) }} ₽
+                            </span>
                             <a href="{{ route('products.show', $product->slug) }}"
+                               itemprop="url"
                                class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors">
                                 Смотреть
                             </a>
                         </div>
                     </div>
-                </div>
+                </article>
             @empty
                 <!-- Fallback карточки если нет продуктов -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
