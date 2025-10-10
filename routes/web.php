@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\CustomBouquetController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,13 +26,8 @@ Route::get('/storage/products/{product_id}/{filename}', function ($product_id, $
 })->where(['product_id' => '[0-9]+', 'filename' => '[^/]+\.(jpg|jpeg|png|gif|webp)'])->name('product.image');
 
 // Custom bouquet
-Route::get('/custom-bouquet', function () {
-    return view('custom-bouquet');
-});
-Route::post('/custom-bouquet/submit', function () {
-    // Пока просто редирект с сообщением
-    return redirect('/custom-bouquet')->with('success', 'Спасибо! Мы скоро с вами свяжемся!');
-});
+Route::get('/custom-bouquet', [CustomBouquetController::class, 'show'])->name('custom-bouquet.show');
+Route::post('/custom-bouquet/submit', [CustomBouquetController::class, 'submit'])->name('custom-bouquet.submit');
 
 // Cart routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
