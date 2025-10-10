@@ -144,4 +144,11 @@
     </div>
 </section>
 
+
+            <!-- Карта -->
+                <div class="relative rounded-lg overflow-hidden shadow-lg" style="height: 600px;">
+                    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A44c15fbbc06a1918b30ef4008bef6dfc6e94b209ee5468ed2444ae0f343d7c39&amp;width=100%25&amp;height=600&amp;lang=ru_RU&amp;scroll=true"></script>
+                </div>
+</section>
+
 @endsection
