@@ -1,0 +1,61 @@
+# Быстрые правила проекта Mindale
+
+## Всегда делать
+✅ Добавлять SEO теги для новых страниц (title, description, keywords, OG, Schema.org)
+✅ Использовать строгую типизацию в PHP: типы параметров и возвращаемых значений
+✅ Валидировать через Form Request классы, не в контроллерах
+✅ Добавлять alt текст для изображений с ключевыми словами
+✅ Использовать eager loading для избежания N+1
+✅ Очищать кеш после изменений: php artisan view:clear
+✅ Комментарии на русском, код на английском
+✅ Использовать Route Model Binding
+✅ Добавлять метод down() в миграциях
+
+## Никогда не делать
+❌ Не коммитить .env файл
+❌ Не использовать массовое присваивание без $fillable
+❌ Не писать SQL запросы напрямую (использовать Eloquent/Query Builder)
+❌ Не забывать CSRF защиту для форм
+❌ Не создавать страницы без SEO тегов
+❌ Не загружать изображения без alt текста
+❌ Не использовать транслит в URL (только кириллицу через slug)
+❌ Не делать бизнес-логику в контроллерах (выносить в Services)
+
+## SEO must-have для каждой страницы
+1. Meta title с "Брянск" и ключевыми словами
+2. Meta description 150-160 символов
+3. Open Graph теги (og:title, og:description, og:image)
+4. Schema.org JSON-LD разметка
+5. Canonical URL
+6. Один H1 с ключевым словом
+7. Alt теги для всех изображений
+8. Семантические HTML5 теги
+
+## Цветовая схема проекта
+- Primary: pink-500 (#ec4899), pink-600 (#db2777)
+- Secondary: purple-600 (#9333ea)
+- Background: white, gray-50, gray-100
+- Text: gray-900, gray-700, gray-600
+
+## Ключевые слова для SEO
+- "доставка цветов Брянск"
+- "купить букет Брянск"
+- "заказать цветы Брянск"
+- "цветы с доставкой Брянск"
+- Всегда указывать город!
+
+## Структура файлов
+Controllers: app/Http/Controllers/
+Models: app/Models/
+Requests: app/Http/Requests/
+Services: app/Services/
+Views: resources/views/
+Components: resources/views/components/
+
+## Команды для быстрого старта
+php artisan make:controller NameController --resource
+php artisan make:model Name -m
+php artisan make:request StoreNameRequest
+php artisan migrate
+php artisan view:clear
+php artisan pint (форматирование кода)
