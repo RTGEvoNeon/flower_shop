@@ -1,3 +1,7 @@
+@php
+    $ogDefaultImage = asset('images/og-default.jpg');
+@endphp
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -14,7 +18,7 @@
     <meta property="og:url" content="{{ route('products.show', $product->slug) }}">
     <meta property="og:title" content="{{ $product->name }}">
     <meta property="og:description" content="{{ mb_substr(strip_tags($product->description), 0, 155) }}">
-    <meta property="og:image" content="{{ $product->main_image && $product->main_image !== '/images/placeholder.svg' ? url($product->main_image) : asset('images/og-default.jpg') }}">
+    <meta property="og:image" content="{{ $product->main_image && $product->main_image !== '/images/placeholder.svg' ? url($product->main_image) : $ogDefaultImage }}">
     <meta property="og:site_name" content="Mindale">
     <meta property="og:locale" content="ru_RU">
 
@@ -22,7 +26,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $product->name }}">
     <meta name="twitter:description" content="{{ mb_substr(strip_tags($product->description), 0, 155) }}">
-    <meta name="twitter:image" content="{{ $product->main_image && $product->main_image !== '/images/placeholder.svg' ? url($product->main_image) : asset('images/og-default.jpg') }}">
+    <meta name="twitter:image" content="{{ $product->main_image && $product->main_image !== '/images/placeholder.svg' ? url($product->main_image) : $ogDefaultImage }}">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ route('products.show', $product->slug) }}">

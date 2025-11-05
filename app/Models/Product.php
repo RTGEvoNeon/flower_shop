@@ -21,13 +21,22 @@ class Product extends Model
         'amount',
         'price',
         'is_available',
-        'alt_text'
+        'alt_text',
+        'flower_type',
+        'occasion',
+        'style',
+        'price_range',
+        'tags',
+        'meta_title',
+        'meta_description',
+        'meta_keywords'
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'amount' => 'integer',
         'is_available' => 'boolean',
+        'tags' => 'array',
     ];
 
     /**
@@ -114,6 +123,38 @@ class Product extends Model
     public function scopeWithImages(Builder $query): Builder
     {
         return $query->with(['activeImages', 'primaryImage']);
+    }
+
+    /**
+     * Scope: по типу цветов
+     */
+    public function scopeByFlowerType(Builder $query, string $flowerType): Builder
+    {
+        return $query->where('flower_type', $flowerType);
+    }
+
+    /**
+     * Scope: по поводу
+     */
+    public function scopeByOccasion(Builder $query, string $occasion): Builder
+    {
+        return $query->where('occasion', $occasion);
+    }
+
+    /**
+     * Scope: по стилю
+     */
+    public function scopeByStyle(Builder $query, string $style): Builder
+    {
+        return $query->where('style', $style);
+    }
+
+    /**
+     * Scope: по ценовому диапазону
+     */
+    public function scopeByPriceRange(Builder $query, string $priceRange): Builder
+    {
+        return $query->where('price_range', $priceRange);
     }
 
     /**

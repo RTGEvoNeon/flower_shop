@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\CustomBouquetController;
+use App\Http\Controllers\CategoryPageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,6 +29,20 @@ Route::get('/storage/products/{product_id}/{filename}', function ($product_id, $
 // Custom bouquet
 Route::get('/custom-bouquet', [CustomBouquetController::class, 'show'])->name('custom-bouquet.show');
 Route::post('/custom-bouquet/submit', [CustomBouquetController::class, 'submit'])->name('custom-bouquet.submit');
+
+// Категорийные SEO-страницы
+// Высокий приоритет (высокая частотность)
+Route::get('/rozy', [CategoryPageController::class, 'roses'])->name('category.roses');
+Route::get('/bukety-na-den-rozhdeniya', [CategoryPageController::class, 'birthday'])->name('category.birthday');
+Route::get('/bukety-na-8-marta', [CategoryPageController::class, 'march8'])->name('category.march8');
+Route::get('/bukety-nedorogo', [CategoryPageController::class, 'affordable'])->name('category.affordable');
+
+// Средний приоритет (средняя частотность)
+Route::get('/hrizantemy', [CategoryPageController::class, 'chrysanthemums'])->name('category.chrysanthemums');
+Route::get('/piony', [CategoryPageController::class, 'peonies'])->name('category.peonies');
+Route::get('/bukety-v-krafte', [CategoryPageController::class, 'kraft'])->name('category.kraft');
+Route::get('/svadebnyy-buket', [CategoryPageController::class, 'wedding'])->name('category.wedding');
+Route::get('/kompozicii-iz-cvetov', [CategoryPageController::class, 'compositions'])->name('category.compositions');
 
 // Cart routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
