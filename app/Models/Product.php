@@ -16,7 +16,6 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'image', // Оставляем для обратной совместимости
         'category',
         'is_available'
     ];
@@ -81,22 +80,14 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                // Сначала проверяем новую систему
                 if ($this->primaryImage) {
                     return $this->primaryImage->full_url;
                 }
-                
-                // Если есть любое активное изображение
+
                 if ($this->activeImages->isNotEmpty()) {
                     return $this->activeImages->first()->full_url;
                 }
-                
-                // Fallback на старое поле image
-                if ($this->image) {
-                    return $this->image;
-                }
-                
-                // Placeholder
+
                 return '/images/placeholder.jpg';
             }
         );
