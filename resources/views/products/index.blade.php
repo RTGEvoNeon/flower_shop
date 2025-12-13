@@ -110,7 +110,7 @@
                         </div>
 
                         <!-- Кнопка быстрого просмотра -->
-                        <a href="/product/{{ $product->id }}"
+                        <a href="/product/{{ $product->slug }}"
                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <span class="bg-white/95 backdrop-blur-sm px-6 py-3 rounded-full font-semibold text-gray-900 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +134,7 @@
 
                         <!-- Действия -->
                         <div class="flex gap-3 pt-2">
-                            <a href="/product/{{ $product->id }}"
+                            <a href="/product/{{ $product->slug }}"
                                class="flex-1 group/btn bg-white border-2 border-accent-300 text-gray-900 px-5 py-3 rounded-full font-semibold text-center hover:border-primary-400 hover:bg-primary-50 transition-all hover:scale-[1.02] shadow-sm flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>

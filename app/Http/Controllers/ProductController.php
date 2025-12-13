@@ -37,12 +37,14 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        $product = Product::with(['activeImages' => function($query) {
-            $query->ordered();
-        }, 'primaryImage'])->findOrFail($id);
-        
+        $product = Product::where('slug', $slug)
+            ->with(['activeImages' => function($query) {
+                $query->ordered();
+            }, 'primaryImage'])
+            ->firstOrFail();
+
         return view('products.show', compact('product'));
     }
 
