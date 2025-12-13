@@ -1,878 +1,974 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $product->name }} - iTulip</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@extends('layouts.app')
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
+@section('content')
+<style>
+    /* Organic Art Nouveau Design - Расширенные стили для страницы товара */
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
+    /* Декоративные элементы в стиле модерн */
+    .art-nouveau-border {
+        position: relative;
+    }
 
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+    .art-nouveau-border::before,
+    .art-nouveau-border::after {
+        content: '';
+        position: absolute;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            #fbe196 20%,
+            #f8bd91 50%,
+            #fbe196 80%,
+            transparent 100%
+        );
+        height: 2px;
+        left: 0;
+        right: 0;
+    }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 300;
-            text-decoration: none;
-            color: white;
-        }
+    .art-nouveau-border::before {
+        top: 0;
+        opacity: 0.3;
+    }
 
-        .back-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 25px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+    .art-nouveau-border::after {
+        bottom: 0;
+        opacity: 0.3;
+    }
 
-        .back-btn:hover {
-            background: rgba(255,255,255,0.2);
-            color: white;
-        }
+    /* Органические формы для галереи */
+    .organic-shape {
+        border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+        position: relative;
+        overflow: hidden;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 20px;
-        }
+    .organic-shape-alt {
+        border-radius: 48% 52% 39% 61% / 62% 45% 55% 38%;
+    }
 
-        .product-detail {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            min-height: 600px;
+    /* Анимация плавающих лепестков */
+    @keyframes petalFloat {
+        0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+            opacity: 0.15;
         }
-
-        .product-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            position: relative;
+        25% {
+            transform: translate(10px, -20px) rotate(5deg);
+            opacity: 0.25;
         }
-
-        .main-image-container {
-            position: relative;
-            background: linear-gradient(45deg, #FFB6C1, #FFC0CB, #DDA0DD);
-            border-radius: 20px;
-            overflow: hidden;
-            aspect-ratio: 4/3;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        50% {
+            transform: translate(-5px, -35px) rotate(-3deg);
+            opacity: 0.2;
         }
-
-        .main-image-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/><circle cx="20" cy="20" r="10" fill="rgba(255,255,255,0.05)"/><circle cx="80" cy="30" r="15" fill="rgba(255,255,255,0.05)"/></svg>');
-            z-index: 1;
+        75% {
+            transform: translate(15px, -25px) rotate(7deg);
+            opacity: 0.18;
         }
+    }
 
-        .main-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
-            transition: transform 0.3s ease;
-            cursor: zoom-in;
+    @keyframes petalFloat2 {
+        0%, 100% {
+            transform: translate(0, 0) rotate(0deg) scale(1);
+            opacity: 0.1;
         }
-
-        .main-image:hover {
-            transform: scale(1.05);
+        33% {
+            transform: translate(-15px, -30px) rotate(-8deg) scale(1.1);
+            opacity: 0.2;
         }
-
-        .product-placeholder {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 4rem;
-            color: white;
-            z-index: 2;
+        66% {
+            transform: translate(20px, -40px) rotate(10deg) scale(0.95);
+            opacity: 0.15;
         }
+    }
 
-        .image-counter {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            z-index: 3;
-        }
+    @keyframes shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+    }
 
-        .gallery-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.9);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #667eea;
-            transition: all 0.3s ease;
-            z-index: 3;
+    .petal-float {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(ellipse at 30% 30%,
+            #fbd9be,
+            #f8bd91 40%,
+            transparent 70%
+        );
+        border-radius: 50% 0% 50% 50%;
+        animation: petalFloat 12s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .petal-float-2 {
+        animation: petalFloat2 15s ease-in-out infinite;
+        background: radial-gradient(ellipse at 70% 40%,
+            #fdf0c4,
+            #cad3ca 50%,
+            transparent 75%
+        );
+        animation-delay: -5s;
+    }
+
+    /* Кастомный курсор для hover областей */
+    .custom-cursor-zoom {
+        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%23e96d3f" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>'), zoom-in;
+    }
+
+    /* Эффект свечения для активных элементов */
+    .glow-primary {
+        box-shadow:
+            0 0 20px rgba(233, 109, 63, 0.15),
+            0 0 40px rgba(233, 109, 63, 0.1),
+            0 8px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .glow-gold {
+        box-shadow:
+            0 0 30px rgba(244, 179, 41, 0.2),
+            0 0 60px rgba(244, 179, 41, 0.1);
+    }
+
+    /* Градиент с анимацией */
+    .animated-gradient {
+        background: linear-gradient(
+            120deg,
+            #e96d3f,
+            #f4b329,
+            #d95132,
+            #e0971e
+        );
+        background-size: 200% 200%;
+        animation: shimmer 3s ease-in-out infinite;
+    }
+
+    /* Текстура холста */
+    .canvas-texture {
+        background-image:
+            url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' /%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    }
+
+    /* Стеклянный эффект для карточек */
+    .glass-morphism {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Плавные переходы для изображений */
+    .image-reveal {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .image-reveal img {
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                    filter 0.4s ease;
+    }
+
+    .image-reveal:hover img {
+        transform: scale(1.08);
+        filter: brightness(1.05) contrast(1.05);
+    }
+
+    /* Декоративная рамка */
+    .decorative-frame {
+        position: relative;
+        padding: 2rem;
+    }
+
+    .decorative-frame::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border: 2px solid transparent;
+        background: linear-gradient(135deg,
+            #fbe196,
+            #f8bd91,
+            #a5b5a5
+        ) border-box;
+        -webkit-mask:
+            linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask:
+            linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        border-radius: 2rem;
+        opacity: 0.5;
+    }
+
+    /* Типографика с особым характером */
+    .display-xl {
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+
+    .price-display {
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        font-weight: 700;
+        background: linear-gradient(135deg,
+            #e96d3f,
+            #f4b329
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-variant-numeric: oldstyle-nums;
+    }
+
+    /* Кнопки с органическими формами */
+    .btn-organic {
+        border-radius: 3rem 1rem 3rem 1rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-organic::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+    }
+
+    .btn-organic:hover::before {
+        transform: translateX(100%);
+    }
+
+    .btn-organic:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-organic:active {
+        transform: translateY(-2px) scale(0.98);
+    }
+
+    /* Особенности товара с иконками */
+    .feature-badge {
+        background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.9),
+            rgba(248, 247, 244, 0.8)
+        );
+        border: 1px solid #ddd8c8;
+        border-radius: 1.5rem 0.5rem 1.5rem 0.5rem;
+        padding: 1rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .feature-badge:hover {
+        background: white;
+        border-color: #f8bd91;
+        transform: translateX(8px);
+    }
+
+    .feature-badge svg {
+        transition: transform 0.3s ease;
+    }
+
+    .feature-badge:hover svg {
+        transform: rotate(12deg) scale(1.1);
+    }
+
+    /* Миниатюры галереи */
+    .thumbnail-organic {
+        border-radius: 1.5rem 0.5rem 1.5rem 0.5rem;
+        border: 3px solid transparent;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .thumbnail-organic::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg,
+            rgba(233, 109, 63, 0.3),
+            rgba(244, 179, 41, 0.3)
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .thumbnail-organic:hover::after {
+        opacity: 1;
+    }
+
+    .thumbnail-organic.active {
+        border-color: #f49162;
+        box-shadow: 0 0 0 3px #fdeee0;
+    }
+
+    /* Счетчик изображений */
+    .image-counter {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        border-radius: 2rem;
+        padding: 0.5rem 1.25rem;
+        font-family: 'Playfair Display', serif;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+    }
+
+    /* Zoom overlay */
+    .zoom-overlay {
+        backdrop-filter: blur(20px);
+        background: rgba(0, 0, 0, 0.95);
+    }
+
+    /* Прелоадер изображений */
+    .image-loading {
+        position: relative;
+        background: linear-gradient(
+            90deg,
+            #efede5 0%,
+            #ddd8c8 50%,
+            #efede5 100%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s ease-in-out infinite;
+    }
+
+    @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    .image-loading::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .image-loaded {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
             opacity: 0;
+            transform: scale(0.95);
         }
-
-        .main-image-container:hover .gallery-nav {
+        to {
             opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Улучшенные переходы */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .smooth-scroll {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 1024px) {
+        .decorative-frame {
+            padding: 1.5rem;
         }
 
-        .gallery-nav:hover {
-            background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .gallery-nav.prev {
-            left: 15px;
-        }
-
-        .gallery-nav.next {
-            right: 15px;
-        }
-
-        .thumbnails-container {
-            display: flex;
-            gap: 0.8rem;
-            overflow-x: auto;
-            padding: 0.5rem 0;
-            scrollbar-width: thin;
-            scrollbar-color: #667eea #f1f1f1;
-        }
-
-        .thumbnails-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .thumbnails-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .thumbnails-container::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 3px;
-        }
-
-        .thumbnail {
-            min-width: 80px;
+        .petal-float {
+            width: 80px;
             height: 80px;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 3px solid transparent;
+        }
+
+        .display-xl {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+        }
+
+        .price-display {
+            font-size: clamp(1.75rem, 5vw, 3rem);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .art-nouveau-border::before,
+        .art-nouveau-border::after {
+            display: none;
+        }
+
+        .decorative-frame {
+            padding: 1rem;
+        }
+
+        .decorative-frame::before {
+            border-radius: 1rem;
+            opacity: 0.3;
+        }
+
+        .btn-organic {
+            border-radius: 2rem 0.75rem 2rem 0.75rem;
+            font-size: 1rem;
+            padding: 0.875rem 1.5rem;
+        }
+
+        .organic-shape {
+            border-radius: 2rem;
+        }
+
+        .feature-badge {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .feature-badge:hover {
+            transform: translateX(4px);
+        }
+
+        /* Убираем плавающие лепестки на мобильных */
+        .petal-float {
+            display: none;
+        }
+
+        /* Оптимизация галереи на мобильных */
+        .thumbnail-organic {
+            border-width: 2px;
+        }
+
+        /* Sticky галерея только на desktop */
+        .sticky {
             position: relative;
         }
+    }
 
-        .thumbnail:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    @media (max-width: 640px) {
+        .decorative-frame {
+            padding: 0;
         }
 
-        .thumbnail.active {
-            border-color: #667eea;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        .art-nouveau-border {
+            padding: 1.5rem 0;
         }
 
-        .thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .feature-badge svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
+
+    /* Улучшение производительности анимаций */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
         }
 
-        .thumbnail-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #FFB6C1, #FFC0CB);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .zoom-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
+        .petal-float {
             display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            cursor: zoom-out;
         }
+    }
+</style>
 
-        .zoom-image {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 10px;
-        }
+<!-- Плавающие декоративные элементы -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+    <div class="petal-float" style="top: 10%; left: 5%;"></div>
+    <div class="petal-float petal-float-2" style="top: 60%; right: 8%;"></div>
+    <div class="petal-float" style="bottom: 15%; left: 15%; animation-delay: -8s;"></div>
+</div>
 
-        .product-info {
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+<!-- Основной контент -->
+<div class="relative z-10 min-h-screen py-8 lg:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        .product-category-badge {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: inline-block;
-            width: fit-content;
-            margin-bottom: 1rem;
-        }
+        <!-- Хлебные крошки -->
+        <nav class="mb-8 animate-fade-in-up">
+            <ol class="flex items-center space-x-2 text-sm text-accent-600">
+                <li><a href="/" class="hover:text-primary-600 transition-colors">Главная</a></li>
+                <li class="flex items-center">
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                    <a href="/products" class="hover:text-primary-600 transition-colors">Каталог</a>
+                </li>
+                <li class="flex items-center">
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                    <span class="text-gray-900 font-medium">{{ $product->name }}</span>
+                </li>
+            </ol>
+        </nav>
 
-        .product-title {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
+        <!-- Основная сетка товара -->
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
-        .product-price {
-            font-size: 3rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1.5rem;
-        }
-
-        .product-description {
-            color: #7f8c8d;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-        }
-
-        .product-actions {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            flex: 1;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-
-        .btn-secondary:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        .product-features {
-            border-top: 1px solid #ecf0f1;
-            padding-top: 2rem;
-        }
-
-        .features-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-        }
-
-        .features-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #7f8c8d;
-        }
-
-        .feature-icon {
-            color: #667eea;
-            width: 20px;
-        }
-
-        .cart-badge {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 1rem;
-            border-radius: 50%;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .cart-badge:hover {
-            transform: scale(1.1);
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #e74c3c;
-            color: white;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            .product-detail {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .product-gallery {
-                order: 1;
-            }
-            
-            .product-info {
-                padding: 2rem;
-                order: 2;
-            }
-            
-            .product-title {
-                font-size: 2rem;
-            }
-            
-            .product-price {
-                font-size: 2.5rem;
-            }
-            
-            .features-list {
-                grid-template-columns: 1fr;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            /* Галерея на мобильных */
-            .main-image-container {
-                aspect-ratio: 1/1;
-                margin-bottom: 1rem;
-            }
-            
-            .gallery-nav {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-            
-            .gallery-nav.prev {
-                left: 10px;
-            }
-            
-            .gallery-nav.next {
-                right: 10px;
-            }
-            
-            .thumbnails-container {
-                gap: 0.5rem;
-                padding: 0.3rem 0;
-                justify-content: center;
-            }
-            
-            .thumbnail {
-                min-width: 60px;
-                height: 60px;
-                border-radius: 8px;
-            }
-            
-            .image-counter {
-                top: 10px;
-                right: 10px;
-                padding: 0.3rem 0.8rem;
-                font-size: 0.8rem;
-            }
-
-            /* Zoom на мобильных */
-            .zoom-image {
-                max-width: 95%;
-                max-height: 95%;
-            }
-
-            /* Улучшение UX для сенсорных экранов */
-            .main-image-container:hover .gallery-nav {
-                opacity: 1; /* Всегда показываем на мобильных */
-            }
-            
-            .thumbnail:hover {
-                transform: none; /* Убираем hover эффекты на мобильных */
-            }
-            
-            .thumbnail:active {
-                transform: scale(0.95);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 1rem 10px;
-            }
-            
-            .product-info {
-                padding: 1.5rem;
-            }
-            
-            .thumbnails-container {
-                overflow-x: auto;
-                justify-content: flex-start;
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            
-            .thumbnail {
-                min-width: 50px;
-                height: 50px;
-                flex-shrink: 0;
-            }
-            
-            .product-actions {
-                flex-direction: column;
-                gap: 0.8rem;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header class="header">
-        <div class="header-content">
-            <a href="/" class="logo">🌷 iTulip</a>
-            <a href="/" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                Вернуться к каталогу
-            </a>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="product-detail">
-            <div class="product-gallery">
-                <div class="main-image-container">
-                    <!-- Счетчик изображений -->
-                    @if($product->activeImages->count() > 1)
-                        <div class="image-counter">
-                            <span id="current-image">1</span> / {{ $product->activeImages->count() }}
-                        </div>
-                    @endif
-
-                    <!-- Кнопки навигации -->
-                    @if($product->activeImages->count() > 1)
-                        <button class="gallery-nav prev" onclick="changeImage(-1)">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="gallery-nav next" onclick="changeImage(1)">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    @endif
-
+            <!-- Галерея изображений -->
+            <div class="animate-fade-in-up stagger-1">
+                <div class="sticky top-24">
                     <!-- Главное изображение -->
-                    @if($product->activeImages->count() > 0)
-                        <img src="{{ $product->activeImages->first()->full_url }}" 
-                             alt="{{ $product->activeImages->first()->alt_text }}" 
-                             class="main-image" 
-                             id="main-image"
-                             onclick="openZoom(this.src)">
-                    @elseif($product->image)
-                        <img src="{{ $product->image }}" 
-                             alt="{{ $product->name }}" 
-                             class="main-image" 
-                             id="main-image"
-                             onclick="openZoom(this.src)">
-                    @else
-                        <i class="fas fa-seedling product-placeholder"></i>
+                    <div class="relative mb-6 image-reveal organic-shape canvas-texture bg-gradient-to-br from-accent-50 via-primary-50 to-sage-50 group">
+                        <div class="aspect-[4/5] relative overflow-hidden">
+                            @php
+                                $images = $product->image_urls;
+                                $hasImages = !empty($images);
+                                $imageCount = count($images);
+                            @endphp
+
+                            @if($imageCount > 1)
+                                <div class="absolute top-4 right-4 z-20 image-counter text-white text-sm">
+                                    <span id="current-image">1</span> / {{ $imageCount }}
+                                </div>
+                            @endif
+
+                            @if($hasImages)
+                                <img
+                                    src="{{ $images[0] }}"
+                                    alt="{{ $product->name }}"
+                                    class="w-full h-full object-cover custom-cursor-zoom"
+                                    id="main-image"
+                                    onclick="openZoom(this.src)"
+                                >
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <svg class="w-32 h-32 text-accent-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            @endif
+
+                            <!-- Навигационные стрелки -->
+                            @if($imageCount > 1)
+                                <button
+                                    onclick="changeImage(-1)"
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass-morphism flex items-center justify-center text-primary-600 hover:bg-white hover:shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                                    aria-label="Предыдущее изображение"
+                                >
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                    </svg>
+                                </button>
+                                <button
+                                    onclick="changeImage(1)"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass-morphism flex items-center justify-center text-primary-600 hover:bg-white hover:shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                                    aria-label="Следующее изображение"
+                                >
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Миниатюры -->
+                    @if($imageCount > 0)
+                        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-accent-100">
+                            @foreach($images as $index => $imageUrl)
+                                <button
+                                    onclick="setMainImage('{{ $imageUrl }}', '{{ $product->name }}', {{ $index }})"
+                                    class="thumbnail-organic flex-shrink-0 w-20 h-20 lg:w-24 lg:h-24 overflow-hidden {{ $index === 0 ? 'active' : '' }}"
+                                    aria-label="Показать изображение {{ $index + 1 }}"
+                                >
+                                    <img
+                                        src="{{ $imageUrl }}"
+                                        alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover"
+                                    >
+                                </button>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
-
-                <!-- Миниатюры -->
-                @if($product->activeImages->count() > 1)
-                    <div class="thumbnails-container">
-                        @foreach($product->activeImages as $index => $image)
-                            <div class="thumbnail {{ $index === 0 ? 'active' : '' }}" 
-                                 onclick="setMainImage('{{ $image->full_url }}', '{{ $image->alt_text }}', {{ $index }})">
-                                <img src="{{ $image->full_url }}" alt="{{ $image->alt_text }}">
-                            </div>
-                        @endforeach
-                    </div>
-                @elseif($product->image)
-                    <div class="thumbnails-container">
-                        <div class="thumbnail active">
-                            <img src="{{ $product->image }}" alt="{{ $product->name }}">
-                        </div>
-                    </div>
-                @endif
             </div>
-            
-            <div class="product-info">
-                <div class="product-category-badge">{{ ucfirst($product->category) }}</div>
-                
-                <h1 class="product-title">{{ $product->name }}</h1>
-                
-                <div class="product-price">{{ number_format($product->price, 0) }} ₽</div>
-                
-                <div class="product-description">
-                    {{ $product->description ?: 'Красивый букет, созданный с любовью нашими флористами. Идеально подходит для особенных моментов и выражения ваших чувств.' }}
-                </div>
 
-                <div class="product-actions">
-                    <button class="btn btn-primary" onclick="addToCart({{ $product->id }})">
-                        <i class="fas fa-shopping-cart"></i>
-                        Добавить в корзину
-                    </button>
-                    <button class="btn btn-secondary" onclick="buyNow({{ $product->id }})">
-                        <i class="fas fa-bolt"></i>
-                        Купить сейчас
-                    </button>
-                </div>
+            <!-- Информация о товаре -->
+            <div class="animate-fade-in-up stagger-2">
+                <div class="decorative-frame">
+                    <!-- Категория -->
+                    <div class="mb-4">
+                        <span class="inline-block px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-primary-100 to-gold-100 text-primary-700 border border-primary-200">
+                            {{ ucfirst($product->category) }}
+                        </span>
+                    </div>
 
-                <div class="product-features">
-                    <div class="features-title">Особенности букета</div>
-                    <div class="features-list">
-                        <div class="feature-item">
-                            <i class="fas fa-leaf feature-icon"></i>
-                            <span>Свежие цветы</span>
+                    <!-- Название -->
+                    <h1 class="display-xl font-display font-semibold text-gray-900 mb-6 text-balance">
+                        {{ $product->name }}
+                    </h1>
+
+                    <!-- Цена -->
+                    <div class="mb-8">
+                        <div class="price-display">
+                            {{ number_format($product->price, 0, ',', ' ') }}<span class="text-2xl"> ₽</span>
                         </div>
-                        <div class="feature-item">
-                            <i class="fas fa-truck feature-icon"></i>
-                            <span>Доставка по городу</span>
+                    </div>
+
+                    <!-- Описание -->
+                    @if($product->description)
+                        <div class="mb-10 text-lg text-gray-700 leading-relaxed art-nouveau-border py-8">
+                            {{ $product->description }}
                         </div>
-                        <div class="feature-item">
-                            <i class="fas fa-gift feature-icon"></i>
-                            <span>Красивая упаковка</span>
+                    @else
+                        <div class="mb-10 text-lg text-gray-600 leading-relaxed italic art-nouveau-border py-8">
+                            Прекрасный букет, созданный с любовью и вниманием к деталям нашими флористами. Каждый цветок подобран вручную, чтобы создать гармоничную композицию, которая будет радовать вас своей красотой.
                         </div>
-                        <div class="feature-item">
-                            <i class="fas fa-heart feature-icon"></i>
-                            <span>Сделано с любовью</span>
+                    @endif
+
+                    <!-- Действия -->
+                    <div class="flex flex-col sm:flex-row gap-4 mb-12">
+                        <button
+                            onclick="addToCart({{ $product->id }})"
+                            class="btn-organic flex-1 px-8 py-4 animated-gradient text-white font-semibold text-lg hover:glow-primary focus:outline-none focus:ring-4 focus:ring-primary-200"
+                        >
+                            <span class="flex items-center justify-center gap-3">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                </svg>
+                                В корзину
+                            </span>
+                        </button>
+
+                        <button
+                            onclick="buyNow({{ $product->id }})"
+                            class="btn-organic px-8 py-4 bg-white border-2 border-primary-400 text-primary-600 font-semibold text-lg hover:bg-primary-50 focus:outline-none focus:ring-4 focus:ring-primary-200"
+                        >
+                            <span class="flex items-center justify-center gap-3">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Купить сейчас
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Особенности -->
+                    <div class="space-y-3">
+                        <h2 class="text-xl font-display font-semibold text-gray-900 mb-6">Особенности букета</h2>
+
+                        <div class="feature-badge">
+                            <div class="flex items-center gap-4">
+                                <svg class="w-6 h-6 text-sage-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                </svg>
+                                <span class="text-gray-700 font-medium">Свежие цветы высшего качества</span>
+                            </div>
+                        </div>
+
+                        <div class="feature-badge">
+                            <div class="flex items-center gap-4">
+                                <svg class="w-6 h-6 text-primary-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-gray-700 font-medium">Доставка в течение дня</span>
+                            </div>
+                        </div>
+
+                        <div class="feature-badge">
+                            <div class="flex items-center gap-4">
+                                <svg class="w-6 h-6 text-gold-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
+                                </svg>
+                                <span class="text-gray-700 font-medium">Элегантная упаковка в подарок</span>
+                            </div>
+                        </div>
+
+                        <div class="feature-badge">
+                            <div class="flex items-center gap-4">
+                                <svg class="w-6 h-6 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                                <span class="text-gray-700 font-medium">Собрано с любовью и заботой</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Дополнительная информация -->
+        <div class="p-8 animate-fade-in-up stagger-3">
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-white to-accent-50 border-2 border-gray-200">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary-400 to-gold-400 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-lg font-semibold text-gray-900 mb-2">Гарантия свежести</h3>
+                        <p class="text-sm text-gray-600">Только свежие цветы прямо от поставщиков</p>
+                    </div>
+
+                    <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-white to-accent-50 border-2 border-gray-200">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-sage-400 to-primary-400 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-lg font-semibold text-gray-900 mb-2">Быстрая доставка</h3>
+                        <p class="text-sm text-gray-600">Доставим в удобное для вас время</p>
+                    </div>
+
+                    <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-white to-accent-50 border-2 border-gray-200">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-gold-400 to-primary-400 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-display text-lg font-semibold text-gray-900 mb-2">Индивидуальный подход</h3>
+                        <p class="text-sm text-gray-600">Учтем все ваши пожелания</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div class="cart-badge" onclick="toggleCart()">
-        <i class="fas fa-shopping-cart"></i>
-        <div class="cart-count" id="cartCount">0</div>
-    </div>
+<!-- Zoom overlay -->
+<div id="zoom-overlay" class="zoom-overlay fixed inset-0 z-50 hidden items-center justify-center p-4" onclick="closeZoom()">
+    <img id="zoom-image" src="" alt="Zoom" class="max-w-full max-h-full object-contain rounded-3xl shadow-2xl">
+</div>
 
-    <!-- Zoom overlay -->
-    <div class="zoom-overlay" id="zoom-overlay" onclick="closeZoom()">
-        <img src="" alt="Zoom" class="zoom-image" id="zoom-image">
-    </div>
+<script>
+    // Галерея изображений
+    const images = @json($product->image_urls);
+    const productName = @json($product->name);
+    let currentImageIndex = 0;
 
-    <script>
-        // Галерея изображений
-        const images = @json($product->activeImages->pluck('full_url'));
-        const imageAlts = @json($product->activeImages->pluck('alt_text'));
-        let currentImageIndex = 0;
+    // Функция переключения изображения
+    function setMainImage(src, alt, index) {
+        const mainImage = document.getElementById('main-image');
+        const currentCounter = document.getElementById('current-image');
 
-        // Функция переключения изображения
-        function setMainImage(src, alt, index) {
-            const mainImage = document.getElementById('main-image');
-            const currentCounter = document.getElementById('current-image');
-            
-            // Обновляем главное изображение
-            mainImage.src = src;
-            mainImage.alt = alt;
-            
-            // Обновляем счетчик
-            if (currentCounter) {
-                currentCounter.textContent = index + 1;
-            }
-            
-            // Обновляем активную миниатюру
-            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === index);
-            });
-            
-            currentImageIndex = index;
+        mainImage.src = src;
+        mainImage.alt = alt;
+
+        if (currentCounter) {
+            currentCounter.textContent = index + 1;
         }
 
-        // Функция навигации (стрелки)
-        function changeImage(direction) {
-            if (images.length === 0) return;
-            
-            currentImageIndex += direction;
-            
-            // Циклическая навигация
-            if (currentImageIndex >= images.length) {
-                currentImageIndex = 0;
-            } else if (currentImageIndex < 0) {
-                currentImageIndex = images.length - 1;
-            }
-            
-            setMainImage(images[currentImageIndex], imageAlts[currentImageIndex], currentImageIndex);
-        }
-
-        // Функция открытия zoom
-        function openZoom(src) {
-            const overlay = document.getElementById('zoom-overlay');
-            const zoomImage = document.getElementById('zoom-image');
-            
-            zoomImage.src = src;
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Функция закрытия zoom
-        function closeZoom() {
-            const overlay = document.getElementById('zoom-overlay');
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // Клавиатурная навигация
-        document.addEventListener('keydown', function(e) {
-            if (images.length === 0) return;
-            
-            switch(e.key) {
-                case 'ArrowLeft':
-                    changeImage(-1);
-                    break;
-                case 'ArrowRight':
-                    changeImage(1);
-                    break;
-                case 'Escape':
-                    closeZoom();
-                    break;
-            }
+        // Обновляем активную миниатюру
+        document.querySelectorAll('.thumbnail-organic').forEach((thumb, i) => {
+            thumb.classList.toggle('active', i === index);
         });
 
-        // Свайп для мобильных устройств
-        let startX = null;
-        const mainImageContainer = document.querySelector('.main-image-container');
-        
+        currentImageIndex = index;
+    }
+
+    // Функция навигации (стрелки)
+    function changeImage(direction) {
+        if (images.length === 0) return;
+
+        currentImageIndex += direction;
+
+        if (currentImageIndex >= images.length) {
+            currentImageIndex = 0;
+        } else if (currentImageIndex < 0) {
+            currentImageIndex = images.length - 1;
+        }
+
+        setMainImage(images[currentImageIndex], productName, currentImageIndex);
+    }
+
+    // Функция открытия zoom
+    function openZoom(src) {
+        const overlay = document.getElementById('zoom-overlay');
+        const zoomImage = document.getElementById('zoom-image');
+
+        zoomImage.src = src;
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Функция закрытия zoom
+    function closeZoom() {
+        const overlay = document.getElementById('zoom-overlay');
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Клавиатурная навигация
+    document.addEventListener('keydown', function(e) {
+        switch(e.key) {
+            case 'ArrowLeft':
+                if (images.length > 0) changeImage(-1);
+                break;
+            case 'ArrowRight':
+                if (images.length > 0) changeImage(1);
+                break;
+            case 'Escape':
+                closeZoom();
+                break;
+        }
+    });
+
+    // Свайп для мобильных устройств
+    let startX = null;
+    const mainImageContainer = document.querySelector('.image-reveal');
+
+    if (mainImageContainer) {
         mainImageContainer.addEventListener('touchstart', function(e) {
             startX = e.touches[0].clientX;
         });
-        
+
         mainImageContainer.addEventListener('touchend', function(e) {
-            if (!startX) return;
-            
+            if (!startX || images.length === 0) return;
+
             const endX = e.changedTouches[0].clientX;
             const diffX = startX - endX;
-            
-            if (Math.abs(diffX) > 50) { // Минимальное расстояние свайпа
+
+            if (Math.abs(diffX) > 50) {
                 if (diffX > 0) {
-                    changeImage(1); // Свайп влево - следующее изображение
+                    changeImage(1);
                 } else {
-                    changeImage(-1); // Свайп вправо - предыдущее изображение
+                    changeImage(-1);
                 }
             }
-            
+
             startX = null;
         });
+    }
 
-        // Корзина (временно в локальном хранилище)
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
-        function updateCartCount() {
-            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cartCount').textContent = cartCount;
-        }
-
-        function addToCart(productId) {
-            fetch('/cart/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    product_id: productId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('cartCount').textContent = data.cart_count || 0;
-                    showNotification('Товар добавлен в корзину!');
-                } else {
-                    showNotification('Ошибка при добавлении товара', 'error');
+    // Корзина
+    function addToCart(productId) {
+        fetch('/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ product_id: productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Товар добавлен в корзину', 'success');
+                // Обновляем счетчик корзины в header если нужно
+                if (data.cart_count) {
+                    const cartBadge = document.querySelector('.cart-badge');
+                    if (cartBadge) cartBadge.textContent = data.cart_count;
                 }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
+            } else {
                 showNotification('Ошибка при добавлении товара', 'error');
-            });
-        }
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            showNotification('Ошибка при добавлении товара', 'error');
+        });
+    }
 
-        function buyNow(productId) {
-            fetch('/cart/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    product_id: productId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '/checkout';
-                } else {
-                    showNotification('Ошибка при добавлении товара', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
+    function buyNow(productId) {
+        fetch('/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ product_id: productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '/checkout';
+            } else {
                 showNotification('Ошибка при добавлении товара', 'error');
-            });
-        }
-
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #28a745;
-                color: white;
-                padding: 1rem 2rem;
-                border-radius: 25px;
-                z-index: 1001;
-                animation: slideDown 0.3s ease;
-                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideUp 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 2500);
-        }
-
-        function toggleCart() {
-            window.location.href = '/cart';
-        }
-
-        // Инициализация
-        updateCartCount();
-
-        // CSS анимации
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideDown {
-                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
-                to { transform: translateX(-50%) translateY(0); opacity: 1; }
             }
-            
-            @keyframes slideUp {
-                from { transform: translateX(-50%) translateY(0); opacity: 1; }
-                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
-            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            showNotification('Ошибка при добавлении товара', 'error');
+        });
+    }
+
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.textContent = message;
+
+        const bgColor = type === 'success'
+            ? 'linear-gradient(135deg, rgb(95, 117, 96), rgb(233, 109, 63))'
+            : 'linear-gradient(135deg, rgb(220, 38, 38), rgb(153, 27, 27))';
+
+        notification.style.cssText = `
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: ${bgColor};
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 3rem 1rem 3rem 1rem;
+            z-index: 1000;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         `;
-        document.head.appendChild(style);
-    </script>
-</body>
-</html>
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+            setTimeout(() => notification.remove(), 400);
+        }, 3000);
+    }
+
+    // CSS анимации для уведомлений
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-100%);
+            }
+        }
+
+        .scrollbar-thin::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #efede5;
+            border-radius: 3px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #f8bd91;
+            border-radius: 3px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: #f49162;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+@endsection

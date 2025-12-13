@@ -83,19 +83,10 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                // Сначала проверяем файловую систему products/{id}/
+                // Проверяем файловую систему products/{id}/
                 $filesystemImages = $this->getFilesystemImages();
                 if (!empty($filesystemImages)) {
                     return $filesystemImages[0];
-                }
-
-                // Затем проверяем базу данных (legacy)
-                if ($this->primaryImage) {
-                    return $this->primaryImage->full_url;
-                }
-
-                if ($this->activeImages->isNotEmpty()) {
-                    return $this->activeImages->first()->full_url;
                 }
 
                 return '/images/placeholder.jpg';
@@ -110,14 +101,9 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                // Сначала проверяем файловую систему
+                // Проверяем файловую систему
                 $filesystemImages = $this->getFilesystemImages();
-                if (!empty($filesystemImages)) {
-                    return $filesystemImages;
-                }
-
-                // Затем проверяем базу данных (legacy)
-                return $this->activeImages->pluck('full_url')->toArray();
+                return $filesystemImages;
             }
         );
     }
