@@ -616,7 +616,7 @@
 
                     <!-- Описание -->
                     @if($product->description)
-                        <div class="mb-10 text-lg text-gray-700 leading-relaxed art-nouveau-border py-8">
+                        <div class="mb-10 pb-10 text-lg text-gray-700 leading-relaxed art-nouveau-border py-8">
                             {{ $product->description }}
                         </div>
                     @else
@@ -627,29 +627,17 @@
 
                     <!-- Действия -->
                     <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                        <button
-                            onclick="addToCart({{ $product->id }})"
-                            class="btn-organic flex-1 px-8 py-4 animated-gradient text-white font-semibold text-lg hover:glow-primary focus:outline-none focus:ring-4 focus:ring-primary-200"
+                        <a
+                            href="/custom-bouquet"
+                            class="btn-organic flex-1 p-12 py-4 m-12 animated-gradient text-white font-semibold text-lg hover:glow-primary focus:outline-none focus:ring-4 focus:ring-primary-200 text-center"
                         >
-                            <span class="flex items-center justify-center gap-3">
+                            <span class="flex items-center justify-center gap-4">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                                 </svg>
-                                В корзину
+                                Связаться с нами
                             </span>
-                        </button>
-
-                        <button
-                            onclick="buyNow({{ $product->id }})"
-                            class="btn-organic px-8 py-4 bg-white border-2 border-primary-400 text-primary-600 font-semibold text-lg hover:bg-primary-50 focus:outline-none focus:ring-4 focus:ring-primary-200"
-                        >
-                            <span class="flex items-center justify-center gap-3">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                                Купить сейчас
-                            </span>
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Особенности -->
@@ -843,114 +831,9 @@
         });
     }
 
-    // Корзина
-    function addToCart(productId) {
-        fetch('/cart/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ product_id: productId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showNotification('Товар добавлен в корзину', 'success');
-                // Обновляем счетчик корзины в header если нужно
-                if (data.cart_count) {
-                    const cartBadge = document.querySelector('.cart-badge');
-                    if (cartBadge) cartBadge.textContent = data.cart_count;
-                }
-            } else {
-                showNotification('Ошибка при добавлении товара', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
-            showNotification('Ошибка при добавлении товара', 'error');
-        });
-    }
-
-    function buyNow(productId) {
-        fetch('/cart/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ product_id: productId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = '/checkout';
-            } else {
-                showNotification('Ошибка при добавлении товара', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
-            showNotification('Ошибка при добавлении товара', 'error');
-        });
-    }
-
-    function showNotification(message, type = 'success') {
-        const notification = document.createElement('div');
-        notification.textContent = message;
-
-        const bgColor = type === 'success'
-            ? 'linear-gradient(135deg, rgb(95, 117, 96), rgb(233, 109, 63))'
-            : 'linear-gradient(135deg, rgb(220, 38, 38), rgb(153, 27, 27))';
-
-        notification.style.cssText = `
-            position: fixed;
-            top: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            background: ${bgColor};
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 3rem 1rem 3rem 1rem;
-            z-index: 1000;
-            font-weight: 600;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        `;
-
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.style.animation = 'slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards';
-            setTimeout(() => notification.remove(), 400);
-        }, 3000);
-    }
-
-    // CSS анимации для уведомлений
+    // CSS стили для scrollbar
     const style = document.createElement('style');
     style.textContent = `
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-100%);
-            }
-        }
-
         .scrollbar-thin::-webkit-scrollbar {
             height: 6px;
         }

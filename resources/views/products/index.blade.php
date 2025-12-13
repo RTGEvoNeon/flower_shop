@@ -135,20 +135,13 @@
                         <!-- Действия -->
                         <div class="flex gap-3 pt-2">
                             <a href="/product/{{ $product->slug }}"
-                               class="flex-1 group/btn bg-white border-2 border-accent-300 text-gray-900 px-5 py-3 rounded-full font-semibold text-center hover:border-primary-400 hover:bg-primary-50 transition-all hover:scale-[1.02] shadow-sm flex items-center justify-center gap-2">
+                               class="flex-1 group/btn bg-gradient-to-r {{ $buttonGradient }} text-white px-5 py-3 rounded-full font-semibold text-center transition-all hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                 </svg>
-                                <span>Смотреть</span>
+                                <span>Подробнее</span>
                             </a>
-
-                            <button onclick="addToCart({{ $product->id }})"
-                                    class="group/btn bg-gradient-to-r {{ $buttonGradient }} text-white px-5 py-3 rounded-full font-semibold hover:shadow-xl transition-all hover:scale-[1.02] shadow-lg flex items-center justify-center">
-                                <svg class="w-5 h-5 transition-transform group-hover/btn:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                </svg>
-                            </button>
                         </div>
                     </div>
                 </article>
@@ -341,66 +334,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Добавление в корзину
-function addToCart(productId) {
-    fetch('/cart/add', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-        },
-        body: JSON.stringify({
-            product_id: productId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Обновляем счетчик корзины в header
-            const cartCountEl = document.querySelector('a[href="/cart"] span');
-            if (cartCountEl && data.cart_count) {
-                cartCountEl.textContent = data.cart_count;
-            }
-
-            // Показываем уведомление
-            showNotification('Букет добавлен в корзину!', 'success');
-        } else {
-            showNotification('Ошибка при добавлении товара', 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Ошибка:', error);
-        showNotification('Ошибка при добавлении товара', 'error');
-    });
-}
-
-// Уведомления
-function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `fixed top-24 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-full font-semibold shadow-2xl z-50 transition-all duration-300 ${
-        type === 'success'
-            ? 'bg-gradient-to-r from-primary-600 to-primary-500 text-white'
-            : 'bg-red-600 text-white'
-    }`;
-    notification.textContent = message;
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateX(-50%) translateY(-20px)';
-
-    document.body.appendChild(notification);
-
-    // Анимация появления
-    requestAnimationFrame(() => {
-        notification.style.opacity = '1';
-        notification.style.transform = 'translateX(-50%) translateY(0)';
-    });
-
-    // Удаление через 3 секунды
-    setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateX(-50%) translateY(-20px)';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
 </script>
 
 @endsection

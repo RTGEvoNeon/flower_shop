@@ -45,18 +45,8 @@
                     <a href="/delivery" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Доставка</a>
                 </div>
 
-                <!-- Cart & Mobile menu -->
-                <div class="flex items-center space-x-3">
-                    <!-- Cart -->
-                    <a href="/cart" class="relative group">
-                        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-accent-200 hover:border-primary-300 hover:shadow-md transition-all">
-                            <svg class="w-5 h-5 text-gray-700 group-hover:text-primary-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                            </svg>
-                            <span class="text-sm font-medium text-gray-700 group-hover:text-primary-600">0</span>
-                        </div>
-                    </a>
-
+                <!-- Mobile menu -->
+                <div class="flex items-center">
                     <!-- Mobile menu button -->
                     <button class="lg:hidden p-2 text-gray-700 hover:text-primary-600 rounded-lg hover:bg-white/50 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
