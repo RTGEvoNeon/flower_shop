@@ -17,10 +17,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
     */
     public function model(array $row)
     {
-        // Отладка: смотрим какие ключи приходят
-        \Log::info('Excel row keys:', array_keys($row));
-        \Log::info('Excel row data:', $row);
-
+        $id = $row['id'] ?? null;
         $name = $row['name'] ?? null;
         $price = $row['price'] ?? null;
         $category = $row['category'] ?? null;
@@ -30,6 +27,25 @@ class ProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
             return null;
         }
 
+        // Если указан ID, пытаемся обновить существующий товар
+        if (!empty($id)) {
+            $product = Product::find($id);
+
+            if ($product) {
+                // Обновляем существующий товар
+                $product->update([
+                    'name' => $name,
+                    'description' => $row['description'] ?? null,
+                    'price' => $price,
+                    'category' => $category,
+                    'is_available' => isset($row['is_available']) ? (bool)$row['is_available'] : true,
+                ]);
+
+                return null; // Возвращаем null, так как товар уже обновлен
+            }
+        }
+
+        // Создаем новый товар (если ID не указан или товар не найден)
         // Генерируем уникальный slug из названия
         $slug = Str::slug($name);
         $originalSlug = $slug;
@@ -41,13 +57,20 @@ class ProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
             $counter++;
         }
 
-        return new Product([
+        $productData = [
             'name' => $name,
             'slug' => $slug,
             'description' => $row['description'] ?? null,
             'price' => $price,
             'category' => $category,
             'is_available' => isset($row['is_available']) ? (bool)$row['is_available'] : true,
-        ]);
+        ];
+
+        // Если указан ID при создании нового товара, добавляем его
+        if (!empty($id)) {
+            $productData['id'] = $id;
+        }
+
+        return new Product($productData);
     }
 }
