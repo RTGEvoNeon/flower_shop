@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -82,6 +83,13 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
+                // Сначала проверяем файловую систему products/{id}/
+                $filesystemImages = $this->getFilesystemImages();
+                if (!empty($filesystemImages)) {
+                    return $filesystemImages[0];
+                }
+
+                // Затем проверяем базу данных (legacy)
                 if ($this->primaryImage) {
                     return $this->primaryImage->full_url;
                 }
@@ -101,8 +109,45 @@ class Product extends Model
     protected function imageUrls(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->activeImages->pluck('full_url')->toArray()
+            get: function () {
+                // Сначала проверяем файловую систему
+                $filesystemImages = $this->getFilesystemImages();
+                if (!empty($filesystemImages)) {
+                    return $filesystemImages;
+                }
+
+                // Затем проверяем базу данных (legacy)
+                return $this->activeImages->pluck('full_url')->toArray();
+            }
         );
+    }
+
+    /**
+     * Получить изображения из файловой системы products/{id}/
+     */
+    private function getFilesystemImages(): array
+    {
+        $directory = "products/{$this->id}";
+
+        if (!Storage::disk('public')->exists($directory)) {
+            return [];
+        }
+
+        $files = Storage::disk('public')->files($directory);
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        $images = [];
+
+        foreach ($files as $file) {
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if (in_array($extension, $imageExtensions)) {
+                $images[] = Storage::url($file);
+            }
+        }
+
+        // Сортируем по имени файла
+        sort($images);
+
+        return $images;
     }
 
 
