@@ -627,17 +627,17 @@
 
                     <!-- Действия -->
                     <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                        <a
-                            href="/custom-bouquet"
-                            class="btn-organic flex-1 p-12 py-4 m-12 animated-gradient text-white font-semibold text-lg hover:glow-primary focus:outline-none focus:ring-4 focus:ring-primary-200 text-center"
+                        <button
+                            onclick="openOrderModal()"
+                            class="btn-organic flex-1 py-4 animated-gradient text-white font-semibold text-lg hover:glow-primary focus:outline-none focus:ring-4 focus:ring-primary-200 text-center"
                         >
-                            <span class="flex items-center justify-center gap-4">
+                            <span class="flex items-center justify-center gap-3">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                                 </svg>
-                                Связаться с нами
+                                Оформить заказ
                             </span>
-                        </a>
+                        </button>
                     </div>
 
                     <!-- Особенности -->
@@ -727,6 +727,95 @@
 <!-- Zoom overlay -->
 <div id="zoom-overlay" class="zoom-overlay fixed inset-0 z-50 hidden items-center justify-center p-4" onclick="closeZoom()">
     <img id="zoom-image" src="" alt="Zoom" class="max-w-full max-h-full object-contain rounded-3xl shadow-2xl">
+</div>
+
+<!-- Модальное окно заказа -->
+<div id="order-modal" class="zoom-overlay fixed inset-0 z-50 hidden items-center justify-center p-4" onclick="closeOrderModal(event)">
+    <div class="glass-morphism max-w-md w-full rounded-3xl p-8 shadow-2xl" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-display font-semibold text-gray-900">Оформить заказ</h3>
+            <button onclick="closeOrderModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <form id="order-form" class="space-y-4">
+            <input type="hidden" name="total_amount" value="{{ $product->price }}">
+            <input type="hidden" name="product_url" value="{{ url('/product/' . $product->slug) }}">
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Ваше имя *</label>
+                <input
+                    type="text"
+                    name="customer_name"
+                    required
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition-all"
+                    placeholder="Как к вам обращаться?"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Телефон *</label>
+                <input
+                    type="tel"
+                    name="customer_phone"
+                    required
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition-all"
+                    placeholder="+7 (___) ___-__-__"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Адрес доставки</label>
+                <input
+                    type="text"
+                    name="delivery_address"
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition-all"
+                    placeholder="Улица, дом, квартира"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Комментарий</label>
+                <textarea
+                    name="notes"
+                    rows="3"
+                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition-all"
+                    placeholder="Пожелания к букету, время доставки..."
+                ></textarea>
+            </div>
+
+            <div class="bg-accent-50 rounded-xl p-4 mb-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700 font-medium">{{ $product->name }}</span>
+                    <span class="text-primary-600 font-semibold text-lg">{{ number_format($product->price, 0, ',', ' ') }} ₽</span>
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button
+                    type="submit"
+                    class="btn-organic w-full py-4 animated-gradient text-white font-semibold text-lg hover:glow-primary focus:outline-none focus:ring-4 focus:ring-primary-200"
+                >
+                    Отправить заявку
+                </button>
+            </div>
+        </form>
+
+        <div id="order-success" class="hidden text-center py-8">
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <h4 class="text-xl font-semibold text-gray-900 mb-2">Заявка принята!</h4>
+            <p class="text-gray-600">Мы свяжемся с вами в ближайшее время</p>
+        </div>
+
+        <div id="order-error" class="hidden bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-700 text-sm"></div>
+    </div>
 </div>
 
 <script>
@@ -853,5 +942,70 @@
         }
     `;
     document.head.appendChild(style);
+
+    // Модальное окно заказа
+    function openOrderModal() {
+        const modal = document.getElementById('order-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeOrderModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+
+        const modal = document.getElementById('order-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+
+        // Сброс формы
+        document.getElementById('order-form').reset();
+        document.getElementById('order-form').classList.remove('hidden');
+        document.getElementById('order-success').classList.add('hidden');
+        document.getElementById('order-error').classList.add('hidden');
+    }
+
+    // Обработка отправки формы
+    document.getElementById('order-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const submitButton = this.querySelector('button[type="submit"]');
+        const errorDiv = document.getElementById('order-error');
+
+        submitButton.disabled = true;
+        submitButton.textContent = 'Отправка...';
+        errorDiv.classList.add('hidden');
+
+        try {
+            const response = await fetch('/order/submit', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                document.getElementById('order-form').classList.add('hidden');
+                document.getElementById('order-success').classList.remove('hidden');
+
+                setTimeout(() => {
+                    closeOrderModal();
+                }, 3000);
+            } else {
+                throw new Error(data.message || 'Произошла ошибка');
+            }
+        } catch (error) {
+            errorDiv.textContent = error.message;
+            errorDiv.classList.remove('hidden');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Отправить заявку';
+        }
+    });
 </script>
 @endsection

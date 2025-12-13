@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // Главная страница
@@ -22,6 +23,8 @@ Route::post('/custom-bouquet/submit', function () {
     // TODO: Добавить отправку в Telegram
     return redirect('/custom-bouquet')->with('success', 'Спасибо! Мы скоро с вами свяжемся!');
 })->name('custom-bouquet.submit');
+
+Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
 
 // Импорт товаров из Excel
 Route::prefix('admin')->name('admin.')->group(function () {
