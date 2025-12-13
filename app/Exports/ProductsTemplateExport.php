@@ -16,6 +16,7 @@ class ProductsTemplateExport implements FromArray, WithHeadings, WithStyles
     {
         return [
             [
+                '',
                 'Букет "Весенний"',
                 'Нежный букет из тюльпанов и нарциссов',
                 2500,
@@ -23,6 +24,7 @@ class ProductsTemplateExport implements FromArray, WithHeadings, WithStyles
                 1
             ],
             [
+                '',
                 'Композиция "Розовый рассвет"',
                 'Элегантная композиция из роз',
                 3500,
@@ -38,11 +40,12 @@ class ProductsTemplateExport implements FromArray, WithHeadings, WithStyles
     public function headings(): array
     {
         return [
-            'название',
-            'описание',
-            'цена',
-            'категория',
-            'доступно'
+            'id',
+            'name',
+            'description',
+            'price',
+            'category',
+            'is_available'
         ];
     }
 
