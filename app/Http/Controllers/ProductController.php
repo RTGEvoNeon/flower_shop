@@ -14,8 +14,8 @@ class ProductController extends Controller
     {
         $products = Product::available()
             ->withImages()
-            ->paginate(12);
-        return view('products.catalog', compact('products'));
+            ->paginate(18);
+        return view('products.index', compact('products'));
     }
 
     /**
