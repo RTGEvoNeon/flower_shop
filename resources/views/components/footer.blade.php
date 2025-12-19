@@ -72,18 +72,20 @@
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Свадебные
                     </a></li>
-                    <li><a href="/products?category=seasonal" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
+                    <!-- TODO: Страница "Сезонные" временно отключена -->
+                    <!-- <li><a href="/products?category=seasonal" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Сезонные
-                    </a></li>
+                    </a></li> -->
                     <li><a href="/products?category=luxury" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Премиум
                     </a></li>
-                    <li><a href="/custom-bouquet" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
+                    <!-- TODO: Страница "Собери свой букет" временно отключена -->
+                    <!-- <li><a href="/custom-bouquet" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Собери свой букет
-                    </a></li>
+                    </a></li> -->
                 </ul>
             </div>
 
@@ -99,10 +101,11 @@
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Доставка и оплата
                     </a></li>
-                    <li><a href="/care" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
+                    <!-- TODO: Страница "Уход за цветами" временно отключена -->
+                    <!-- <li><a href="/care" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Уход за цветами
-                    </a></li>
+                    </a></li> -->
                     <li><a href="/guarantee" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Гарантии

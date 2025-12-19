@@ -42,10 +42,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                         </svg>
                     </a>
-
-                    <a href="/custom-bouquet" class="inline-flex items-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-sm text-gray-900 rounded-full font-semibold border-2 border-accent-300 hover:border-primary-400 hover:bg-white transition-all hover:scale-105 shadow-sm">
-                        <span>Собрать свой</span>
-                    </a>
                 </div>
             </div>
 
@@ -255,12 +251,9 @@
     </div>
 </section>
 
-<!-- Call to Action для кастомного букета -->
-<section class="relative py-24 overflow-hidden">
-    <!-- Gradient Background -->
+<!-- TODO: Call to Action для кастомного букета (временно отключена) -->
+<!-- <section class="relative py-24 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-gold-600"></div>
-
-    <!-- Decorative patterns -->
     <div class="absolute inset-0 opacity-10">
         <div class="absolute top-0 right-0 w-96 h-96">
             <svg viewBox="0 0 200 200" class="w-full h-full">
@@ -270,7 +263,6 @@
             </svg>
         </div>
     </div>
-
     <div class="relative max-w-5xl mx-auto px-6 lg:px-8 text-center">
         <div class="space-y-8">
             <div class="inline-block">
@@ -278,15 +270,12 @@
                     ✨ Индивидуальный подход
                 </span>
             </div>
-
             <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight text-balance">
                 Не нашли идеальный букет?
             </h2>
-
             <p class="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed text-balance">
                 Создайте уникальный букет вместе с нашим флористом. Расскажите о ваших пожеланиях, и мы воплотим их в жизнь!
             </p>
-
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
                 <a href="/custom-bouquet" class="group inline-flex items-center gap-3 px-8 py-4 bg-white text-primary-700 rounded-full font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
                     <span>Собрать свой букет</span>
@@ -294,13 +283,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                     </svg>
                 </a>
-
                 <a href="/products" class="inline-flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full font-semibold border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transition-all">
                     <span>Посмотреть каталог</span>
                 </a>
             </div>
-
-            <!-- Trust indicators -->
             <div class="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12">
                 <div class="text-white/90">
                     <div class="font-display text-3xl font-bold">500+</div>
@@ -317,6 +303,6 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 @endsection
