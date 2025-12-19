@@ -441,6 +441,26 @@
         /* Оптимизация галереи на мобильных */
         .thumbnail-organic {
             border-width: 2px;
+            width: 70px;
+            height: 70px;
+            min-width: 70px;
+        }
+
+        .thumbnail-organic img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Контейнер главного изображения */
+        .image-reveal .aspect-\[4\/5\] {
+            aspect-ratio: auto;
+            max-height: 60vh;
+        }
+
+        .image-reveal img {
+            object-fit: contain;
+            max-height: 60vh;
         }
 
         /* Sticky галерея только на desktop */
@@ -461,6 +481,22 @@
         .feature-badge svg {
             width: 1.25rem;
             height: 1.25rem;
+        }
+
+        /* Еще меньшие миниатюры на совсем маленьких экранах */
+        .thumbnail-organic {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+        }
+
+        /* Главное изображение на маленьких экранах */
+        .image-reveal .aspect-\[4\/5\] {
+            max-height: 50vh;
+        }
+
+        .image-reveal img {
+            max-height: 50vh;
         }
     }
 
@@ -584,6 +620,7 @@
                                         src="{{ $imageUrl }}"
                                         alt="{{ $product->name }}"
                                         class="w-full h-full object-cover"
+                                        style="object-position: center;"
                                     >
                                 </button>
                             @endforeach
