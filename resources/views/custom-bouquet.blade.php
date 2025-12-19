@@ -148,9 +148,10 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Номер телефона <span class="text-red-500">*</span>
                             </label>
-                            <input 
-                                type="tel" 
-                                name="phone" 
+                            <input
+                                type="tel"
+                                id="phone_input"
+                                name="phone"
                                 required
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                                 placeholder="+7 (999) 123-45-67"
@@ -238,4 +239,62 @@
         </div>
     </div>
 </section>
+
+<script>
+    // Маска для телефона
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.getElementById('phone_input');
+        if (!phoneInput) return;
+
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            // Если первая цифра 8, заменяем на 7
+            if (value.startsWith('8')) {
+                value = '7' + value.slice(1);
+            }
+
+            // Если первая цифра не 7, добавляем 7
+            if (value.length > 0 && !value.startsWith('7')) {
+                value = '7' + value;
+            }
+
+            let formattedValue = '';
+
+            if (value.length > 0) {
+                formattedValue = '+7';
+
+                if (value.length > 1) {
+                    formattedValue += ' (' + value.substring(1, 4);
+                }
+                if (value.length >= 5) {
+                    formattedValue += ') ' + value.substring(4, 7);
+                }
+                if (value.length >= 8) {
+                    formattedValue += '-' + value.substring(7, 9);
+                }
+                if (value.length >= 10) {
+                    formattedValue += '-' + value.substring(9, 11);
+                }
+            }
+
+            e.target.value = formattedValue;
+        });
+
+        // Устанавливаем начальное значение при фокусе
+        phoneInput.addEventListener('focus', function(e) {
+            if (e.target.value === '') {
+                e.target.value = '+7 (';
+            }
+        });
+
+        // Очищаем при потере фокуса, если введено только +7 (
+        phoneInput.addEventListener('blur', function(e) {
+            if (e.target.value === '+7 (' || e.target.value === '+7') {
+                e.target.value = '';
+            }
+        });
+    });
+</script>
+
 @endsection

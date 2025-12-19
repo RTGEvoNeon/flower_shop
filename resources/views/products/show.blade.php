@@ -381,6 +381,10 @@
 
     /* Адаптивность */
     @media (max-width: 1024px) {
+        .animate-fade-in-up.stagger-2 {
+            margin-top: 3rem;
+        }
+
         .decorative-frame {
             padding: 1.5rem;
         }
@@ -403,6 +407,10 @@
         .art-nouveau-border::before,
         .art-nouveau-border::after {
             display: none;
+        }
+
+        .animate-fade-in-up.stagger-2 {
+            margin-top: 2rem;
         }
 
         .decorative-frame {
@@ -441,6 +449,26 @@
         /* Оптимизация галереи на мобильных */
         .thumbnail-organic {
             border-width: 2px;
+            width: 70px;
+            height: 70px;
+            min-width: 70px;
+        }
+
+        .thumbnail-organic img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Контейнер главного изображения */
+        .image-reveal .aspect-\[4\/5\] {
+            aspect-ratio: auto;
+            max-height: 60vh;
+        }
+
+        .image-reveal img {
+            object-fit: contain;
+            max-height: 60vh;
         }
 
         /* Sticky галерея только на desktop */
@@ -450,8 +478,16 @@
     }
 
     @media (max-width: 640px) {
+        .animate-fade-in-up.stagger-2 {
+            margin-top: 2rem;
+        }
+
         .decorative-frame {
-            padding: 0;
+            padding: 0.5rem;
+        }
+
+        .decorative-frame::before {
+            display: none;
         }
 
         .art-nouveau-border {
@@ -461,6 +497,23 @@
         .feature-badge svg {
             width: 1.25rem;
             height: 1.25rem;
+        }
+
+        /* Еще меньшие миниатюры на совсем маленьких экранах */
+        .thumbnail-organic {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            margin: 0 2px;
+        }
+
+        /* Главное изображение на маленьких экранах */
+        .image-reveal .aspect-\[4\/5\] {
+            max-height: 50vh;
+        }
+
+        .image-reveal img {
+            max-height: 50vh;
         }
     }
 
@@ -573,7 +626,7 @@
 
                     <!-- Миниатюры -->
                     @if($imageCount > 0)
-                        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-accent-100">
+                        <div class="flex gap-3 overflow-x-auto pb-2 mb-3 scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-accent-100">
                             @foreach($images as $index => $imageUrl)
                                 <button
                                     onclick="setMainImage('{{ $imageUrl }}', '{{ $product->name }}', {{ $index }})"
@@ -584,6 +637,7 @@
                                         src="{{ $imageUrl }}"
                                         alt="{{ $product->name }}"
                                         class="w-full h-full object-cover"
+                                        style="object-position: center;"
                                     >
                                 </button>
                             @endforeach
@@ -595,7 +649,7 @@
             <!-- Информация о товаре -->
             <div class="animate-fade-in-up stagger-2">
                 <div class="decorative-frame">
-                    <!-- Категория -->
+                <!-- Категория -->
                     <div class="mb-4">
                         <span class="inline-block px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-primary-100 to-gold-100 text-primary-700 border border-primary-200">
                             {{ ucfirst($product->category) }}
@@ -760,6 +814,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Телефон *</label>
                 <input
                     type="tel"
+                    id="customer_phone"
                     name="customer_phone"
                     required
                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition-all"
@@ -965,6 +1020,68 @@
         document.getElementById('order-success').classList.add('hidden');
         document.getElementById('order-error').classList.add('hidden');
     }
+
+    // Маска для телефона
+    function initPhoneMask() {
+        const phoneInput = document.getElementById('customer_phone');
+        if (!phoneInput) return;
+
+        let mask = '';
+
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            // Если первая цифра 8, заменяем на 7
+            if (value.startsWith('8')) {
+                value = '7' + value.slice(1);
+            }
+
+            // Если первая цифра не 7, добавляем 7
+            if (value.length > 0 && !value.startsWith('7')) {
+                value = '7' + value;
+            }
+
+            let formattedValue = '';
+
+            if (value.length > 0) {
+                formattedValue = '+7';
+
+                if (value.length > 1) {
+                    formattedValue += ' (' + value.substring(1, 4);
+                }
+                if (value.length >= 5) {
+                    formattedValue += ') ' + value.substring(4, 7);
+                }
+                if (value.length >= 8) {
+                    formattedValue += '-' + value.substring(7, 9);
+                }
+                if (value.length >= 10) {
+                    formattedValue += '-' + value.substring(9, 11);
+                }
+            }
+
+            e.target.value = formattedValue;
+        });
+
+        // Устанавливаем начальное значение при фокусе
+        phoneInput.addEventListener('focus', function(e) {
+            if (e.target.value === '') {
+                e.target.value = '+7 (';
+            }
+        });
+
+        // Очищаем при потере фокуса, если введено только +7 (
+        phoneInput.addEventListener('blur', function(e) {
+            if (e.target.value === '+7 (' || e.target.value === '+7') {
+                e.target.value = '';
+            }
+        });
+    }
+
+    // Инициализируем маску при открытии модального окна
+    document.addEventListener('DOMContentLoaded', function() {
+        initPhoneMask();
+    });
 
     // Обработка отправки формы
     document.getElementById('order-form').addEventListener('submit', async function(e) {
