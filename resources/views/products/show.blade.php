@@ -381,6 +381,10 @@
 
     /* Адаптивность */
     @media (max-width: 1024px) {
+        .animate-fade-in-up.stagger-2 {
+            margin-top: 3rem;
+        }
+
         .decorative-frame {
             padding: 1.5rem;
         }
@@ -403,6 +407,10 @@
         .art-nouveau-border::before,
         .art-nouveau-border::after {
             display: none;
+        }
+
+        .animate-fade-in-up.stagger-2 {
+            margin-top: 2rem;
         }
 
         .decorative-frame {
@@ -470,8 +478,16 @@
     }
 
     @media (max-width: 640px) {
+        .animate-fade-in-up.stagger-2 {
+            margin-top: 2rem;
+        }
+
         .decorative-frame {
-            padding: 0;
+            padding: 0.5rem;
+        }
+
+        .decorative-frame::before {
+            display: none;
         }
 
         .art-nouveau-border {
@@ -488,6 +504,7 @@
             width: 60px;
             height: 60px;
             min-width: 60px;
+            margin: 0 2px;
         }
 
         /* Главное изображение на маленьких экранах */
@@ -609,7 +626,7 @@
 
                     <!-- Миниатюры -->
                     @if($imageCount > 0)
-                        <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-accent-100">
+                        <div class="flex gap-3 overflow-x-auto pb-2 mb-3 scrollbar-thin scrollbar-thumb-primary-300 scrollbar-track-accent-100">
                             @foreach($images as $index => $imageUrl)
                                 <button
                                     onclick="setMainImage('{{ $imageUrl }}', '{{ $product->name }}', {{ $index }})"
@@ -632,7 +649,7 @@
             <!-- Информация о товаре -->
             <div class="animate-fade-in-up stagger-2">
                 <div class="decorative-frame">
-                    <!-- Категория -->
+                <!-- Категория -->
                     <div class="mb-4">
                         <span class="inline-block px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-primary-100 to-gold-100 text-primary-700 border border-primary-200">
                             {{ ucfirst($product->category) }}
