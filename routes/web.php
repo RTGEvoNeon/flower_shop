@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // Главная страница
@@ -13,15 +14,18 @@ Route::get('/', function () {
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
 
-// Форма заказа кастомного букета
-Route::get('/custom-bouquet', function () {
-    return view('custom-bouquet');
-})->name('custom-bouquet.show');
+// Оформление заказа
+Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
 
-Route::post('/custom-bouquet/submit', function () {
-    // TODO: Добавить отправку в Telegram
-    return redirect('/custom-bouquet')->with('success', 'Спасибо! Мы скоро с вами свяжемся!');
-})->name('custom-bouquet.submit');
+// TODO: Форма заказа кастомного букета (временно отключена)
+// Route::get('/custom-bouquet', function () {
+//     return view('custom-bouquet');
+// })->name('custom-bouquet.show');
+//
+// Route::post('/custom-bouquet/submit', function () {
+//     // TODO: Добавить отправку в Telegram
+//     return redirect('/custom-bouquet')->with('success', 'Спасибо! Мы скоро с вами свяжемся!');
+// })->name('custom-bouquet.submit');
 
 // Импорт товаров из Excel
 Route::prefix('admin')->name('admin.')->group(function () {
