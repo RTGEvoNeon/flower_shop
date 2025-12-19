@@ -10,6 +10,11 @@ Route::get('/', function () {
     return view('home');
 });
 
+// Страница доставки
+Route::get('/delivery', function () {
+    return view('delivery');
+})->name('delivery');
+
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');

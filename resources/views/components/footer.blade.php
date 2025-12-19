@@ -10,11 +10,11 @@
         <!-- Logo and tagline -->
         <div class="mb-16 text-center lg:text-left">
             <div class="flex flex-col lg:flex-row items-center lg:items-start gap-4 mb-6">
-                <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-gold-600 rounded-2xl flex items-center justify-center text-3xl shadow-xl">
-                    🌷
+                <div class="w-16 h-16 rounded-full overflow-hidden">
+                    <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h3 class="font-display text-3xl font-bold mb-2">iTulip</h3>
+                    <h3 class="font-display text-3xl font-bold mb-2">Эдемский сад</h3>
                     <p class="text-gray-400 text-lg">Цветочная мастерская для особенных моментов</p>
                 </div>
             </div>
@@ -141,7 +141,7 @@
             <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
                 <div class="text-center lg:text-left">
                     <p class="text-gray-400 mb-2">
-                        © 2024 iTulip. Все права защищены.
+                        © 2024 Эдемский сад. Все права защищены.
                     </p>
                     <p class="text-xs text-gray-500 leading-relaxed">
                         ИП Цветочкин Иван Иванович<br>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? 'iTulip — Цветочная мастерская' }}</title>
+    <title>{{ $title ?? 'Эдемский сад — Цветочная мастерская' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +22,11 @@
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="/" class="group flex items-center gap-3">
-                        <div class="relative">
-                            <div class="absolute inset-0 bg-gradient-to-br from-primary-400 to-gold-500 rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity"></div>
-                            <div class="relative w-12 h-12 bg-gradient-to-br from-primary-500 to-gold-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
-                                🌷
-                            </div>
+                        <div class="w-12 h-12 rounded-full overflow-hidden">
+                            <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover">
                         </div>
                         <div class="flex flex-col">
-                            <span class="font-display text-2xl font-semibold text-gray-900 tracking-tight">iTulip</span>
+                            <span class="font-display text-2xl font-semibold text-gray-900 tracking-tight">Эдемский сад</span>
                             <span class="text-xs text-accent-600 tracking-wider uppercase">Цветочная мастерская</span>
                         </div>
                     </a>
@@ -74,10 +71,10 @@
             <!-- Header меню -->
             <div class="flex items-center justify-between px-6 py-6 border-b border-accent-200/50">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-gold-600 rounded-full flex items-center justify-center text-white text-xl shadow-md">
-                        🌷
+                    <div class="w-10 h-10 rounded-full overflow-hidden">
+                        <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover">
                     </div>
-                    <span class="font-display text-xl font-semibold text-gray-900">Меню</span>
+                    <span class="font-display text-xl font-semibold text-gray-900">Эдемский сад</span>
                 </div>
                 <button id="mobile-menu-close" class="p-2 text-gray-600 hover:text-primary-600 rounded-lg hover:bg-white/50 transition-all">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,7 +117,7 @@
 
             <!-- Footer меню (опционально) -->
             <div class="px-6 py-4 border-t border-accent-200/50 bg-gradient-to-b from-transparent to-accent-100/50">
-                <p class="text-sm text-gray-600 text-center">iTulip — Цветочная мастерская</p>
+                <p class="text-sm text-gray-600 text-center">Эдемский сад — Цветочная мастерская</p>
             </div>
         </div>
     </div>

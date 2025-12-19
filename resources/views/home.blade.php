@@ -46,44 +46,52 @@
             </div>
 
             <!-- Right Column - Image Grid -->
-            <div class="relative animate-fade-in-up stagger-2">
-                <!-- Decorative frame -->
-                <div class="absolute -top-6 -right-6 w-full h-full border-2 border-gold-400/30 rounded-3xl"></div>
+<div class="relative animate-fade-in-up stagger-2">
+    <!-- Decorative frame -->
+    <div class="absolute -top-6 -right-6 w-full h-full border-2 border-gold-400/30 rounded-3xl"></div>
 
-                <div class="relative grid grid-cols-2 gap-4">
-                    <!-- Large image -->
-                    <div class="col-span-2 h-80 bg-gradient-to-br from-primary-200 via-primary-300 to-primary-400 rounded-3xl shadow-2xl overflow-hidden hover-lift">
-                        <div class="w-full h-full flex items-center justify-center text-white/30 text-6xl">
-                            🌸
-                        </div>
-                    </div>
+    <div class="relative grid grid-cols-2 gap-4">
+        <!-- Large image -->
+        <div class="col-span-2 h-80 rounded-3xl shadow-2xl overflow-hidden hover-lift">
+            <img
+                src="{{ asset('images/main1.jpg') }}"
+                alt="Основной букет"
+                class="w-full h-full object-cover"
+            >
+        </div>
 
-                    <!-- Small images -->
-                    <div class="h-48 bg-gradient-to-br from-gold-200 via-gold-300 to-gold-400 rounded-2xl shadow-lg overflow-hidden hover-lift">
-                        <div class="w-full h-full flex items-center justify-center text-white/30 text-4xl">
-                            🌹
-                        </div>
-                    </div>
-                    <div class="h-48 bg-gradient-to-br from-sage-200 via-sage-300 to-sage-400 rounded-2xl shadow-lg overflow-hidden hover-lift">
-                        <div class="w-full h-full flex items-center justify-center text-white/30 text-4xl">
-                            🌺
-                        </div>
-                    </div>
-                </div>
+        <!-- Small images -->
+        <div class="h-48 rounded-2xl shadow-lg overflow-hidden hover-lift">
+            <img
+                src="{{ asset('images/main2.jpg') }}"
+                alt="Букет роз"
+                class="w-full h-full object-cover"
+            >
+        </div>
 
-                <!-- Floating badge -->
-                <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4 backdrop-blur-sm border border-accent-200 animate-float">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-gold-500 rounded-xl flex items-center justify-center text-white font-bold text-xl">
-                            ★
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-gray-900">4.9</div>
-                            <div class="text-xs text-gray-600">Более 500 отзывов</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="h-48 rounded-2xl shadow-lg overflow-hidden hover-lift">
+            <img
+                src="{{ asset('images/main3.jpg') }}"
+                alt="Цветочная композиция"
+                class="w-full h-full object-cover scale-70"
+            >
+        </div>
+    </div>
+
+    <!-- Floating badge -->
+    <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4 backdrop-blur-sm border border-accent-200 animate-float">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-gold-500 rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                ★
             </div>
+            <div>
+                <div class="text-2xl font-bold text-gray-900">4.9</div>
+                <div class="text-xs text-gray-600">Более 500 отзывов</div>
+            </div>
+        </div>
+    </div>
+</div>
+
         </div>
     </div>
 </section>
@@ -130,7 +138,7 @@
                         </svg>
                     </div>
                     <h3 class="font-display text-xl font-semibold mb-3 text-gray-900">Доступные цены</h3>
-                    <p class="text-gray-600 leading-relaxed">Цены на букеты начинаются от <span class="font-semibold text-primary-600">2 000 ₽</span></p>
+                    <p class="text-gray-600 leading-relaxed">Цены на наши прекрасные букеты начинаются от <span class="font-semibold text-primary-600">2 000 ₽</span></p>
                 </div>
             </div>
         </div>
