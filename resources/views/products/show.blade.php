@@ -814,6 +814,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Телефон *</label>
                 <input
                     type="tel"
+                    id="customer_phone"
                     name="customer_phone"
                     required
                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition-all"
@@ -1019,6 +1020,68 @@
         document.getElementById('order-success').classList.add('hidden');
         document.getElementById('order-error').classList.add('hidden');
     }
+
+    // Маска для телефона
+    function initPhoneMask() {
+        const phoneInput = document.getElementById('customer_phone');
+        if (!phoneInput) return;
+
+        let mask = '';
+
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            // Если первая цифра 8, заменяем на 7
+            if (value.startsWith('8')) {
+                value = '7' + value.slice(1);
+            }
+
+            // Если первая цифра не 7, добавляем 7
+            if (value.length > 0 && !value.startsWith('7')) {
+                value = '7' + value;
+            }
+
+            let formattedValue = '';
+
+            if (value.length > 0) {
+                formattedValue = '+7';
+
+                if (value.length > 1) {
+                    formattedValue += ' (' + value.substring(1, 4);
+                }
+                if (value.length >= 5) {
+                    formattedValue += ') ' + value.substring(4, 7);
+                }
+                if (value.length >= 8) {
+                    formattedValue += '-' + value.substring(7, 9);
+                }
+                if (value.length >= 10) {
+                    formattedValue += '-' + value.substring(9, 11);
+                }
+            }
+
+            e.target.value = formattedValue;
+        });
+
+        // Устанавливаем начальное значение при фокусе
+        phoneInput.addEventListener('focus', function(e) {
+            if (e.target.value === '') {
+                e.target.value = '+7 (';
+            }
+        });
+
+        // Очищаем при потере фокуса, если введено только +7 (
+        phoneInput.addEventListener('blur', function(e) {
+            if (e.target.value === '+7 (' || e.target.value === '+7') {
+                e.target.value = '';
+            }
+        });
+    }
+
+    // Инициализируем маску при открытии модального окна
+    document.addEventListener('DOMContentLoaded', function() {
+        initPhoneMask();
+    });
 
     // Обработка отправки формы
     document.getElementById('order-form').addEventListener('submit', async function(e) {
