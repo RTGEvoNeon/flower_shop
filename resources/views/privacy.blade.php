@@ -664,7 +664,7 @@
                     <div class="p-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl">
                         <p class="text-xl font-semibold mb-2">ИП Редин Дмитрий Витальевич</p>
                         <div class="space-y-2 text-white/90">
-                            <p>г. Брянск</p>
+                            <p>г. Брянск, ул. Академика Сахарова, 5</p>
                             <p>Телефон: <a href="tel:+79532929246" class="hover:text-white transition-colors">+7 (953) 292-92-46</a></p>
                             <p>Email для вопросов о персональных данных: <a href="mailto:edemskisadprivacy@yandex.ru" class="hover:text-white transition-colors underline">edemskisadprivacy@yandex.ru</a></p>
                             <p>Telegram: <a href="https://t.me/FlowersMindale" class="hover:text-white transition-colors underline">@FlowersMindale</a></p>

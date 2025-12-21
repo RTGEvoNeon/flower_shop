@@ -42,7 +42,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
                         </div>
-                        <span class="text-gray-300">г. Брянск<br>доставка по всему городу</span>
+                        <span class="text-gray-300">г. Брянск, ул. Академика Сахарова, 5<br>доставка по всему городу</span>
                     </div>
 
                     <div class="flex items-start">

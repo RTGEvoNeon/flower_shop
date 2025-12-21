@@ -170,82 +170,40 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Карточка 1 -->
+            @foreach($randomProducts as $index => $product)
+            <!-- Карточка букета -->
             <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg">
-                <div class="relative h-80 bg-gradient-to-br from-primary-200 via-primary-300 to-primary-400 overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-white/40 text-7xl">🌸</div>
+                <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+                    @if($product->main_image)
+                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    @else
+                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-7xl">🌸</div>
+                    @endif
                     <!-- Price badge -->
                     <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                        <span class="font-display text-2xl font-bold text-primary-600">2 500 ₽</span>
+                        <span class="font-display text-2xl font-bold text-primary-600">{{ number_format($product->price, 0, ',', ' ') }} ₽</span>
                     </div>
                     <!-- Category badge -->
+                    @if($product->category)
                     <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700">
-                        Классика
+                        {{ $product->category }}
                     </div>
-                </div>
+                    @endif
+                </a>
                 <div class="p-6 space-y-4">
-                    <h3 class="font-display text-2xl font-semibold text-gray-900">Букет «Нежность»</h3>
-                    <p class="text-gray-600 leading-relaxed">Романтичный букет из розовых роз и пионов, идеальный для признания в чувствах</p>
-                    <button class="w-full group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]">
+                    <h3 class="font-display text-2xl font-semibold text-gray-900">{{ $product->name }}</h3>
+                    <p class="text-gray-600 leading-relaxed line-clamp-2">{{ $product->description ?? 'Прекрасный букет для особого случая' }}</p>
+                    <a href="{{ route('products.show', $product->slug) }}" class="block w-full group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             <span>Заказать букет</span>
                             <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                             </svg>
                         </span>
-                    </button>
+                    </a>
                 </div>
             </div>
-
-            <!-- Карточка 2 -->
-            <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg">
-                <div class="relative h-80 bg-gradient-to-br from-gold-200 via-gold-300 to-gold-400 overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-white/40 text-7xl">🌻</div>
-                    <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                        <span class="font-display text-2xl font-bold text-gold-600">1 800 ₽</span>
-                    </div>
-                    <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700">
-                        Сезонный
-                    </div>
-                </div>
-                <div class="p-6 space-y-4">
-                    <h3 class="font-display text-2xl font-semibold text-gray-900">Букет «Солнечный»</h3>
-                    <p class="text-gray-600 leading-relaxed">Яркий букет из подсолнухов и хризантем, наполняющий дом теплом и светом</p>
-                    <button class="w-full group/btn relative overflow-hidden bg-gradient-to-r from-gold-600 to-gold-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]">
-                        <span class="relative z-10 flex items-center justify-center gap-2">
-                            <span>Заказать букет</span>
-                            <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Карточка 3 -->
-            <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg">
-                <div class="relative h-80 bg-gradient-to-br from-sage-200 via-sage-300 to-sage-400 overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-white/40 text-7xl">🌺</div>
-                    <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                        <span class="font-display text-2xl font-bold text-sage-600">3 200 ₽</span>
-                    </div>
-                    <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700">
-                        Премиум
-                    </div>
-                </div>
-                <div class="p-6 space-y-4">
-                    <h3 class="font-display text-2xl font-semibold text-gray-900">Букет «Мечта»</h3>
-                    <p class="text-gray-600 leading-relaxed">Изысканный букет из орхидей и лилий для особенных случаев и торжеств</p>
-                    <button class="w-full group/btn relative overflow-hidden bg-gradient-to-r from-sage-600 to-sage-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]">
-                        <span class="relative z-10 flex items-center justify-center gap-2">
-                            <span>Заказать букет</span>
-                            <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </span>
-                    </button>
-                </div>
-            </div>
+            @endforeach
         </div>
 
         <div class="text-center mt-16">

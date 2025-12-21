@@ -7,7 +7,12 @@ use Illuminate\Support\Facades\Route;
 
 // Главная страница
 Route::get('/', function () {
-    return view('home');
+    $randomProducts = \App\Models\Product::available()
+        ->withImages()
+        ->inRandomOrder()
+        ->limit(3)
+        ->get();
+    return view('home', compact('randomProducts'));
 });
 
 // Страница доставки
@@ -24,6 +29,11 @@ Route::get('/privacy', function () {
 Route::get('/about', function () {
     return view('about');
 })->name('about');
+
+// Страница контактов
+Route::get('/contacts', function () {
+    return view('contacts');
+})->name('contacts');
 
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
