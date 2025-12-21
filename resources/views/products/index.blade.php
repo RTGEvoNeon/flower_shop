@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<x-seo.meta />
+
 @section('content')
 <!-- Hero Section - Каталог -->
 <section class="relative overflow-hidden bg-gradient-to-b from-white via-accent-50 to-white py-16 lg:py-24">
@@ -78,7 +80,8 @@
                     <div class="relative h-80 overflow-hidden bg-gradient-to-br {{ $bgGradient }}">
                         @if($product->main_image && $product->main_image !== '/images/placeholder.jpg')
                             <img src="{{ $product->main_image }}"
-                                 alt="{{ $product->name }}"
+                                 alt="{{ $product->name }} — свежие цветы с доставкой"
+                                 loading="lazy"
                                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         @else
                             <div class="absolute inset-0 flex items-center justify-center">

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<x-seo.meta />
+
 @section('content')
 <style>
     /* Organic Art Nouveau Design - Расширенные стили для страницы товара */
@@ -587,7 +589,7 @@
                             @if($hasImages)
                                 <img
                                     src="{{ $images[0] }}"
-                                    alt="{{ $product->name }}"
+                                    alt="{{ $product->name }} — фото букета, купить в Брянске"
                                     class="w-full h-full object-cover custom-cursor-zoom"
                                     id="main-image"
                                     onclick="openZoom(this.src)"
@@ -635,7 +637,8 @@
                                 >
                                     <img
                                         src="{{ $imageUrl }}"
-                                        alt="{{ $product->name }}"
+                                        alt="{{ $product->name }} — вид {{ $index + 1 }}"
+                                        loading="lazy"
                                         class="w-full h-full object-cover"
                                         style="object-position: center;"
                                     >

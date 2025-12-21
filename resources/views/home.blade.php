@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<x-seo.meta />
+
 @section('content')
 <!-- Hero Section -->
 <section class="relative overflow-hidden">
@@ -64,7 +66,8 @@
         <div class="h-48 rounded-2xl shadow-lg overflow-hidden hover-lift">
             <img
                 src="{{ asset('images/main2.jpg') }}"
-                alt="Букет роз"
+                alt="Букет роз — свежие цветы от Эдемский сад"
+                loading="lazy"
                 class="w-full h-full object-cover"
             >
         </div>
@@ -72,7 +75,8 @@
         <div class="h-48 rounded-2xl shadow-lg overflow-hidden hover-lift">
             <img
                 src="{{ asset('images/main3.jpg') }}"
-                alt="Цветочная композиция"
+                alt="Цветочная композиция — красивые букеты на заказ"
+                loading="lazy"
                 class="w-full h-full object-cover scale-70"
             >
         </div>
@@ -175,7 +179,11 @@
             <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg">
                 <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
                     @if($product->main_image)
-                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <img
+                            src="{{ $product->main_image }}"
+                            alt="{{ $product->name }} — купить букет в Брянске"
+                            loading="lazy"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     @else
                         <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-7xl">🌸</div>
                     @endif

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#e96d3f">
-    <meta name="description" content="Эдемский сад — Цветочная мастерская для особенных моментов. Свежие букеты с доставкой по Брянску">
-    <title>{{ $title ?? 'Эдемский сад — Цветочная мастерская' }}</title>
+
+    @stack('seo')
 
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -25,6 +25,9 @@
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Schema.org JSON-LD -->
+    @stack('schema')
 
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
