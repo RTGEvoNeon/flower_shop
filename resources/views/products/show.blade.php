@@ -1004,6 +1004,11 @@
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         document.body.style.overflow = 'hidden';
+
+        // Яндекс.Метрика: клик по кнопке "Оформить заказ"
+        if (typeof ym !== 'undefined') {
+            ym(104582209, 'reachGoal', 'click_order_button');
+        }
     }
 
     function closeOrderModal(event) {
@@ -1110,6 +1115,11 @@
             if (data.success) {
                 document.getElementById('order-form').classList.add('hidden');
                 document.getElementById('order-success').classList.remove('hidden');
+
+                // Яндекс.Метрика: успешная отправка заказа
+                if (typeof ym !== 'undefined') {
+                    ym(104582209, 'reachGoal', 'order_submitted');
+                }
 
                 setTimeout(() => {
                     closeOrderModal();

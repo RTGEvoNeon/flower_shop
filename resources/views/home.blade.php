@@ -36,7 +36,7 @@
                 </p>
 
                 <div class="flex flex-wrap gap-4 pt-4">
-                    <a href="#catalog" class="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-full font-semibold shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-all hover:scale-105">
+                    <a href="#catalog" class="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-full font-semibold shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-all hover:scale-105" onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'click_find_bouquet');">
                         <span>Найти букет</span>
                         <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -193,7 +193,7 @@
                 <div class="p-6 space-y-4">
                     <h3 class="font-display text-2xl font-semibold text-gray-900">{{ $product->name }}</h3>
                     <p class="text-gray-600 leading-relaxed line-clamp-2">{{ $product->description ?? 'Прекрасный букет для особого случая' }}</p>
-                    <a href="{{ route('products.show', $product->slug) }}" class="block w-full group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]">
+                    <a href="{{ route('products.show', $product->slug) }}" class="block w-full group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]" onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'click_product_card');">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             <span>Заказать букет</span>
                             <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
