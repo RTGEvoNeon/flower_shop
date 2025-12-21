@@ -152,9 +152,9 @@
                     <a href="/privacy" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
                         Политика конфиденциальности
                     </a>
-                    <a href="/terms" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
+                    <!-- <a href="/terms" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
                         Публичная оферта
-                    </a>
+                    </a> -->
                 </div>
             </div>
 
