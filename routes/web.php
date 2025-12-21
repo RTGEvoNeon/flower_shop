@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 // Главная страница
@@ -41,6 +42,9 @@ Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product
 
 // Оформление заказа
 Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
+
+// Sitemap
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // TODO: Форма заказа кастомного букета (временно отключена)
 // Route::get('/custom-bouquet', function () {

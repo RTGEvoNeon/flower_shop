@@ -1,2 +1,41 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Разрешить индексацию основных страниц
+Allow: /products
+Allow: /delivery
+Allow: /about
+Allow: /contacts
+Allow: /privacy
+
+# Запретить служебные страницы
+Disallow: /admin
+Disallow: /api
+Disallow: /*.json$
+
+# Разрешить изображения
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.webp$
+
+# Sitemap
+Sitemap: https://mindale.ru/sitemap.xml
+
+# Специальные правила для Яндекса
+User-agent: Yandex
+Allow: /
+
+# Специальные правила для Google
+User-agent: Googlebot
+Allow: /
+
+# Запретить плохих ботов
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
