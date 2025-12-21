@@ -42,7 +42,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
                         </div>
-                        <span class="text-gray-300">г. Брянск<br>доставка по всему городу</span>
+                        <span class="text-gray-300">г. Брянск, ул. Академика Сахарова, 5<br>доставка по всему городу</span>
                     </div>
 
                     <div class="flex items-start">
@@ -51,7 +51,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <span class="text-gray-300">Выдача букетов:<br>Пн-Сб 8:00 - 22:00</span>
+                        <span class="text-gray-300">Выдача букетов:<br>Пн-Сб 8:00 - 00:00</span>
                     </div>
                 </div>
             </div>
@@ -144,9 +144,7 @@
                         © 2024 Эдемский сад. Все права защищены.
                     </p>
                     <p class="text-xs text-gray-500 leading-relaxed">
-                        ИП Цветочкин Иван Иванович<br>
-                        ИНН: 123456789012 ОГРНИП: 123456789012345<br>
-                        Адрес: г. Москва, ул. Цветочная, д. 1
+                        ИП Редин Дмитрий Витальевич
                     </p>
                 </div>
 
