@@ -15,6 +15,16 @@ Route::get('/delivery', function () {
     return view('delivery');
 })->name('delivery');
 
+// Страница политики конфиденциальности
+Route::get('/privacy', function () {
+    return view('privacy');
+})->name('privacy');
+
+// Страница о нас
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');

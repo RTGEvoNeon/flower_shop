@@ -34,13 +34,13 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-1">
-                    <!-- TODO: Добавить страницы -->
                     <a href="/" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Главная</a>
                     <a href="/products" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Каталог</a>
                     <!-- <a href="/custom-bouquet" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Свой букет</a>
                     <a href="/seasonal" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Сезонные</a>
                     <a href="/care" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Уход</a> -->
                     <a href="/delivery" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Доставка</a>
+                    <a href="/about" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">О нас</a>
                 </div>
 
                 <!-- Mobile menu -->
@@ -100,6 +100,15 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                         </svg>
                         Каталог
+                    </span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary-50 to-gold-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </a>
+                <a href="/about" class="mobile-menu-link block relative px-5 py-4 text-gray-700 font-medium rounded-2xl transition-all duration-300 hover:text-primary-600 hover:bg-white/80 hover:shadow-md hover:translate-x-2 group overflow-hidden">
+                    <span class="relative z-10 flex items-center gap-3">
+                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        О нас
                     </span>
                     <div class="absolute inset-0 bg-gradient-to-r from-primary-50 to-gold-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </a>
@@ -178,6 +187,10 @@
 
         #mobile-menu.menu-open .mobile-menu-link:nth-child(3) {
             animation-delay: 0.25s;
+        }
+
+        #mobile-menu.menu-open .mobile-menu-link:nth-child(4) {
+            animation-delay: 0.3s;
         }
 
         @keyframes slideInFromRight {
