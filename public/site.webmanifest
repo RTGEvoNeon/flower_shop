@@ -1,0 +1,22 @@
+{
+    "name": "Эдемский сад — Цветочная мастерская",
+    "short_name": "Эдемский сад",
+    "description": "Цветочная мастерская для особенных моментов",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#e96d3f",
+    "background_color": "#fef8f4",
+    "display": "standalone",
+    "start_url": "/",
+    "scope": "/"
+}
