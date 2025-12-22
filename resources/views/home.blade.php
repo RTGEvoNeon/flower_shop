@@ -194,7 +194,15 @@
                     <!-- Category badge -->
                     @if($product->category)
                     <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700">
-                        {{ $product->category }}
+                        @php
+                            $categoryLabels = [
+                                'mono' => 'Монобукет',
+                                'mix' => 'Микс',
+                                'winter' => 'Зима',
+                                'wedding' => 'Свадебные',
+                            ];
+                        @endphp
+                        {{ $categoryLabels[$product->category] ?? ucfirst($product->category) }}
                     </div>
                     @endif
                 </a>

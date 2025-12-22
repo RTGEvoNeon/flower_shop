@@ -63,6 +63,13 @@ class ProductController extends Controller
             ? mb_substr($product->description, 0, 140) . '... Цена: ' . number_format($product->price, 0) . '₽. Доставка по Брянску бесплатно.'
             : "Букет {$product->name} от цветочной мастерской Эдемский сад. Цена: " . number_format($product->price, 0) . "₽. Свежие цветы, бесплатная доставка по Брянску.";
 
+        $categoryKeywords = [
+            'mono' => 'монобукет',
+            'mix' => 'букет микс',
+            'winter' => 'зимний букет',
+            'wedding' => 'свадебный букет',
+        ];
+
         Seo::setTitle($title)
             ->setDescription($description)
             ->setKeywords([
@@ -70,7 +77,7 @@ class ProductController extends Controller
                 "купить {$product->name}",
                 "{$product->name} Брянск",
                 "букет {$product->name}",
-                $product->category === 'mono' ? 'монобукет' : 'букет микс'
+                $categoryKeywords[$product->category] ?? 'букет'
             ])
             ->setCanonical(route('products.show', $product->slug))
             ->setType('product')

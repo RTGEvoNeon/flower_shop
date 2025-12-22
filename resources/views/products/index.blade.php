@@ -45,6 +45,12 @@
             <button class="filter-btn px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm" data-category="mix">
                 Микс букеты
             </button>
+            <button class="filter-btn px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm" data-category="winter">
+                Зима
+            </button>
+            <button class="filter-btn px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm" data-category="wedding">
+                Свадебные
+            </button>
         </div>
     </div>
 </section>
@@ -107,6 +113,8 @@
                                 $categoryLabels = [
                                     'mono' => 'Монобукет',
                                     'mix' => 'Микс',
+                                    'winter' => 'Зима',
+                                    'wedding' => 'Свадебные',
                                 ];
                             @endphp
                             {{ $categoryLabels[$product->category] ?? ucfirst($product->category) }}
