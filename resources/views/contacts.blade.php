@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<x-seo.meta />
+
 @section('content')
 <!-- Hero Section -->
 <section class="relative overflow-hidden">

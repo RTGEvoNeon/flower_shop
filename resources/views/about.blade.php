@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<x-seo.meta />
+
 @section('content')
 <!-- Hero Section -->
 <section class="relative overflow-hidden bg-gradient-to-br from-accent-50 via-white to-primary-50">
@@ -83,7 +85,8 @@
                     <div class="aspect-[4/5] bg-gradient-to-br from-primary-100 via-sage-100 to-gold-100">
                         <img
                             src="{{ asset('images/about.jpg') }}"
-                            alt="Наша семейная мастерская - Эдемский сад"
+                            alt="Семейная цветочная мастерская Эдемский сад — фото команды флористов"
+                            loading="lazy"
                             class="w-full h-full object-cover"
                         >
                     </div>

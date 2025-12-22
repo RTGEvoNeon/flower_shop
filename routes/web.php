@@ -1,40 +1,18 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
-// Главная страница
-Route::get('/', function () {
-    $randomProducts = \App\Models\Product::available()
-        ->withImages()
-        ->inRandomOrder()
-        ->limit(3)
-        ->get();
-    return view('home', compact('randomProducts'));
-});
-
-// Страница доставки
-Route::get('/delivery', function () {
-    return view('delivery');
-})->name('delivery');
-
-// Страница политики конфиденциальности
-Route::get('/privacy', function () {
-    return view('privacy');
-})->name('privacy');
-
-// Страница о нас
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
-// Страница контактов
-Route::get('/contacts', function () {
-    return view('contacts');
-})->name('contacts');
+// Статические страницы
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/delivery', [PageController::class, 'delivery'])->name('delivery');
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
