@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\OrderController;
@@ -12,8 +13,24 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/delivery', [PageController::class, 'delivery'])->name('delivery');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
-Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/-privacy', [PageController::class, 'privacy'])->name('privacy');
 
+Route::get('/me', function () {
+    if (session()->has('user_id')) {
+        return 'Вы авторизованы. ID: ' . session('user_id');
+    }
+
+    return 'Вы гость';
+});
+Route::get('/register', function () {
+    return view('register');
+});
+
+Route::get('/login', function () {
+    return view('login');
+});
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/authorize', [AuthController::class, 'authorize'])->name('authorize');
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
