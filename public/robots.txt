@@ -20,7 +20,7 @@ Allow: /*.png$
 Allow: /*.webp$
 
 # Sitemap
-Sitemap: https://mindale.ru/sitemap.xml
+Sitemap: https://эдемский-сад.рф/sitemap.xml
 
 # Специальные правила для Яндекса
 User-agent: Yandex
