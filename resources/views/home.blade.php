@@ -77,7 +77,7 @@
                 src="{{ asset('images/main3.jpg') }}"
                 alt="Цветочная композиция — красивые букеты на заказ"
                 loading="lazy"
-                class="w-full h-full object-cover scale-70"
+                class="w-full h-full object-cover"
             >
         </div>
     </div>
