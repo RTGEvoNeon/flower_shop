@@ -72,17 +72,18 @@
                 </div>
 
                 <!-- Mobile menu -->
-                <div class="flex items-center">
+                <div class="flex items-center lg:hidden">
                     <!-- Mobile menu button -->
-                    <button id="mobile-menu-button" class="lg:hidden relative p-2.5 text-gray-700 hover:text-primary-600 rounded-xl hover:bg-white/70 transition-all duration-300 group">
-                        <div class="relative w-6 h-6">
-                            <svg id="menu-icon" class="w-6 h-6 absolute inset-0 transition-all duration-300 ease-in-out transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                            <svg id="close-icon" class="w-6 h-6 absolute inset-0 transition-all duration-300 ease-in-out transform opacity-0 rotate-90 scale-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </div>
+                    <button id="mobile-menu-button" type="button" class="relative p-2.5 text-gray-700 hover:text-primary-600 rounded-xl hover:bg-white/70 transition-all duration-300" aria-label="Открыть меню">
+                        <svg id="menu-icon" class="w-6 h-6 transition-all duration-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="4" y1="6" x2="20" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="4" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <svg id="close-icon" class="w-6 h-6 absolute inset-0 m-2.5 transition-all duration-300 opacity-0 scale-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="6" y1="18" x2="18" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -95,7 +96,7 @@
 
     <!-- Mobile menu panel (right side) -->
     <div id="mobile-menu" class="lg:hidden fixed right-0 top-0 bottom-0 w-80 max-w-[85vw] z-50">
-        <div class="mobile-menu-content h-full bg-gradient-to-b from-white via-accent-50/95 to-accent-100/95 backdrop-blur-xl shadow-2xl transform translate-x-full transition-transform duration-500 ease-out flex flex-col">
+        <div class="mobile-menu-content h-full bg-gradient-to-b from-white via-accent-50/95 to-accent-100/95 backdrop-blur-xl shadow-2xl transition-transform duration-500 ease-out flex flex-col">
             <!-- Header меню -->
             <div class="flex items-center justify-between px-6 py-6 border-b border-accent-200/50">
                 <div class="flex items-center gap-3">
@@ -177,13 +178,17 @@
             visibility: hidden;
         }
 
+        #mobile-menu .mobile-menu-content {
+            transform: translateX(100%);
+        }
+
         #mobile-menu.menu-open {
             pointer-events: auto;
             visibility: visible;
         }
 
         #mobile-menu.menu-open .mobile-menu-content {
-            transform: translateX(0);
+            transform: translateX(0) !important;
         }
 
         /* Backdrop затемнение */
@@ -269,82 +274,6 @@
             background: rgba(233, 109, 63, 0.5);
         }
     </style>
-
-    <script>
-        // Мобильное меню с плавной анимацией
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
-            const mobileMenuClose = document.getElementById('mobile-menu-close');
-            const menuIcon = document.getElementById('menu-icon');
-            const closeIcon = document.getElementById('close-icon');
-            let isMenuOpen = false;
-
-            function openMenu() {
-                console.log('Opening menu');
-                isMenuOpen = true;
-                mobileMenuButton.classList.add('menu-open');
-                mobileMenu.classList.add('menu-open');
-                mobileMenuBackdrop.classList.add('menu-open');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeMenu() {
-                console.log('Closing menu');
-                isMenuOpen = false;
-                mobileMenuButton.classList.remove('menu-open');
-                mobileMenu.classList.remove('menu-open');
-                mobileMenuBackdrop.classList.remove('menu-open');
-                document.body.style.overflow = '';
-            }
-
-            // Открытие меню по кнопке
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (isMenuOpen) {
-                        closeMenu();
-                    } else {
-                        openMenu();
-                    }
-                });
-            }
-
-            // Закрытие по кнопке X внутри меню
-            if (mobileMenuClose) {
-                mobileMenuClose.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Close button clicked');
-                    closeMenu();
-                });
-            }
-
-            // Закрытие меню при клике на ссылку
-            const mobileMenuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    closeMenu();
-                });
-            });
-
-            // Закрытие меню при клике на backdrop
-            if (mobileMenuBackdrop) {
-                mobileMenuBackdrop.addEventListener('click', () => {
-                    closeMenu();
-                });
-            }
-
-            // Закрытие меню по клавише Escape
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && isMenuOpen) {
-                    closeMenu();
-                }
-            });
-        });
-    </script>
 
     <!-- Main Content -->
     <main>
