@@ -19,6 +19,12 @@ Allow: /*.jpg$
 Allow: /*.png$
 Allow: /*.webp$
 
+# Разрешить favicon
+Allow: /favicon.ico
+Allow: /favicon-*.png
+Allow: /apple-touch-icon.png
+Allow: /android-chrome-*.png
+
 # Sitemap
 Sitemap: https://эдемский-сад.рф/sitemap.xml
 
