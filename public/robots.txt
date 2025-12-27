@@ -25,8 +25,8 @@ Allow: /favicon-*.png
 Allow: /apple-touch-icon.png
 Allow: /android-chrome-*.png
 
-# Sitemap
-Sitemap: https://эдемский-сад.рф/sitemap.xml
+# Sitemap (используем Punycode для международного домена)
+Sitemap: https://xn----8sbkccshgr4ce9k.xn--p1ai/sitemap.xml
 
 # Специальные правила для Яндекса
 User-agent: Yandex
