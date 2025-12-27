@@ -314,6 +314,20 @@
             </div>
         </div>
 
+        <!-- Yandex Map Section -->
+        <div class="mt-20 max-w-5xl mx-auto animate-fade-in-up stagger-6">
+            <div class="text-center mb-12">
+                <h2 class="font-display text-4xl font-bold text-gray-900 mb-4">Как нас найти</h2>
+                <p class="text-xl text-gray-600">
+                    г. Брянск, ул. Академика Сахарова, 5
+                </p>
+            </div>
+
+            <div class="overflow-hidden rounded-3xl border-2 border-accent-200/50 shadow-xl">
+                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A44c15fbbc06a1918b30ef4008bef6dfc6e94b209ee5468ed2444ae0f343d7c39&amp;width=100%25&amp;height=686&amp;lang=ru_RU&amp;scroll=true"></script>
+            </div>
+        </div>
+
         <!-- Back Button -->
         <div class="text-center mt-16">
             <a href="/" class="group inline-flex items-center gap-3 px-8 py-4 border-2 border-primary-400 text-primary-700 rounded-full font-semibold hover:bg-primary-50 transition-all hover:scale-105 shadow-sm">
