@@ -7,8 +7,15 @@ services:
       dockerfile: Dockerfile
     container_name: laravel_app
     restart: unless-stopped
+    ports:
+      - "9003:9003"
     volumes:
       - .:/var/www/html
+    environment:
+      - XDEBUG_MODE=debug
+      - XDEBUG_CONFIG=client_host=host.docker.internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - laravel
 
