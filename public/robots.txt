@@ -19,8 +19,14 @@ Allow: /*.jpg$
 Allow: /*.png$
 Allow: /*.webp$
 
-# Sitemap
-Sitemap: https://mindale.ru/sitemap.xml
+# Разрешить favicon
+Allow: /favicon.ico
+Allow: /favicon-*.png
+Allow: /apple-touch-icon.png
+Allow: /android-chrome-*.png
+
+# Sitemap (используем Punycode для международного домена)
+Sitemap: https://xn----8sbkccshgr4ce9k.xn--p1ai/sitemap.xml
 
 # Специальные правила для Яндекса
 User-agent: Yandex
