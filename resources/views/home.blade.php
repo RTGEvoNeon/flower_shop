@@ -233,6 +233,31 @@
     </div>
 </section>
 
+<!-- Отзывы клиентов -->
+<section class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16 space-y-4">
+            <div class="inline-block">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 text-primary-700 font-medium text-sm">
+                    ⭐ Отзывы
+                </span>
+            </div>
+            <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900 text-balance">
+                Что говорят наши клиенты
+            </h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Мы ценим каждый отзыв и стараемся сделать ваш опыт незабываемым
+            </p>
+        </div>
+
+        <!-- ReviewLab Widget -->
+        <div class="max-w-6xl mx-auto">
+            <review-lab data-widgetid="69525a879d63142bd9e6b323"></review-lab>
+        </div>
+    </div>
+</section>
+
 <!-- TODO: Call to Action для кастомного букета (временно отключена) -->
 <!-- <section class="relative py-24 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-gold-600"></div>
