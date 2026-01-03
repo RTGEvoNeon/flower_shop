@@ -21,4 +21,8 @@ RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.
 # Установка Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Установка Node.js и npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
 WORKDIR /var/www/html

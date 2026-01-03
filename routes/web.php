@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 // Статические страницы
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -15,22 +15,6 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
 Route::get('/-privacy', [PageController::class, 'privacy'])->name('privacy');
 
-Route::get('/me', function () {
-    if (session()->has('user_id')) {
-        return 'Вы авторизованы. ID: ' . session('user_id');
-    }
-
-    return 'Вы гость';
-});
-Route::get('/register', function () {
-    return view('register');
-});
-
-Route::get('/login', function () {
-    return view('login');
-});
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/authorize', [AuthController::class, 'authorize'])->name('authorize');
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
@@ -57,3 +41,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/products/import', [ProductImportController::class, 'import'])->name('products.import.process');
     Route::get('/products/import/template', [ProductImportController::class, 'downloadTemplate'])->name('products.import.template');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
