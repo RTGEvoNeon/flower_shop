@@ -136,6 +136,7 @@ return [
 
     'aliases' => [
         'Seo' => App\Facades\Seo::class,
+        'Route' => Illuminate\Support\Facades\Route::class,
     ],
 
 ];

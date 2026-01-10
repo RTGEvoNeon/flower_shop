@@ -27,7 +27,9 @@
                 <!-- Логотип -->
                 <div class="text-center mb-8 opacity-0 animate-fade-in-up">
                     <a href="/" class="inline-block group">
-                        <x-application-logo class="w-20 h-20 object-contain rounded-lg transition-transform duration-300 group-hover:scale-110" />
+                        <div class="w-20 h-20 rounded-full overflow-hidden shadow-lg ring-2 ring-primary-200/50 transition-all duration-300 group-hover:scale-110 group-hover:ring-primary-400/70 group-hover:shadow-xl">
+                            <x-application-logo class="w-full h-full object-cover" />
+                        </div>
                     </a>
                 </div>
 
