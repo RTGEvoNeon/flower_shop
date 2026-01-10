@@ -42,14 +42,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/products/import/template', [ProductImportController::class, 'downloadTemplate'])->name('products.import.template');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
+    Route::patch('/dashboard/profile', [ProfileController::class, 'update'])->name('dashboard.profile.update');
+    Route::delete('/dashboard/profile', [ProfileController::class, 'destroy'])->name('dashboard.profile.destroy');
+    Route::put('/dashboard/password', [ProfileController::class, 'updatePassword'])->name('dashboard.password.update');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

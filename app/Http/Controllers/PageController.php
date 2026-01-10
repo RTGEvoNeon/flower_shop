@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Facades\Seo;
 use App\Models\Product;
+use App\Models\Order;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -103,5 +105,23 @@ class PageController extends Controller
             ->setCanonical(route('privacy'));
 
         return view('privacy');
+    }
+
+    /**
+     * Личный кабинет (Dashboard)
+     */
+    public function dashboard(): View
+    {
+        $user = Auth::user();
+        $orders = Order::where('customer_email', $user->email)
+            ->orderBy('created_at', 'desc')
+            ->with('orderItems')
+            ->get();
+
+        Seo::setTitle('Личный кабинет')
+            ->setDescription('Личный кабинет — просмотр заказов и управление профилем')
+            ->setRobots('noindex, follow');
+
+        return view('dashboard', compact('orders'));
     }
 }
