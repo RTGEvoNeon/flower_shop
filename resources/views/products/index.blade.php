@@ -4,13 +4,13 @@
 
 @section('content')
 <!-- Hero Section - Каталог -->
-<section class="relative overflow-hidden bg-gradient-to-b from-white via-accent-50 to-white py-16 lg:py-24">
+<section class="relative overflow-hidden bg-gradient-to-b from-white via-accent-50 to-white py-8 sm:py-16 lg:py-24">
     <!-- Декоративные элементы -->
     <div class="absolute top-0 left-0 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl animate-float"></div>
     <div class="absolute bottom-0 right-0 w-80 h-80 bg-gold-200/20 rounded-full blur-3xl animate-float" style="animation-delay: -2s;"></div>
 
-    <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div class="text-center space-y-6 mb-12">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center space-y-4 sm:space-y-6 mb-6 sm:mb-12">
             <div class="inline-block animate-fade-in-up">
                 <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/90 backdrop-blur-sm border border-accent-200 shadow-sm">
                     <span class="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></span>
@@ -18,7 +18,7 @@
                 </span>
             </div>
 
-            <h1 class="font-display text-5xl lg:text-7xl font-bold text-gray-900 leading-tight text-balance animate-fade-in-up stagger-1">
+            <h1 class="font-display text-3xl sm:text-5xl lg:text-7xl font-bold text-gray-900 leading-tight text-balance animate-fade-in-up stagger-1">
                 Выберите
                 <span class="relative inline-block">
                     <span class="relative z-10 bg-gradient-to-r from-primary-600 via-primary-500 to-gold-600 bg-clip-text text-transparent">идеальный</span>
@@ -29,16 +29,16 @@
                 букет
             </h1>
 
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up stagger-2">
+            <p class="text-base sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up stagger-2">
                 Каждый букет создан с любовью и вниманием к деталям
             </p>
         </div>
 
         <!-- Фильтры -->
-        <nav class="flex flex-wrap justify-center gap-3 mb-16 animate-fade-in-up stagger-3" aria-label="Фильтры по категориям">
+        <nav class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-16 animate-fade-in-up stagger-3" aria-label="Фильтры по категориям">
             @foreach($categories as $key => $label)
                 <a href="{{ route('products.index', $key === 'all' ? [] : ['category' => $key]) }}"
-                   class="filter-btn {{ $currentCategory === $key ? 'active' : '' }} px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm"
+                   class="filter-btn {{ $currentCategory === $key ? 'active' : '' }} px-3 py-2 sm:px-6 sm:py-3 rounded-full font-medium text-xs sm:text-sm transition-all hover:scale-105 shadow-sm"
                    @if($currentCategory === $key) aria-current="page" @endif>
                     {{ $label }}
                 </a>
@@ -48,9 +48,9 @@
 </section>
 
 <!-- Каталог товаров -->
-<section class="py-16 bg-white relative">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-        <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<section class="py-8 sm:py-16 bg-white relative">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
             @forelse($products as $product)
                 @php
                     $colorIndex = $loop->index % 3;
@@ -70,11 +70,11 @@
                         default => 'from-sage-600 to-sage-500',
                     };
                 @endphp
-                <article class="product-card group bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg hover-lift transition-all duration-500"
+                <article class="product-card group bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg hover-lift transition-all duration-500"
                          style="opacity: 0; animation: fadeInUp 0.6s ease-out forwards; animation-delay: {{ ($loop->index % 9) * 0.1 }}s;">
 
                     <!-- Изображение товара -->
-                    <div class="relative h-80 overflow-hidden bg-gradient-to-br {{ $bgGradient }}">
+                    <div class="relative h-44 sm:h-80 overflow-hidden bg-gradient-to-br {{ $bgGradient }}">
                         @if($product->main_image && $product->main_image !== '/images/placeholder.jpg')
                             <img src="{{ $product->main_image }}"
                                  alt="{{ $product->name }} — свежие цветы с доставкой"
@@ -82,7 +82,7 @@
                                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         @else
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="text-7xl opacity-40">
+                                <span class="text-5xl sm:text-7xl opacity-40">
                                     {{ ['🌸', '🌻', '🌺', '🌹', '🌷', '💐'][$loop->index % 6] }}
                                 </span>
                             </div>
@@ -92,14 +92,14 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                         <!-- Бейдж с ценой -->
-                        <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg transform transition-transform group-hover:scale-110">
-                            <span class="font-display text-2xl font-bold bg-gradient-to-r {{ $priceGradient }} bg-clip-text text-transparent">
+                        <div class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-white/95 backdrop-blur-sm px-2 py-1 sm:px-4 sm:py-2 rounded-full shadow-lg transform transition-transform group-hover:scale-110">
+                            <span class="font-display text-sm sm:text-2xl font-bold bg-gradient-to-r {{ $priceGradient }} bg-clip-text text-transparent">
                                 {{ number_format($product->price, 0) }} ₽
                             </span>
                         </div>
 
                         <!-- Категория -->
-                        <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-gray-700 shadow-md">
+                        <div class="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 bg-white/95 backdrop-blur-sm px-2 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-700 shadow-md">
                             @php
                                 $categoryLabels = [
                                     'mono' => 'Монобукет',
@@ -112,9 +112,9 @@
                             {{ $categoryLabels[$product->category] ?? ucfirst($product->category) }}
                         </div>
 
-                        <!-- Кнопка быстрого просмотра -->
+                        <!-- Кнопка быстрого просмотра (только на десктопе) -->
                         <a href="/product/{{ $product->slug }}"
-                           class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                           class="hidden sm:flex absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <span class="bg-white/95 backdrop-blur-sm px-6 py-3 rounded-full font-semibold text-gray-900 shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -126,21 +126,22 @@
                     </div>
 
                     <!-- Контент карточки -->
-                    <div class="p-6 space-y-4">
-                        <h3 class="font-display text-2xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <div class="p-3 sm:p-6 space-y-1 sm:space-y-4">
+                        <h3 class="font-display text-sm sm:text-2xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
                             {{ $product->name }}
                         </h3>
 
-                        <p class="text-gray-600 leading-relaxed line-clamp-2">
+                        <!-- Описание (только десктоп) -->
+                        <p class="hidden md:block md:line-clamp-2 text-gray-600 leading-relaxed">
                             {{ $product->description }}
                         </p>
 
                         <!-- Действия -->
-                        <div class="flex gap-3 pt-2">
+                        <div class="flex gap-3 pt-1 sm:pt-2">
                             <a href="/product/{{ $product->slug }}"
-                               class="flex-1 group/btn bg-gradient-to-r {{ $buttonGradient }} text-white px-5 py-3 rounded-full font-semibold text-center transition-all hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                               class="flex-1 group/btn bg-gradient-to-r {{ $buttonGradient }} text-white px-3 py-2 sm:px-5 sm:py-3 rounded-full font-semibold text-xs sm:text-base text-center transition-all hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-1 sm:gap-2"
                                onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'view_product_catalog');">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                 </svg>
