@@ -51,11 +51,7 @@ class ProductController extends Controller
      */
     public function show(string $slug): View
     {
-        $product = Product::where('slug', $slug)
-            ->with(['activeImages' => function($query) {
-                $query->ordered();
-            }, 'primaryImage'])
-            ->firstOrFail();
+        $product = Product::where('slug', $slug)->firstOrFail();
 
         // SEO для страницы товара
         $title = $product->name . ' — купить в Брянске';
