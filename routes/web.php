@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 // Статические страницы
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -15,22 +15,6 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
 Route::get('/-privacy', [PageController::class, 'privacy'])->name('privacy');
 
-Route::get('/me', function () {
-    if (session()->has('user_id')) {
-        return 'Вы авторизованы. ID: ' . session('user_id');
-    }
-
-    return 'Вы гость';
-});
-Route::get('/register', function () {
-    return view('register');
-});
-
-Route::get('/login', function () {
-    return view('login');
-});
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/authorize', [AuthController::class, 'authorize'])->name('authorize');
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
@@ -57,3 +41,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/products/import', [ProductImportController::class, 'import'])->name('products.import.process');
     Route::get('/products/import/template', [ProductImportController::class, 'downloadTemplate'])->name('products.import.template');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
+    Route::patch('/dashboard/profile', [ProfileController::class, 'update'])->name('dashboard.profile.update');
+    Route::delete('/dashboard/profile', [ProfileController::class, 'destroy'])->name('dashboard.profile.destroy');
+    Route::put('/dashboard/password', [ProfileController::class, 'updatePassword'])->name('dashboard.password.update');
+});
+
+require __DIR__ . '/auth.php';

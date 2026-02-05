@@ -1,0 +1,154 @@
+---
+description: Frontend Design & Development Standards
+alwaysApply: true
+---
+
+# Frontend Standards
+
+## Дизайн-мышление
+
+Перед кодом определи направление:
+
+- **Цель**: Какую проблему решает интерфейс? Кто пользователь?
+- **Тон**: Выбери СМЕЛОЕ направление (минимализм, максимализм, ретро-футуризм, органика, люкс, брутализм, арт-деко, индустриальный)
+- **Дифференциация**: "Что делает это НЕЗАБЫВАЕМЫМ? Что запомнит пользователь?"
+
+**ВАЖНО**: Выбери чёткое концептуальное направление и выполни с точностью. Смелый максимализм и утончённый минимализм оба работают — важна намеренность.
+
+## Эстетика
+
+### Типографика
+- Выбирай характерные шрифты, избегай generic (Inter, Roboto, Arial)
+- Для русского языка — кириллические шрифты
+- Пара: выразительный display + утончённый body
+
+### Цвет и тема
+- CSS переменные для консистентности
+- Доминантные цвета с острыми акцентами лучше робких палитр
+- Избегай клише (фиолетовые градиенты)
+
+### Анимации
+- Micro-interactions для отклика
+- Staggered animations при загрузке
+- Scroll-triggered эффекты
+- CSS для простого, Motion/GSAP для сложного
+
+### Композиция
+- Неожиданные layouts, асимметрия
+- Overlap элементов, диагональный flow
+- Generous negative space
+
+### Детали
+- Gradient meshes, noise textures
+- Геометрические паттерны
+- Layered transparencies
+- Dramatic shadows, decorative borders
+
+## Чего избегать
+
+- Generic AI-эстетика и cookie-cutter дизайны
+- Предсказуемые layouts
+- Одинаковые решения для разных проектов
+
+---
+
+# Frontend Development Best Practices
+
+## HTML/Blade
+
+- Семантическая разметка: `<header>`, `<nav>`, `<main>`, `<article>`, `<section>`
+- Accessibility: `aria-*`, `role`, `alt` для изображений
+- Правильная иерархия заголовков (h1 → h2 → h3)
+
+```html
+<!-- ❌ Плохо -->
+<div class="header">
+    <div class="nav">...</div>
+</div>
+
+<!-- ✅ Хорошо -->
+<header role="banner">
+    <nav aria-label="Главная навигация">...</nav>
+</header>
+```
+
+## CSS/Tailwind
+
+- Mobile-first подход
+- CSS Custom Properties для темизации
+- Логические группировки классов
+- Избегай magic numbers — используй систему spacing
+
+```html
+<!-- ❌ Плохо -->
+<div class="mt-[37px] p-[13px]">
+
+<!-- ✅ Хорошо -->
+<div class="mt-8 p-4">
+```
+
+## JavaScript
+
+- Progressive enhancement — работает без JS
+- Debounce/throttle для scroll и resize
+- Lazy loading для изображений и тяжёлого контента
+- Event delegation для списков
+
+```javascript
+// ❌ Плохо
+document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('click', handler);
+});
+
+// ✅ Хорошо
+document.querySelector('.list').addEventListener('click', (e) => {
+    if (e.target.matches('.item')) handler(e);
+});
+```
+
+## Производительность
+
+- Оптимизируй изображения: WebP, правильные размеры
+- Critical CSS inline
+- Минимизируй CLS (Cumulative Layout Shift)
+- `loading="lazy"` для изображений below the fold
+- Preload критичных ресурсов
+
+## Accessibility (A11y)
+
+- Keyboard navigation для всех интерактивных элементов
+- Focus states видимые и стильные
+- Contrast ratio минимум 4.5:1
+- Screen reader testing
+
+```html
+<!-- ✅ Интерактивный элемент -->
+<button 
+    type="button"
+    aria-expanded="false"
+    aria-controls="menu"
+    class="focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+>
+    Меню
+</button>
+```
+
+## Формы
+
+- Label для каждого input
+- Валидация на клиенте И сервере
+- Понятные сообщения об ошибках
+- Автозаполнение где уместно
+
+```html
+<label for="email" class="sr-only">Email</label>
+<input 
+    type="email" 
+    id="email"
+    name="email"
+    autocomplete="email"
+    required
+    aria-describedby="email-error"
+>
+<p id="email-error" class="text-red-500 text-sm" role="alert"></p>
+```

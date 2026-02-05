@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Storage;
@@ -29,30 +27,6 @@ class Product extends Model
     ];
 
     /**
-     * Связь с изображениями (все изображения)
-     */
-    public function images(): HasMany
-    {
-        return $this->hasMany(ProductImage::class)->ordered();
-    }
-
-    /**
-     * Связь с активными изображениями
-     */
-    public function activeImages(): HasMany
-    {
-        return $this->hasMany(ProductImage::class)->active()->ordered();
-    }
-
-    /**
-     * Связь с главным изображением
-     */
-    public function primaryImage(): HasOne
-    {
-        return $this->hasOne(ProductImage::class)->primary()->active();
-    }
-
-    /**
      * Scope: только доступные товары
      */
     public function scopeAvailable(Builder $query): Builder
@@ -69,11 +43,11 @@ class Product extends Model
     }
 
     /**
-     * Scope: с изображениями
+     * Scope: с изображениями (для совместимости, изображения загружаются из файловой системы)
      */
     public function scopeWithImages(Builder $query): Builder
     {
-        return $query->with(['activeImages', 'primaryImage']);
+        return $query; // Изображения загружаются напрямую из файловой системы через accessors
     }
 
     /**

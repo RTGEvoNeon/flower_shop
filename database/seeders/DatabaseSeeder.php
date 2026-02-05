@@ -110,26 +110,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         // Создаем продукты
-        $createdProducts = [];
         foreach ($products as $productData) {
-            $createdProducts[] = Product::create($productData);
+            Product::create($productData);
         }
-
-        // Добавляем изображения к продуктам
-        foreach ($createdProducts as $product) {
-            // Каждому продукту добавляем от 2 до 5 изображений
-            $imageCount = fake()->numberBetween(2, 5);
-            
-            \App\Models\ProductImage::factory()
-                ->count($imageCount)
-                ->forProduct($product)
-                ->sequence(
-                    // Первое изображение - главное
-                    ['is_primary' => true, 'sort_order' => 0],
-                    // Остальные - обычные
-                    ...array_map(fn($i) => ['is_primary' => false, 'sort_order' => $i], range(1, $imageCount - 1))
-                )
-                ->create();
-        }
+        
+        // Примечание: Изображения товаров хранятся в файловой системе в папке storage/app/public/products/{id}/
     }
 }

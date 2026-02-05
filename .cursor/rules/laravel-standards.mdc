@@ -1,0 +1,121 @@
+---
+description: PHP/Laravel Senior Developer Standards
+alwaysApply: true
+---
+
+# PHP & Laravel Best Practices
+
+Пиши код как senior-разработчик с 10+ годами опыта. Каждое решение должно быть обосновано.
+
+## Архитектура и проектирование
+
+- Следуй SOLID принципам, особенно Single Responsibility
+- Используй Service Layer для бизнес-логики, не пиши её в контроллерах
+- Контроллеры только принимают запрос и возвращают ответ
+- Используй Repository Pattern для сложных запросов к БД
+- Выноси повторяющуюся логику в Action классы или Services
+
+## PHP Standards
+
+- Строгая типизация: `declare(strict_types=1);` в каждом файле
+- Type hints для всех параметров и return types
+- Readonly properties где возможно (PHP 8.2+)
+- Используй Enums вместо констант для статусов
+- Никаких `mixed` типов без крайней необходимости
+
+```php
+// ❌ Плохо
+public function process($data) {
+    // ...
+}
+
+// ✅ Хорошо
+public function process(ProcessDataDTO $data): ProcessResult
+{
+    // ...
+}
+```
+
+## Laravel Conventions
+
+- Form Requests для валидации, не validate() в контроллере
+- Resource классы для API responses
+- Policies для авторизации
+- Events/Listeners для side effects
+- Jobs для тяжёлых операций
+- Используй Eloquent scopes для повторяющихся условий
+
+```php
+// ❌ Плохо
+$users = User::where('active', true)->where('role', 'admin')->get();
+
+// ✅ Хорошо  
+$users = User::active()->admins()->get();
+```
+
+## Безопасность
+
+- НИКОГДА не используй `$request->all()` в create/update
+- Всегда используй `$request->validated()` или `$request->safe()->only()`
+- Экранируй вывод: `{{ }}` вместо `{!! !!}`
+- Используй prepared statements (Eloquent делает это автоматически)
+- Проверяй авторизацию через Policies: `$this->authorize()`
+- Валидируй ВСЕ входные данные, включая ID из URL
+- Храни секреты только в .env, никогда в коде
+
+## Тестирование
+
+- Пиши Feature тесты для каждого endpoint
+- Unit тесты для сервисов и бизнес-логики
+- Используй Factories для тестовых данных
+- Тестируй граничные случаи и ошибки
+- Минимум 1 тест на каждый публичный метод сервиса
+
+```php
+// Структура теста
+public function test_user_can_create_product(): void
+{
+    // Arrange
+    $user = User::factory()->create();
+    $data = ['name' => 'Test', 'price' => 100];
+    
+    // Act
+    $response = $this->actingAs($user)->post('/products', $data);
+    
+    // Assert
+    $response->assertCreated();
+    $this->assertDatabaseHas('products', $data);
+}
+```
+
+## База данных
+
+- Всегда используй миграции, никаких ручных изменений
+- Индексы на часто используемые поля в WHERE и JOIN
+- Избегай N+1: используй eager loading (`with()`)
+- Foreign keys для целостности данных
+- Soft deletes для важных данных
+
+## Обработка ошибок
+
+- Кастомные Exceptions для бизнес-ошибок
+- Логируй ошибки с контекстом
+- Возвращай понятные сообщения пользователю
+- Не глуши exceptions пустым catch
+
+```php
+// ❌ Плохо
+try {
+    $this->process();
+} catch (\Exception $e) {
+    // silence
+}
+
+// ✅ Хорошо
+try {
+    $this->process();
+} catch (ProcessingException $e) {
+    Log::error('Processing failed', ['error' => $e->getMessage(), 'context' => $context]);
+    throw $e;
+}
+```
