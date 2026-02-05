@@ -1,0 +1,51 @@
+# Makefile для itulip
+# Использование: make <команда>
+
+# Настройки сервера
+REMOTE_HOST = 185.11.135.11
+REMOTE_USER = root
+REMOTE_PATH = /var/www/html
+
+# Локальные пути
+LOCAL_PRODUCTS = ./storage/app/public/products/
+REMOTE_PRODUCTS = $(REMOTE_PATH)/storage/app/public/products
+
+.PHONY: help sync sync-dry deploy ssh logs
+
+# Помощь (по умолчанию)
+help:
+	@echo "Доступные команды:"
+	@echo "  make sync      - Синхронизировать файлы продуктов на сервер"
+	@echo "  make sync-dry  - Тестовый запуск (без реальной передачи)"
+	@echo "  make deploy    - Деплой всего проекта на сервер"
+	@echo "  make ssh       - Подключиться к серверу по SSH"
+	@echo "  make logs      - Посмотреть логи Docker на сервере"
+
+# Синхронизация файлов продуктов
+sync:
+	@echo "🚀 Синхронизация файлов продуктов..."
+	@mkdir -p $(LOCAL_PRODUCTS)
+	@ssh $(REMOTE_USER)@$(REMOTE_HOST) "mkdir -p $(REMOTE_PRODUCTS)"
+	rsync -avz --progress $(LOCAL_PRODUCTS) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_PRODUCTS)/
+	@ssh $(REMOTE_USER)@$(REMOTE_HOST) "chown -R www-data:www-data $(REMOTE_PRODUCTS) && chmod -R 755 $(REMOTE_PRODUCTS)"
+	@echo "✅ Готово!"
+
+# Тестовый запуск синхронизации
+sync-dry:
+	@echo "🔍 Тестовый режим (файлы НЕ будут переданы)..."
+	@mkdir -p $(LOCAL_PRODUCTS)
+	rsync -avz --dry-run --progress $(LOCAL_PRODUCTS) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_PRODUCTS)/
+
+# Деплой всего проекта (git pull на сервере)
+deploy:
+	@echo "🚀 Деплой на сервер..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull && docker compose -f docker-compose.prod.yml restart app"
+	@echo "✅ Деплой завершён!"
+
+# Подключение к серверу
+ssh:
+	ssh $(REMOTE_USER)@$(REMOTE_HOST)
+
+# Логи Docker на сервере
+logs:
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml logs -f --tail=100"
