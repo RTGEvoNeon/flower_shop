@@ -284,8 +284,5 @@
     <!-- Yandex.Metrika noscript -->
     <noscript><div><img src="https://mc.yandex.ru/watch/104582209" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika noscript -->
-
-    <!-- ReviewLab Widget Script -->
-    <script src="https://app.reviewlab.ru/widget/index-es2015.js" defer></script>
 </body>
 </html>
