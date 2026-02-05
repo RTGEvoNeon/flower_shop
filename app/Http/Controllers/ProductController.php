@@ -123,8 +123,8 @@ class ProductController extends Controller
         // SEO для страницы товара
         $title = $product->name . ' — купить в Брянске';
         $description = $product->description
-            ? mb_substr($product->description, 0, 140) . '... Цена: ' . number_format($product->price, 0) . '₽. Доставка по Брянску бесплатно.'
-            : "Букет {$product->name} от цветочной мастерской Эдемский сад. Цена: " . number_format($product->price, 0) . "₽. Свежие цветы, бесплатная доставка по Брянску.";
+            ? mb_substr($product->description, 0, 140) . '... Цена: ' . number_format((float) $product->price, 0, '', ' ') . '₽. Доставка по Брянску бесплатно.'
+            : "Букет {$product->name} от цветочной мастерской Эдемский сад. Цена: " . number_format((float) $product->price, 0, '', ' ') . "₽. Свежие цветы, бесплатная доставка по Брянску.";
 
         $categoryKeywords = [
             'mono' => 'монобукет',

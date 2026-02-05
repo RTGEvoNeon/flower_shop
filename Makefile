@@ -10,17 +10,24 @@ REMOTE_PATH = /var/www/html/flower_shop
 LOCAL_PRODUCTS = ./storage/app/public/products/
 REMOTE_PRODUCTS = $(REMOTE_PATH)/storage/app/public/products
 
-.PHONY: help sync sync-dry deploy ssh logs storage-link
+.PHONY: help sync sync-dry deploy ssh logs storage-link build
 
 # Помощь (по умолчанию)
 help:
 	@echo "Доступные команды:"
+	@echo "  make build     - Собрать фронтенд (npm run build)"
 	@echo "  make sync      - Синхронизировать файлы продуктов на сервер"
 	@echo "  make sync-dry  - Тестовый запуск (без реальной передачи)"
-	@echo "  make deploy    - Деплой всего проекта на сервер"
+	@echo "  make deploy    - Собрать фронтенд и задеплоить на сервер"
 	@echo "  make ssh       - Подключиться к серверу по SSH"
 	@echo "  make logs      - Посмотреть логи Docker на сервере"
 	@echo "  make storage-link - Создать симлинк storage на сервере"
+
+# Сборка фронтенда
+build:
+	@echo "🔨 Сборка фронтенда..."
+	npm run build
+	@echo "✅ Сборка завершена!"
 
 # Синхронизация файлов продуктов
 sync:
@@ -37,10 +44,10 @@ sync-dry:
 	@mkdir -p $(LOCAL_PRODUCTS)
 	rsync -avz --dry-run --progress $(LOCAL_PRODUCTS) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_PRODUCTS)/
 
-# Деплой всего проекта (git pull на сервере)
+# Деплой всего проекта (git pull + сборка + рестарт на сервере)
 deploy:
 	@echo "🚀 Деплой на сервер..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull && docker compose -f docker-compose.prod.yml restart app"
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull && npm install && npm run build && docker compose -f docker-compose.prod.yml restart app"
 	@echo "✅ Деплой завершён!"
 
 # Подключение к серверу
