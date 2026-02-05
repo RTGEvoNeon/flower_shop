@@ -4,13 +4,13 @@
 # Настройки сервера
 REMOTE_HOST = 185.11.135.11
 REMOTE_USER = root
-REMOTE_PATH = /var/www/html
+REMOTE_PATH = /var/www/html/flower_shop
 
 # Локальные пути
 LOCAL_PRODUCTS = ./storage/app/public/products/
 REMOTE_PRODUCTS = $(REMOTE_PATH)/storage/app/public/products
 
-.PHONY: help sync sync-dry deploy ssh logs
+.PHONY: help sync sync-dry deploy ssh logs storage-link
 
 # Помощь (по умолчанию)
 help:
@@ -20,6 +20,7 @@ help:
 	@echo "  make deploy    - Деплой всего проекта на сервер"
 	@echo "  make ssh       - Подключиться к серверу по SSH"
 	@echo "  make logs      - Посмотреть логи Docker на сервере"
+	@echo "  make storage-link - Создать симлинк storage на сервере"
 
 # Синхронизация файлов продуктов
 sync:
@@ -49,3 +50,9 @@ ssh:
 # Логи Docker на сервере
 logs:
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml logs -f --tail=100"
+
+# Создать симлинк storage на сервере
+storage-link:
+	@echo "🔗 Создание симлинка storage..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan storage:link"
+	@echo "✅ Симлинк создан!"
