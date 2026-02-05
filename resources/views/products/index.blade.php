@@ -35,23 +35,15 @@
         </div>
 
         <!-- Фильтры -->
-        <div class="flex flex-wrap justify-center gap-3 mb-16 animate-fade-in-up stagger-3">
-            <button class="filter-btn active px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm" data-category="all">
-                Все букеты
-            </button>
-            <button class="filter-btn px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm" data-category="mono">
-                Монобукеты
-            </button>
-            <button class="filter-btn px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm" data-category="mix">
-                Микс букеты
-            </button>
-            <button class="filter-btn px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm" data-category="winter">
-                Зима
-            </button>
-            <button class="filter-btn px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm" data-category="wedding">
-                Свадебные
-            </button>
-        </div>
+        <nav class="flex flex-wrap justify-center gap-3 mb-16 animate-fade-in-up stagger-3" aria-label="Фильтры по категориям">
+            @foreach($categories as $key => $label)
+                <a href="{{ route('products.index', $key === 'all' ? [] : ['category' => $key]) }}"
+                   class="filter-btn {{ $currentCategory === $key ? 'active' : '' }} px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105 shadow-sm"
+                   @if($currentCategory === $key) aria-current="page" @endif>
+                    {{ $label }}
+                </a>
+            @endforeach
+        </nav>
     </div>
 </section>
 
@@ -79,7 +71,6 @@
                     };
                 @endphp
                 <article class="product-card group bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg hover-lift transition-all duration-500"
-                         data-category="{{ $product->category }}"
                          style="opacity: 0; animation: fadeInUp 0.6s ease-out forwards; animation-delay: {{ ($loop->index % 9) * 0.1 }}s;">
 
                     <!-- Изображение товара -->
@@ -113,6 +104,7 @@
                                 $categoryLabels = [
                                     'mono' => 'Монобукет',
                                     'mix' => 'Микс',
+                                    'tulip' => 'Тюльпаны',
                                     'winter' => 'Зима',
                                     'wedding' => 'Свадебные',
                                 ];
@@ -314,38 +306,5 @@
     }
 </style>
 
-<script>
-// Фильтрация товаров
-document.addEventListener('DOMContentLoaded', function() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const productCards = document.querySelectorAll('.product-card');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const category = this.dataset.category;
-
-            // Обновляем активную кнопку
-            filterBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-
-            // Фильтруем товары с анимацией
-            productCards.forEach((card, index) => {
-                const cardCategory = card.dataset.category;
-
-                if (category === 'all' || cardCategory === category) {
-                    card.style.display = 'block';
-                    card.style.animation = 'none';
-                    setTimeout(() => {
-                        card.style.animation = `fadeInUp 0.6s ease-out forwards ${index * 0.1}s`;
-                    }, 10);
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-});
-
-</script>
 
 @endsection
