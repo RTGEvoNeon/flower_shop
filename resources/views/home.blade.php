@@ -176,8 +176,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($randomProducts as $index => $product)
             <!-- Карточка букета -->
-            <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg">
-                <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+            <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg flex flex-col">
+                <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 shrink-0 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
                     @if($product->main_image)
                         <img
                             src="{{ $product->main_image }}"
@@ -189,7 +189,10 @@
                     @endif
                     <!-- Price badge -->
                     <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                        <span class="font-display text-2xl font-bold text-primary-600">{{ number_format($product->price, 0, ',', ' ') }} ₽</span>
+                        <span class="font-sans text-2xl font-bold tabular-nums bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent inline-flex items-baseline gap-0.5">
+                            <span>{{ number_format($product->price, 0, ',', ' ') }}</span>
+                            <span class="translate-y-[-0.06em]" aria-hidden="true">₽</span>
+                        </span>
                     </div>
                     <!-- Category badge -->
                     @if($product->category)
@@ -206,10 +209,10 @@
                     </div>
                     @endif
                 </a>
-                <div class="p-6 space-y-4">
-                    <h3 class="font-display text-2xl font-semibold text-gray-900">{{ $product->name }}</h3>
-                    <p class="text-gray-600 leading-relaxed line-clamp-2">{{ $product->description ?? 'Прекрасный букет для особого случая' }}</p>
-                    <a href="{{ route('products.show', $product->slug) }}" class="block w-full group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]" onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'click_product_card');">
+                <div class="p-6 flex flex-col flex-1 min-h-0">
+                    <h3 class="font-display text-2xl font-semibold text-gray-900 mb-2">{{ $product->name }}</h3>
+                    <p class="text-gray-600 leading-relaxed line-clamp-2 flex-1 min-h-0">{{ $product->description ?? 'Прекрасный букет для особого случая' }}</p>
+                    <a href="{{ route('products.show', $product->slug) }}" class="block w-full mt-4 group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]" onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'click_product_card');">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             <span>Заказать букет</span>
                             <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
