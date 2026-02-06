@@ -106,10 +106,6 @@
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Уход за цветами
                     </a></li> -->
-                    <li><a href="/guarantee" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
-                        <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                        Гарантии
-                    </a></li>
                     <li><a href="/contacts" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Контакты
@@ -141,7 +137,7 @@
             <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
                 <div class="text-center lg:text-left">
                     <p class="text-gray-400 mb-2">
-                        © 2024 Эдемский сад. Все права защищены.
+                        © 2026 Эдемский сад. Все права защищены.
                     </p>
                     <p class="text-xs text-gray-500 leading-relaxed">
                         ИП Редин Дмитрий Витальевич

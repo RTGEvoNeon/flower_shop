@@ -13,7 +13,7 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/delivery', [PageController::class, 'delivery'])->name('delivery');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
-Route::get('/-privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
