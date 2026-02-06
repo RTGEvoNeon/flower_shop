@@ -70,7 +70,7 @@
                         default => 'from-sage-600 to-sage-500',
                     };
                 @endphp
-                <article class="product-card group bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg hover-lift transition-all duration-500"
+                <article class="product-card group flex flex-col bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg hover-lift transition-all duration-500"
                          style="opacity: 0; animation: fadeInUp 0.6s ease-out forwards; animation-delay: {{ ($loop->index % 9) * 0.1 }}s;">
 
                     <!-- Изображение товара -->
@@ -93,8 +93,9 @@
 
                         <!-- Бейдж с ценой -->
                         <div class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-white/95 backdrop-blur-sm px-2 py-1 sm:px-4 sm:py-2 rounded-full shadow-lg transform transition-transform group-hover:scale-110">
-                            <span class="font-display text-sm sm:text-2xl font-bold bg-gradient-to-r {{ $priceGradient }} bg-clip-text text-transparent">
-                                {{ number_format($product->price, 0) }} ₽
+                            <span class="font-sans text-sm sm:text-2xl font-bold tabular-nums bg-gradient-to-r {{ $priceGradient }} bg-clip-text text-transparent inline-flex items-baseline gap-0.5">
+                                <span>{{ number_format($product->price, 0) }}</span>
+                                <span class="price-currency" aria-hidden="true">₽</span>
                             </span>
                         </div>
 
@@ -126,18 +127,18 @@
                     </div>
 
                     <!-- Контент карточки -->
-                    <div class="p-3 sm:p-6 space-y-1 sm:space-y-4">
+                    <div class="flex flex-col flex-1 p-3 sm:p-6 space-y-1 sm:space-y-4">
                         <h3 class="font-display text-sm sm:text-2xl font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
                             {{ $product->name }}
                         </h3>
 
                         <!-- Описание (только десктоп) -->
-                        <p class="hidden md:block md:line-clamp-2 text-gray-600 leading-relaxed">
+                        <p class="hidden md:block md:line-clamp-2 text-gray-600 leading-relaxed flex-1 min-h-0">
                             {{ $product->description }}
                         </p>
 
                         <!-- Действия -->
-                        <div class="flex gap-3 pt-1 sm:pt-2">
+                        <div class="flex gap-3 pt-1 sm:pt-2 mt-auto">
                             <a href="/product/{{ $product->slug }}"
                                class="flex-1 group/btn bg-gradient-to-r {{ $buttonGradient }} text-white px-3 py-2 sm:px-5 sm:py-3 rounded-full font-semibold text-xs sm:text-base text-center transition-all hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-1 sm:gap-2"
                                onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'view_product_catalog');">
@@ -304,6 +305,11 @@
         line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+
+    /* Выравнивание символа рубля по базовой линии с цифрами (шрифты часто рисуют ₽ ниже) */
+    .price-currency {
+        transform: translateY(-0.06em);
     }
 </style>
 
