@@ -47,7 +47,7 @@ sync-dry:
 # Деплой всего проекта (git pull + сборка + рестарт на сервере)
 deploy:
 	@echo "🚀 Деплой на сервер..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull && npm install && npm run build && docker compose -f docker-compose.prod.yml restart app"
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull && npm run build && docker compose -f docker-compose.prod.yml restart app"
 	@echo "✅ Деплой завершён!"
 
 # Подключение к серверу
