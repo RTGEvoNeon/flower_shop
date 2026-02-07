@@ -306,11 +306,6 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-
-    /* Выравнивание символа рубля по базовой линии с цифрами (шрифты часто рисуют ₽ ниже) */
-    .price-currency {
-        transform: translateY(-0.06em);
-    }
 </style>
 
 
