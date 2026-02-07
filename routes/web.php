@@ -7,7 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\CartController;
 // Статические страницы
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/delivery', [PageController::class, 'delivery'])->name('delivery');
@@ -15,6 +15,7 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 
+Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
