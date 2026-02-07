@@ -667,7 +667,7 @@
                     <!-- Цена -->
                     <div class="mb-8">
                         <div class="price-display">
-                            {{ number_format($product->price, 0, ',', ' ') }}<span class="text-2xl"> ₽</span>
+                            {{ number_format($product->price, 0, ',', ' ') }}<span class="text-2xl price-currency"> ₽</span>
                         </div>
                     </div>
 
@@ -848,7 +848,7 @@
             <div class="bg-accent-50 rounded-xl p-4 mb-4">
                 <div class="flex justify-between items-center">
                     <span class="text-gray-700 font-medium">{{ $product->name }}</span>
-                    <span class="text-primary-600 font-semibold text-lg">{{ number_format($product->price, 0, ',', ' ') }} ₽</span>
+                    <span class="text-primary-600 font-semibold text-lg">{{ number_format($product->price, 0, ',', ' ') }} <span class="price-currency">₽</span></span>
                 </div>
             </div>
 

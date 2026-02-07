@@ -189,9 +189,9 @@
                     @endif
                     <!-- Price badge -->
                     <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                        <span class="font-sans text-2xl font-bold tabular-nums bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent inline-flex items-baseline gap-0.5">
+                        <span class="text-2xl font-bold tabular-nums bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent inline-flex items-baseline gap-0.5">
                             <span>{{ number_format($product->price, 0, ',', ' ') }}</span>
-                            <span class="translate-y-[-0.06em]" aria-hidden="true">₽</span>
+                            <span class="price-currency" aria-hidden="true">₽</span>
                         </span>
                     </div>
                     <!-- Category badge -->
