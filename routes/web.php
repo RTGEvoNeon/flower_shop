@@ -5,6 +5,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\WholesaleController;
+use App\Http\Controllers\WholesaleOrderController;
+use App\Http\Controllers\WholesaleImportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
@@ -19,6 +22,11 @@ Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 // Каталог товаров
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
+
+// Оптовый раздел
+Route::get('/opt', [WholesaleController::class, 'index'])->name('wholesale.index');
+Route::get('/opt/{slug}', [WholesaleController::class, 'show'])->name('wholesale.show');
+Route::post('/opt/order/submit', [WholesaleOrderController::class, 'submit'])->name('wholesale.order.submit');
 
 // Оформление заказа
 Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
@@ -38,9 +46,15 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap')
 
 // Импорт товаров из Excel
 Route::prefix('admin')->name('admin.')->group(function () {
+    // Розничные товары
     Route::get('/products/import', [ProductImportController::class, 'showForm'])->name('products.import');
     Route::post('/products/import', [ProductImportController::class, 'import'])->name('products.import.process');
     Route::get('/products/import/template', [ProductImportController::class, 'downloadTemplate'])->name('products.import.template');
+    
+    // Оптовые товары
+    Route::get('/wholesale/import', [WholesaleImportController::class, 'showForm'])->name('wholesale.import');
+    Route::post('/wholesale/import', [WholesaleImportController::class, 'import'])->name('wholesale.import.process');
+    Route::get('/wholesale/import/template', [WholesaleImportController::class, 'downloadTemplate'])->name('wholesale.import.template');
 });
 
 Route::middleware('auth')->group(function () {
