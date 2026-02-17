@@ -32,6 +32,16 @@
             <p class="text-base sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up stagger-2">
                 Минимальный заказ от 1000 шт. Выгодные цены при больших объёмах.
             </p>
+
+            <!-- Телефоны для связи -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 pt-4 sm:pt-6 animate-fade-in-up stagger-2">
+                <a href="tel:+79102333111" class="text-2xl sm:text-3xl lg:text-4xl font-bold text-sage-700 hover:text-sage-600 active:text-sage-800 transition-colors tracking-tight tabular-nums">
+                    +7 (910) 233-31-11
+                </a>
+                <a href="tel:+79532929246" class="text-2xl sm:text-3xl lg:text-4xl font-bold text-sage-700 hover:text-sage-600 active:text-sage-800 transition-colors tracking-tight tabular-nums">
+                    +7 (953) 292-92-46
+                </a>
+            </div>
         </div>
 
     </div>
