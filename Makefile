@@ -12,18 +12,19 @@ LOCAL_WHOLESALES = ./storage/app/public/wholesales/
 REMOTE_PRODUCTS = $(REMOTE_PATH)/storage/app/public/products
 REMOTE_WHOLESALES = $(REMOTE_PATH)/storage/app/public/wholesales
 
-.PHONY: help sync sync-dry deploy ssh logs storage-link build
+.PHONY: help sync sync-dry deploy ssh logs storage-link build db-tunnel
 
 # Помощь (по умолчанию)
 help:
 	@echo "Доступные команды:"
-	@echo "  make build     - Собрать фронтенд (npm run build)"
-	@echo "  make sync      - Синхронизировать файлы продуктов на сервер"
-	@echo "  make sync-dry  - Тестовый запуск (без реальной передачи)"
-	@echo "  make deploy    - Собрать фронтенд и задеплоить на сервер"
-	@echo "  make ssh       - Подключиться к серверу по SSH"
-	@echo "  make logs      - Посмотреть логи Docker на сервере"
+	@echo "  make build        - Собрать фронтенд (npm run build)"
+	@echo "  make sync         - Синхронизировать файлы продуктов на сервер"
+	@echo "  make sync-dry     - Тестовый запуск (без реальной передачи)"
+	@echo "  make deploy       - Собрать фронтенд и задеплоить на сервер"
+	@echo "  make ssh          - Подключиться к серверу по SSH"
+	@echo "  make logs         - Посмотреть логи Docker на сервере"
 	@echo "  make storage-link - Создать симлинк storage на сервере"
+	@echo "  make db-tunnel    - Создать SSH туннель к БД (localhost:3307)"
 
 # Сборка фронтенда
 build:
@@ -55,10 +56,17 @@ sync-dry:
 	@echo "🌷 Проверка оптовых товаров..."
 	rsync -avz --dry-run --progress $(LOCAL_WHOLESALES) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_WHOLESALES)/
 
-# Деплой всего проекта (git pull + сборка + рестарт на сервере)
+# Деплой всего проекта (git pull + миграции + сборка + рестарт на сервере)
 deploy:
 	@echo "🚀 Деплой на сервер..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull && npm run build && docker compose -f docker-compose.prod.yml restart app"
+	@echo "📥 Получение изменений из Git..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull"
+	@echo "🗃️  Выполнение миграций..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force"
+	@echo "🔨 Сборка фронтенда..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && npm run build"
+	@echo "🔄 Перезапуск приложения..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml restart app"
 	@echo "✅ Деплой завершён!"
 
 # Подключение к серверу
@@ -74,3 +82,12 @@ storage-link:
 	@echo "🔗 Создание симлинка storage..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan storage:link"
 	@echo "✅ Симлинк создан!"
+
+# SSH туннель к базе данных
+db-tunnel:
+	@echo "🔌 Создание SSH туннеля к MySQL..."
+	@echo "📍 Подключайтесь к: localhost:3307"
+	@echo "🔐 Credentials: itulip / itulip / itulip"
+	@echo "⚠️  Нажмите Ctrl+C для остановки туннеля"
+	@echo ""
+	ssh -L 3307:localhost:3306 $(REMOTE_USER)@$(REMOTE_HOST) -N

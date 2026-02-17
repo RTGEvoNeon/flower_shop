@@ -15,6 +15,7 @@ class WholesaleProduct extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'name',
         'slug',
         'price_tier_1',

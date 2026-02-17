@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Imports\WholesaleProductsImport;
 use App\Exports\WholesaleProductsTemplateExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -34,6 +35,9 @@ class WholesaleImportController extends Controller
         ]);
 
         try {
+            // Очищаем каталог оптовых товаров перед импортом (как полная перезагрузка по id из файла)
+            DB::table('wholesale_products')->truncate();
+
             Excel::import(new WholesaleProductsImport, $request->file('file'));
 
             return redirect()->back()->with('success', 'Оптовые товары успешно импортированы!');

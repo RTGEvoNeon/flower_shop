@@ -19,7 +19,7 @@ class WholesaleProductsImport implements ToModel, WithHeadingRow, WithCalculated
      */
     public function model(array $row): ?WholesaleProduct
     {
-        $id = $row['id'] ?? null;
+        $id = isset($row['id']) && $row['id'] !== '' ? (int) $row['id'] : null;
         $name = $row['name'] ?? null;
 
         // Пропускаем пустые строки
@@ -27,32 +27,11 @@ class WholesaleProductsImport implements ToModel, WithHeadingRow, WithCalculated
             return null;
         }
 
-        // Если указан ID, пытаемся обновить существующий товар
-        if (!empty($id)) {
-            $product = WholesaleProduct::find($id);
-
-            if ($product) {
-                // Обновляем существующий товар
-                $product->update([
-                    'name' => $name,
-                    'price_tier_1' => $row['price_tier_1'] ?? 0,
-                    'price_tier_2' => $row['price_tier_2'] ?? 0,
-                    'price_tier_3' => $row['price_tier_3'] ?? 0,
-                    'min_quantity' => $row['min_quantity'] ?? 1000,
-                    'is_available' => isset($row['is_available']) ? (bool)$row['is_available'] : true,
-                ]);
-
-                return null; // Возвращаем null, так как товар уже обновлен
-            }
-        }
-
-        // Создаем новый товар (если ID не указан или товар не найден)
-        // Генерируем уникальный slug из названия
+        // Запись по id из файла (БД перед импортом очищена — всегда создаём новую запись)
         $slug = $row['slug'] ?? Str::slug($name);
         $originalSlug = $slug;
         $counter = 1;
 
-        // Проверяем уникальность slug
         while (WholesaleProduct::where('slug', $slug)->exists()) {
             $slug = $originalSlug . '-' . $counter;
             $counter++;
@@ -61,15 +40,14 @@ class WholesaleProductsImport implements ToModel, WithHeadingRow, WithCalculated
         $productData = [
             'name' => $name,
             'slug' => $slug,
-            'price_tier_1' => $row['price_tier_1'] ?? 0,
-            'price_tier_2' => $row['price_tier_2'] ?? 0,
-            'price_tier_3' => $row['price_tier_3'] ?? 0,
-            'min_quantity' => $row['min_quantity'] ?? 1000,
-            'is_available' => isset($row['is_available']) ? (bool)$row['is_available'] : true,
+            'price_tier_1' => (float) ($row['price_tier_1'] ?? 0),
+            'price_tier_2' => (float) ($row['price_tier_2'] ?? 0),
+            'price_tier_3' => (float) ($row['price_tier_3'] ?? 0),
+            'min_quantity' => (int) ($row['min_quantity'] ?? 1000),
+            'is_available' => isset($row['is_available']) ? (bool) $row['is_available'] : true,
         ];
 
-        // Если указан ID при создании нового товара, добавляем его
-        if (!empty($id)) {
+        if ($id !== null && $id > 0) {
             $productData['id'] = $id;
         }
 
