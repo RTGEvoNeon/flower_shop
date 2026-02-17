@@ -40,7 +40,7 @@
 <!-- Каталог оптовых товаров -->
 <section class="py-8 sm:py-16 bg-white relative">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             @forelse($products as $product)
                 <article class="product-card group flex flex-col bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-sage-200/50 shadow-lg hover-lift transition-all duration-500"
                          style="opacity: 0; animation: fadeInUp 0.6s ease-out forwards; animation-delay: {{ ($loop->index % 9) * 0.1 }}s;">
