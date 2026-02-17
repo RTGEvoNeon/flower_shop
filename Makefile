@@ -8,7 +8,9 @@ REMOTE_PATH = /var/www/html/flower_shop
 
 # Локальные пути
 LOCAL_PRODUCTS = ./storage/app/public/products/
+LOCAL_WHOLESALES = ./storage/app/public/wholesales/
 REMOTE_PRODUCTS = $(REMOTE_PATH)/storage/app/public/products
+REMOTE_WHOLESALES = $(REMOTE_PATH)/storage/app/public/wholesales
 
 .PHONY: help sync sync-dry deploy ssh logs storage-link build
 
@@ -33,16 +35,25 @@ build:
 sync:
 	@echo "🚀 Синхронизация файлов продуктов..."
 	@mkdir -p $(LOCAL_PRODUCTS)
+	@mkdir -p $(LOCAL_WHOLESALES)
 	@ssh $(REMOTE_USER)@$(REMOTE_HOST) "mkdir -p $(REMOTE_PRODUCTS)"
+	@ssh $(REMOTE_USER)@$(REMOTE_HOST) "mkdir -p $(REMOTE_WHOLESALES)"
+	@echo "📦 Синхронизация розничных товаров..."
 	rsync -avz --progress $(LOCAL_PRODUCTS) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_PRODUCTS)/
-	@ssh $(REMOTE_USER)@$(REMOTE_HOST) "chown -R www-data:www-data $(REMOTE_PRODUCTS) && chmod -R 755 $(REMOTE_PRODUCTS)"
+	@echo "🌷 Синхронизация оптовых товаров..."
+	rsync -avz --progress $(LOCAL_WHOLESALES) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_WHOLESALES)/
+	@ssh $(REMOTE_USER)@$(REMOTE_HOST) "chown -R www-data:www-data $(REMOTE_PRODUCTS) $(REMOTE_WHOLESALES) && chmod -R 755 $(REMOTE_PRODUCTS) $(REMOTE_WHOLESALES)"
 	@echo "✅ Готово!"
 
 # Тестовый запуск синхронизации
 sync-dry:
 	@echo "🔍 Тестовый режим (файлы НЕ будут переданы)..."
 	@mkdir -p $(LOCAL_PRODUCTS)
+	@mkdir -p $(LOCAL_WHOLESALES)
+	@echo "📦 Проверка розничных товаров..."
 	rsync -avz --dry-run --progress $(LOCAL_PRODUCTS) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_PRODUCTS)/
+	@echo "🌷 Проверка оптовых товаров..."
+	rsync -avz --dry-run --progress $(LOCAL_WHOLESALES) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_WHOLESALES)/
 
 # Деплой всего проекта (git pull + сборка + рестарт на сервере)
 deploy:
