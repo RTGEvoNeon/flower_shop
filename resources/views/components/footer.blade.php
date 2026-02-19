@@ -11,7 +11,7 @@
         <div class="mb-16 text-center lg:text-left">
             <div class="flex flex-col lg:flex-row items-center lg:items-start gap-4 mb-6">
                 <div class="w-16 h-16 rounded-full overflow-hidden">
-                    <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover">
+                    <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover" width="64" height="64" loading="lazy" decoding="async">
                 </div>
                 <div>
                     <h3 class="font-display text-3xl font-bold mb-2">Эдемский сад</h3>

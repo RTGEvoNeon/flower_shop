@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#e96d3f">
 
+    @stack('head')
     @stack('seo')
 
     <!-- Favicons -->
@@ -16,42 +17,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Эдемский сад">
 
-    <!-- Fonts -->
+    <!-- Fonts (async, не блокируют FCP) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Commissioner:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Commissioner:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Commissioner:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Schema.org JSON-LD -->
     @stack('schema')
-
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
-        (function(m, e, t, r, i, k, a) {
-            m[i] = m[i] || function() {
-                (m[i].a = m[i].a || []).push(arguments)
-            };
-            m[i].l = 1 * new Date();
-            for (var j = 0; j < document.scripts.length; j++) {
-                if (document.scripts[j].src === r) {
-                    return;
-                }
-            }
-            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
-        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=104582209', 'ym');
-
-        ym(104582209, 'init', {
-            ssr: true,
-            webvisor: true,
-            clickmap: true,
-            ecommerce: "dataLayer",
-            accurateTrackBounce: true,
-            trackLinks: true
-        });
-    </script>
-    <!-- /Yandex.Metrika counter -->
 </head>
 
 <body class="min-h-screen bg-accent-50 text-gray-900 grain-texture">
@@ -63,7 +39,7 @@
                 <div class="flex items-center">
                     <a href="/" class="group flex items-center gap-3">
                         <div class="w-12 h-12 rounded-full overflow-hidden">
-                            <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover">
+                            <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover" width="48" height="48" decoding="async">
                         </div>
                         <div class="flex flex-col">
                             <span class="font-display text-2xl font-semibold text-gray-900 tracking-tight">Эдемский сад</span>
@@ -135,7 +111,7 @@
             <div class="flex items-center justify-between px-6 py-6 border-b border-accent-200/50">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full overflow-hidden">
-                        <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover">
+                        <img src="/images/logo.jpg" alt="Эдемский сад" class="w-full h-full object-cover" width="48" height="48" decoding="async">
                     </div>
                     <span class="font-display text-xl font-semibold text-gray-900">Эдемский сад</span>
                 </div>
@@ -363,11 +339,35 @@
     <!-- Footer -->
     @include('components.footer')
 
-    <!-- Yandex.Metrika noscript -->
+    <!-- Yandex.Metrika (в конце body — не блокирует FCP/LCP) -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) {
+                if (document.scripts[j].src === r) {
+                    return;
+                }
+            }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=104582209', 'ym');
+
+        ym(104582209, 'init', {
+            ssr: true,
+            webvisor: true,
+            clickmap: true,
+            ecommerce: "dataLayer",
+            accurateTrackBounce: true,
+            trackLinks: true
+        });
+    </script>
+    <!-- /Yandex.Metrika -->
+
     <noscript>
         <div><img src="https://mc.yandex.ru/watch/104582209" style="position:absolute; left:-9999px;" alt="" /></div>
     </noscript>
-    <!-- /Yandex.Metrika noscript -->
 
     <!-- ReviewLab Widget Script -->
     <script src="https://app.reviewlab.ru/widget/index-es2015.js" defer></script>

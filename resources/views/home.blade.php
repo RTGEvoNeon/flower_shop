@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('head')
+    <link rel="preload" href="{{ asset('images/main1.jpg') }}" as="image">
+@endpush
+
 <x-seo.meta />
 
 @section('content')
@@ -53,12 +57,16 @@
     <div class="absolute -top-6 -right-6 w-full h-full border-2 border-gold-400/30 rounded-3xl"></div>
 
     <div class="relative grid grid-cols-2 gap-4">
-        <!-- Large image -->
+        <!-- Large image (LCP) -->
         <div class="col-span-2 h-80 rounded-3xl shadow-2xl overflow-hidden hover-lift">
             <img
                 src="{{ asset('images/main1.jpg') }}"
                 alt="Основной букет"
                 class="w-full h-full object-cover"
+                width="800"
+                height="400"
+                fetchpriority="high"
+                decoding="async"
             >
         </div>
 
