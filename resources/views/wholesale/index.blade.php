@@ -173,6 +173,37 @@
     </div>
 </section>
 
+<!-- Карта — где мы находимся -->
+<section class="py-16 sm:py-24 bg-gradient-to-b from-white to-sage-50/50 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-sage-300 to-transparent"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 sm:mb-12">
+            <div class="inline-block mb-4">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sage-100 text-sage-700 font-medium text-sm">
+                    📍 Мы здесь
+                </span>
+            </div>
+            <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                Как нас найти
+            </h2>
+            <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+                г. Брянск, ул. Академика Сахарова, 5 — оптовые заказы и выдача
+            </p>
+        </div>
+        <div class="overflow-hidden rounded-3xl border-2 border-sage-200/50 shadow-xl">
+            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A44c15fbbc06a1918b30ef4008bef6dfc6e94b209ee5468ed2444ae0f343d7c39&amp;width=100%25&amp;height=450&amp;lang=ru_RU&amp;scroll=true"></script>
+        </div>
+        <p class="text-center mt-6">
+            <a href="{{ route('contacts') }}" class="text-sage-600 hover:text-sage-700 font-semibold inline-flex items-center gap-2">
+                <span>Контакты и часы работы</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+            </a>
+        </p>
+    </div>
+</section>
+
 <!-- Призыв к действию -->
 <section class="relative py-24 overflow-hidden bg-gradient-to-br from-sage-600 via-sage-500 to-gold-600">
     <div class="absolute inset-0 opacity-10">
