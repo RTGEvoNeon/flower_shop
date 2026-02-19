@@ -74,6 +74,17 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center space-x-1">
+                    <!-- Переключатель Розница/Опт -->
+                    <div class="mr-4 flex items-center gap-2 px-3 py-2 bg-white/70 rounded-lg border border-accent-200/50">
+                        <a href="/products" class="{{ request()->is('products*') ? 'text-primary-600 font-semibold' : 'text-gray-600 hover:text-primary-600' }} transition-colors text-sm">
+                            Розница
+                        </a>
+                        <span class="text-accent-300">|</span>
+                        <a href="/opt" class="{{ request()->is('opt*') ? 'text-primary-600 font-semibold' : 'text-gray-600 hover:text-primary-600' }} transition-colors text-sm">
+                            Опт
+                        </a>
+                    </div>
+                    
                     <a href="/" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Главная</a>
                     <a href="/products" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Каталог</a>
                     <!-- <a href="/custom-bouquet" class="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors rounded-lg hover:bg-white/50">Свой букет</a>
@@ -137,6 +148,16 @@
 
             <!-- Navigation links -->
             <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                <!-- Переключатель Розница/Опт (мобильный) -->
+                <div class="mb-4 flex items-center gap-2 px-5 py-3 bg-white/90 rounded-2xl border border-accent-200/50">
+                    <a href="/products" class="{{ request()->is('products*') ? 'flex-1 text-center px-3 py-2 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-lg font-semibold' : 'flex-1 text-center px-3 py-2 text-gray-600 hover:text-primary-600' }} transition-all text-sm">
+                        Розница
+                    </a>
+                    <a href="/opt" class="{{ request()->is('opt*') ? 'flex-1 text-center px-3 py-2 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-lg font-semibold' : 'flex-1 text-center px-3 py-2 text-gray-600 hover:text-primary-600' }} transition-all text-sm">
+                        Опт
+                    </a>
+                </div>
+                
                 <a href="/" class="mobile-menu-link block relative px-5 py-4 text-gray-700 font-medium rounded-2xl transition-all duration-300 hover:text-primary-600 hover:bg-white/80 hover:shadow-md hover:translate-x-2 group overflow-hidden">
                     <span class="relative z-10 flex items-center gap-3">
                         <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -21,15 +21,15 @@ class TelegramService
     }
 
     function sendOrderMessage($order, $productUrl) {
-        $message = "🌸 Новый заказ!\n\n";
-        $message .= "Букет: " . $productUrl . "\n\n";
-        $message .= "👤 Имя: " . $order->customer_name . "\n";
-        $message .= "📱 Телефон: " . $order->customer_phone . "\n";
-        $message .= "📍 Адрес: " . $order->delivery_address . "\n";
-        $message .= "💬 Комментарий: " . $order->notes . "\n";
-        $message .= "💰 Сумма заказа: " . number_format($order->total_amount, 0, ',', ' ') . " руб.\n";
+        $message = "🌸 <b>Новый заказ!</b>\n\n";
+        $message .= "<b>Букет:</b> " . $productUrl . "\n\n";
+        $message .= "👤 <b>Имя:</b> " . $order->customer_name . "\n";
+        $message .= "📱 <b>Телефон:</b> " . $order->customer_phone . "\n";
+        $message .= "📍 <b>Адрес:</b> " . $order->delivery_address . "\n";
+        $message .= "💬 <b>Комментарий:</b> " . $order->notes . "\n";
+        $message .= "💰 <b>Сумма заказа:</b> " . number_format($order->total_amount, 0, ',', ' ') . " руб.\n";
 
-        $this->telegram->sendMessage($this->chatId, $message);
+        $this->telegram->sendMessage($this->chatId, $message, 'HTML');
     }
 
 
