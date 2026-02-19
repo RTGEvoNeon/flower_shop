@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\WholesaleProduct;
 use Illuminate\Http\Response;
 
 class SitemapController extends Controller
@@ -23,8 +24,9 @@ class SitemapController extends Controller
 
     public function index()
     {
-        // Получаем все активные товары
+        // Получаем все активные товары (розница и опт)
         $products = Product::all();
+        $wholesaleProducts = WholesaleProduct::available()->get();
 
         // Статические страницы сайта
         $staticPages = [
@@ -39,6 +41,12 @@ class SitemapController extends Controller
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'daily',
                 'priority' => '0.9'
+            ],
+            [
+                'url' => $this->punycodeUrl('/opt'),
+                'lastmod' => now()->toAtomString(),
+                'changefreq' => 'daily',
+                'priority' => '0.85'
             ],
             [
                 'url' => $this->punycodeUrl('/delivery'),
@@ -80,10 +88,20 @@ class SitemapController extends Controller
             $sitemap .= "  </url>\n";
         }
 
-        // Добавляем товары
+        // Добавляем товары (розница)
         foreach ($products as $product) {
             $sitemap .= "  <url>\n";
             $sitemap .= "    <loc>" . $this->punycodeUrl('/product/' . $product->slug) . "</loc>\n";
+            $sitemap .= "    <lastmod>" . $product->updated_at->toAtomString() . "</lastmod>\n";
+            $sitemap .= "    <changefreq>weekly</changefreq>\n";
+            $sitemap .= "    <priority>0.8</priority>\n";
+            $sitemap .= "  </url>\n";
+        }
+
+        // Добавляем оптовые товары
+        foreach ($wholesaleProducts as $product) {
+            $sitemap .= "  <url>\n";
+            $sitemap .= "    <loc>" . $this->punycodeUrl('/opt/' . $product->slug) . "</loc>\n";
             $sitemap .= "    <lastmod>" . $product->updated_at->toAtomString() . "</lastmod>\n";
             $sitemap .= "    <changefreq>weekly</changefreq>\n";
             $sitemap .= "    <priority>0.8</priority>\n";

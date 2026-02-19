@@ -3,6 +3,7 @@ Allow: /
 
 # Разрешить индексацию основных страниц
 Allow: /products
+Allow: /opt
 Allow: /delivery
 Allow: /about
 Allow: /contacts
