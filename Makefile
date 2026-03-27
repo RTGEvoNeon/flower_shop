@@ -12,7 +12,7 @@ LOCAL_WHOLESALES = ./storage/app/public/wholesales/
 REMOTE_PRODUCTS = $(REMOTE_PATH)/storage/app/public/products
 REMOTE_WHOLESALES = $(REMOTE_PATH)/storage/app/public/wholesales
 
-.PHONY: help sync sync-dry deploy ssh logs storage-link build db-tunnel
+.PHONY: help sync sync-dry deploy deploy-branch deploy-develop ssh logs storage-link build db-tunnel
 
 # Помощь (по умолчанию)
 help:
@@ -21,6 +21,8 @@ help:
 	@echo "  make sync         - Синхронизировать файлы продуктов на сервер"
 	@echo "  make sync-dry     - Тестовый запуск (без реальной передачи)"
 	@echo "  make deploy       - Собрать фронтенд и задеплоить на сервер"
+	@echo "  make deploy-develop - Задеплоить ветку develop на сервер"
+	@echo "  make deploy-branch BRANCH=<name> - Задеплоить выбранную ветку"
 	@echo "  make ssh          - Подключиться к серверу по SSH"
 	@echo "  make logs         - Посмотреть логи Docker на сервере"
 	@echo "  make storage-link - Создать симлинк storage на сервере"
@@ -56,11 +58,13 @@ sync-dry:
 	@echo "🌷 Проверка оптовых товаров..."
 	rsync -avz --dry-run --progress $(LOCAL_WHOLESALES) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_WHOLESALES)/
 
-# Деплой всего проекта (git pull + миграции + сборка + рестарт на сервере)
+# Деплой всего проекта (git pull + composer + миграции + сборка + рестарт)
 deploy:
 	@echo "🚀 Деплой на сервер..."
 	@echo "📥 Получение изменений из Git..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull"
+	@echo "📚 Установка PHP зависимостей (composer install) и обновление package manifest..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app sh -lc 'rm -f bootstrap/cache/packages.php bootstrap/cache/services.php && composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader --no-scripts && php artisan package:discover --ansi && php artisan config:clear && php artisan clear-compiled'"
 	@echo "🗃️  Выполнение миграций..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force"
 	@echo "🔨 Сборка фронтенда..."
@@ -68,6 +72,25 @@ deploy:
 	@echo "🔄 Перезапуск приложения..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml restart app"
 	@echo "✅ Деплой завершён!"
+
+# Деплой выбранной ветки (по умолчанию develop)
+deploy-branch:
+	@echo "🚀 Деплой ветки '$(if $(BRANCH),$(BRANCH),develop)' на сервер..."
+	@echo "📥 Переключение и обновление ветки..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git fetch origin && git checkout $(if $(BRANCH),$(BRANCH),develop) && git pull origin $(if $(BRANCH),$(BRANCH),develop)"
+	@echo "📚 Установка PHP зависимостей (composer install) и обновление package manifest..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app sh -lc 'rm -f bootstrap/cache/packages.php bootstrap/cache/services.php && composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader --no-scripts && php artisan package:discover --ansi && php artisan config:clear && php artisan clear-compiled'"
+	@echo "🗃️  Выполнение миграций..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force"
+	@echo "🔨 Сборка фронтенда..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && npm run build"
+	@echo "🔄 Перезапуск приложения..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml restart app"
+	@echo "✅ Деплой ветки завершён!"
+
+# Быстрый алиас для deploy develop
+deploy-develop: BRANCH=develop
+deploy-develop: deploy-branch
 
 # Подключение к серверу
 ssh:
