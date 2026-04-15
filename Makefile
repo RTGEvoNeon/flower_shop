@@ -5,6 +5,8 @@
 REMOTE_HOST = 185.11.135.11
 REMOTE_USER = root
 REMOTE_PATH = /var/www/html/flower_shop
+REMOTE_HOST_NEW_PROD = 185.119.59.195
+REMOTE_USER_NEW_PROD = root
 
 # Локальные пути
 LOCAL_PRODUCTS = ./storage/app/public/products/
@@ -95,6 +97,9 @@ deploy-develop: deploy-branch
 # Подключение к серверу
 ssh:
 	ssh $(REMOTE_USER)@$(REMOTE_HOST)
+
+ssh_new_prod:
+	ssh $(REMOTE_USER_NEW_PROD)@$(REMOTE_HOST_NEW_PROD)
 
 # Логи Docker на сервере
 logs:
