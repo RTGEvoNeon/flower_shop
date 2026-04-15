@@ -4,7 +4,7 @@
 # Настройки сервера
 REMOTE_HOST = 185.119.59.195
 REMOTE_USER = root
-REMOTE_PATH = /var/www/html/flower_shop
+REMOTE_PATH = /var/www/mindale.ru
 
 # Локальные пути
 LOCAL_PRODUCTS = ./storage/app/public/products/
