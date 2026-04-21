@@ -1,16 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImportController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\WholesaleController;
-use App\Http\Controllers\WholesaleOrderController;
 use App\Http\Controllers\WholesaleImportController;
+use App\Http\Controllers\WholesaleOrderController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CartController;
+
 // Статические страницы
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/delivery', [PageController::class, 'delivery'])->name('delivery');
@@ -50,7 +53,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/products/import', [ProductImportController::class, 'showForm'])->name('products.import');
     Route::post('/products/import', [ProductImportController::class, 'import'])->name('products.import.process');
     Route::get('/products/import/template', [ProductImportController::class, 'downloadTemplate'])->name('products.import.template');
-    
+
     // Оптовые товары
     Route::get('/wholesale/import', [WholesaleImportController::class, 'showForm'])->name('wholesale.import');
     Route::post('/wholesale/import', [WholesaleImportController::class, 'import'])->name('wholesale.import.process');
@@ -64,4 +67,4 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/password', [ProfileController::class, 'updatePassword'])->name('dashboard.password.update');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

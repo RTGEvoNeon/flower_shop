@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Facades\Seo;
 use App\Models\Product;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -46,7 +47,7 @@ class ProductController extends Controller
      */
     private function validateCategory(?string $category): string
     {
-        if ($category === null || $category === 'all' || !array_key_exists($category, self::CATEGORIES)) {
+        if ($category === null || $category === 'all' || ! array_key_exists($category, self::CATEGORIES)) {
             return 'all';
         }
 
@@ -56,7 +57,7 @@ class ProductController extends Controller
     /**
      * Получить отфильтрованные товары с пагинацией.
      */
-    private function getFilteredProducts(string $category): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    private function getFilteredProducts(string $category): LengthAwarePaginator
     {
         $query = Product::available()->withImages();
 
@@ -121,10 +122,10 @@ class ProductController extends Controller
         $product = Product::where('slug', $slug)->firstOrFail();
 
         // SEO для страницы товара
-        $title = $product->name . ' — купить в Брянске';
+        $title = $product->name.' — купить в Брянске';
         $description = $product->description
-            ? mb_substr($product->description, 0, 140) . '... Цена: ' . number_format((float) $product->price, 0, '', ' ') . '₽. Доставка по Брянску бесплатно.'
-            : "Букет {$product->name} от цветочной мастерской Эдемский сад. Цена: " . number_format((float) $product->price, 0, '', ' ') . "₽. Свежие цветы, бесплатная доставка по Брянску.";
+            ? mb_substr($product->description, 0, 140).'... Цена: '.number_format((float) $product->price, 0, '', ' ').'₽. Доставка по Брянску бесплатно.'
+            : "Букет {$product->name} от цветочной мастерской Эдемский сад. Цена: ".number_format((float) $product->price, 0, '', ' ').'₽. Свежие цветы, бесплатная доставка по Брянску.';
 
         $categoryKeywords = [
             'mono' => 'монобукет',
@@ -141,7 +142,7 @@ class ProductController extends Controller
                 "купить {$product->name}",
                 "{$product->name} Брянск",
                 "букет {$product->name}",
-                $categoryKeywords[$product->category] ?? 'букет'
+                $categoryKeywords[$product->category] ?? 'букет',
             ])
             ->setCanonical(route('products.show', $product->slug))
             ->setType('product')

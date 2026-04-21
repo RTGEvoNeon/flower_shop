@@ -14,9 +14,9 @@ class WholesalePriceCalculator
     public function calculateTotal(WholesaleProduct $product, int $quantity): float
     {
         $this->validateQuantity($product, $quantity);
-        
+
         $pricePerUnit = $product->getPriceForQuantity($quantity);
-        
+
         return $pricePerUnit * $quantity;
     }
 
@@ -55,10 +55,10 @@ class WholesalePriceCalculator
     {
         $pricePerUnit = $product->getPriceForQuantity($quantity);
         $total = $this->calculateTotal($product, $quantity);
-        
+
         // Определяем текущий ценовой уровень
         $tier = $this->getTierForQuantity($quantity);
-        
+
         return [
             'product_name' => $product->name,
             'quantity' => $quantity,
@@ -79,11 +79,11 @@ class WholesalePriceCalculator
         if ($quantity >= 10000) {
             return 3;
         }
-        
+
         if ($quantity >= 5000) {
             return 2;
         }
-        
+
         return 1;
     }
 }

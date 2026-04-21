@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -38,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
             $request ??= request();
             $clientIp = $request->ip();
 
-            if (!$clientIp) {
+            if (! $clientIp) {
                 return false;
             }
 
@@ -49,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
             if ($allowedIps->contains($clientIp)) {
                 return true;
             }
-            
+
             return false;
         });
     }

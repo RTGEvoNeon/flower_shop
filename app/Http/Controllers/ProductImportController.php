@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Exports\ProductsTemplateExport;
 use App\Imports\ProductsImport;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 
@@ -39,7 +42,7 @@ class ProductImportController extends Controller
             $errors = [];
 
             foreach ($failures as $failure) {
-                $errors[] = "Строка {$failure->row()}: " . implode(', ', $failure->errors());
+                $errors[] = "Строка {$failure->row()}: ".implode(', ', $failure->errors());
             }
 
             return redirect()->back()
@@ -47,7 +50,7 @@ class ProductImportController extends Controller
                 ->with('import_errors', $errors);
         } catch (\Exception $e) {
             return redirect()->back()
-                ->withErrors(['import' => 'Ошибка при импорте файла: ' . $e->getMessage()]);
+                ->withErrors(['import' => 'Ошибка при импорте файла: '.$e->getMessage()]);
         }
     }
 
@@ -57,7 +60,7 @@ class ProductImportController extends Controller
     public function downloadTemplate()
     {
         return Excel::download(
-            new \App\Exports\ProductsTemplateExport,
+            new ProductsTemplateExport,
             'shablon_tovarov.xlsx'
         );
     }

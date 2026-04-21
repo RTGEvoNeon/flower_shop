@@ -1,20 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Illuminate\Support\Facades\URL;
 
 /**
  * SEO Service для управления мета-тегами, Open Graph, Schema.org разметкой
- *
- * @package App\Services
  */
 class SeoService
 {
     protected array $meta = [];
+
     protected array $openGraph = [];
+
     protected array $twitter = [];
+
     protected array $schema = [];
+
     protected ?string $canonical = null;
 
     /**
@@ -32,7 +36,7 @@ class SeoService
     protected function setDefaults(): void
     {
         $this->meta = [
-            'title' => config('app.name', 'Эдемский сад') . ' — Цветочная мастерская',
+            'title' => config('app.name', 'Эдемский сад').' — Цветочная мастерская',
             'description' => 'Свежие букеты с доставкой по Брянску. Цветочная мастерская Эдемский сад создаёт уникальные композиции для особенных моментов.',
             'keywords' => 'цветы Брянск, букеты Брянск, доставка цветов Брянск, купить цветы, заказать букет',
             'robots' => 'index, follow',
@@ -56,7 +60,7 @@ class SeoService
     public function setTitle(string $title, bool $appendSiteName = true): self
     {
         $fullTitle = $appendSiteName
-            ? $title . ' — Эдемский сад'
+            ? $title.' — Эдемский сад'
             : $title;
 
         $this->meta['title'] = $fullTitle;
@@ -73,7 +77,7 @@ class SeoService
     {
         // Обрезаем до оптимальной длины для SEO (155-160 символов)
         $optimizedDescription = mb_strlen($description) > 160
-            ? mb_substr($description, 0, 157) . '...'
+            ? mb_substr($description, 0, 157).'...'
             : $description;
 
         $this->meta['description'] = $optimizedDescription;
@@ -139,6 +143,7 @@ class SeoService
     public function setType(string $type): self
     {
         $this->openGraph['og:type'] = $type;
+
         return $this;
     }
 
@@ -148,6 +153,7 @@ class SeoService
     public function setRobots(string $robots): self
     {
         $this->meta['robots'] = $robots;
+
         return $this;
     }
 
@@ -157,6 +163,7 @@ class SeoService
     public function addSchema(array $schema): self
     {
         $this->schema[] = $schema;
+
         return $this;
     }
 
@@ -191,6 +198,7 @@ class SeoService
         }
 
         $this->addSchema($schema);
+
         return $this;
     }
 
@@ -223,15 +231,16 @@ class SeoService
         ];
 
         // Удаляем null значения
-        $schema = array_filter($schema, fn($value) => !is_null($value));
+        $schema = array_filter($schema, fn ($value) => ! is_null($value));
         if (isset($schema['geo'])) {
-            $schema['geo'] = array_filter($schema['geo'], fn($value) => !is_null($value));
+            $schema['geo'] = array_filter($schema['geo'], fn ($value) => ! is_null($value));
             if (count($schema['geo']) <= 1) {
                 unset($schema['geo']);
             }
         }
 
         $this->addSchema($schema);
+
         return $this;
     }
 
@@ -258,6 +267,7 @@ class SeoService
         ];
 
         $this->addSchema($schema);
+
         return $this;
     }
 
@@ -270,12 +280,14 @@ class SeoService
 
         // Title
         if (isset($this->meta['title'])) {
-            $html[] = '<title>' . e($this->meta['title']) . '</title>';
+            $html[] = '<title>'.e($this->meta['title']).'</title>';
         }
 
         // Meta tags
         foreach ($this->meta as $name => $content) {
-            if ($name === 'title') continue;
+            if ($name === 'title') {
+                continue;
+            }
             $html[] = sprintf('<meta name="%s" content="%s">', e($name), e($content));
         }
 

@@ -1,16 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'id',
         'name',
@@ -18,12 +21,12 @@ class Product extends Model
         'description',
         'price',
         'category',
-        'is_available'
+        'is_available',
     ];
 
     protected $casts = [
-        'price' => 'float',
         'is_available' => 'boolean',
+        'price' => 'float',
     ];
 
     /**
@@ -59,7 +62,7 @@ class Product extends Model
             get: function () {
                 // Проверяем файловую систему products/{id}/
                 $filesystemImages = $this->getFilesystemImages();
-                if (!empty($filesystemImages)) {
+                if (! empty($filesystemImages)) {
                     return $filesystemImages[0];
                 }
 
@@ -77,6 +80,7 @@ class Product extends Model
             get: function () {
                 // Проверяем файловую систему
                 $filesystemImages = $this->getFilesystemImages();
+
                 return $filesystemImages;
             }
         );
@@ -89,7 +93,7 @@ class Product extends Model
     {
         $directory = "products/{$this->id}";
 
-        if (!Storage::disk('public')->exists($directory)) {
+        if (! Storage::disk('public')->exists($directory)) {
             return [];
         }
 
@@ -109,6 +113,4 @@ class Product extends Model
 
         return $images;
     }
-
-
 }

@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ProductsTemplateExport implements FromArray, WithHeadings, WithStyles
@@ -21,7 +24,7 @@ class ProductsTemplateExport implements FromArray, WithHeadings, WithStyles
                 'Нежный букет из тюльпанов и нарциссов',
                 2500,
                 'Букеты',
-                1
+                1,
             ],
             [
                 '',
@@ -29,7 +32,7 @@ class ProductsTemplateExport implements FromArray, WithHeadings, WithStyles
                 'Элегантная композиция из роз',
                 3500,
                 'Композиции',
-                1
+                1,
             ],
         ];
     }
@@ -45,7 +48,7 @@ class ProductsTemplateExport implements FromArray, WithHeadings, WithStyles
             'description',
             'price',
             'category',
-            'is_available'
+            'is_available',
         ];
     }
 
@@ -58,9 +61,9 @@ class ProductsTemplateExport implements FromArray, WithHeadings, WithStyles
             1 => [
                 'font' => ['bold' => true],
                 'fill' => [
-                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                    'color' => ['rgb' => 'E2E8F0']
-                ]
+                    'fillType' => Fill::FILL_SOLID,
+                    'color' => ['rgb' => 'E2E8F0'],
+                ],
             ],
         ];
     }

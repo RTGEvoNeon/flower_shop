@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Facades;
 
+use App\Services\SeoService;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -20,7 +23,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string renderSchema()
  * @method static array getData()
  *
- * @see \App\Services\SeoService
+ * @see SeoService
  */
 class Seo extends Facade
 {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,12 +16,12 @@ class Order extends Model
         'total_amount',
         'status',
         'delivery_date',
-        'notes'
+        'notes',
     ];
 
     protected $casts = [
         'delivery_date' => 'datetime',
-        'total_amount' => 'decimal:2'
+        'total_amount' => 'decimal:2',
     ];
 
     // Получить товары в заказе

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exports\WholesaleProductsTemplateExport;
+use App\Imports\WholesaleProductsImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Imports\WholesaleProductsImport;
-use App\Exports\WholesaleProductsTemplateExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 
@@ -46,7 +46,7 @@ class WholesaleImportController extends Controller
             $errors = [];
 
             foreach ($failures as $failure) {
-                $errors[] = "Строка {$failure->row()}: " . implode(', ', $failure->errors());
+                $errors[] = "Строка {$failure->row()}: ".implode(', ', $failure->errors());
             }
 
             return redirect()->back()
@@ -54,7 +54,7 @@ class WholesaleImportController extends Controller
                 ->with('import_errors', $errors);
         } catch (\Exception $e) {
             return redirect()->back()
-                ->withErrors(['import' => 'Ошибка при импорте файла: ' . $e->getMessage()]);
+                ->withErrors(['import' => 'Ошибка при импорте файла: '.$e->getMessage()]);
         }
     }
 
