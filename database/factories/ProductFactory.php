@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ * @extends Factory<Product>
  */
 class ProductFactory extends Factory
 {
@@ -17,11 +20,11 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $categories = ['bouquets', 'wedding', 'seasonal', 'luxury'];
-        
+
         return [
-            'name' => 'Букет "' . fake()->words(2, true) . '"',
+            'name' => 'Букет "'.fake()->words(2, true).'"',
             'description' => fake()->paragraph(3),
-            'price' => fake()->randomFloat(2, 1000, 15000),
+            'price' => fake()->numberBetween(10, 150) * 100,
             'category' => fake()->randomElement($categories),
             'is_available' => fake()->boolean(90), // 90% доступны
         ];

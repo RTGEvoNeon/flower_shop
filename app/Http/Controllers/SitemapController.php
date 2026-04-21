@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\WholesaleProduct;
-use Illuminate\Http\Response;
 
 class SitemapController extends Controller
 {
@@ -19,7 +20,7 @@ class SitemapController extends Controller
      */
     private function punycodeUrl(string $path = ''): string
     {
-        return self::BASE_URL . $path;
+        return self::BASE_URL.$path;
     }
 
     public function index()
@@ -34,49 +35,49 @@ class SitemapController extends Controller
                 'url' => $this->punycodeUrl('/'),
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'daily',
-                'priority' => '1.0'
+                'priority' => '1.0',
             ],
             [
                 'url' => $this->punycodeUrl('/products'),
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'daily',
-                'priority' => '0.9'
+                'priority' => '0.9',
             ],
             [
                 'url' => $this->punycodeUrl('/opt'),
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'daily',
-                'priority' => '0.85'
+                'priority' => '0.85',
             ],
             [
                 'url' => $this->punycodeUrl('/delivery'),
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'monthly',
-                'priority' => '0.7'
+                'priority' => '0.7',
             ],
             [
                 'url' => $this->punycodeUrl('/about'),
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'monthly',
-                'priority' => '0.6'
+                'priority' => '0.6',
             ],
             [
                 'url' => $this->punycodeUrl('/contacts'),
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'monthly',
-                'priority' => '0.5'
+                'priority' => '0.5',
             ],
             [
                 'url' => $this->punycodeUrl('/privacy'),
                 'lastmod' => now()->toAtomString(),
                 'changefreq' => 'yearly',
-                'priority' => '0.3'
-            ]
+                'priority' => '0.3',
+            ],
         ];
 
         // Генерируем XML
-        $sitemap = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-        $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+        $sitemap = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+        $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
 
         // Добавляем статические страницы
         foreach ($staticPages as $page) {
@@ -91,8 +92,8 @@ class SitemapController extends Controller
         // Добавляем товары (розница)
         foreach ($products as $product) {
             $sitemap .= "  <url>\n";
-            $sitemap .= "    <loc>" . $this->punycodeUrl('/product/' . $product->slug) . "</loc>\n";
-            $sitemap .= "    <lastmod>" . $product->updated_at->toAtomString() . "</lastmod>\n";
+            $sitemap .= '    <loc>'.$this->punycodeUrl('/product/'.$product->slug)."</loc>\n";
+            $sitemap .= '    <lastmod>'.$product->updated_at->toAtomString()."</lastmod>\n";
             $sitemap .= "    <changefreq>weekly</changefreq>\n";
             $sitemap .= "    <priority>0.8</priority>\n";
             $sitemap .= "  </url>\n";
@@ -101,8 +102,8 @@ class SitemapController extends Controller
         // Добавляем оптовые товары
         foreach ($wholesaleProducts as $product) {
             $sitemap .= "  <url>\n";
-            $sitemap .= "    <loc>" . $this->punycodeUrl('/opt/' . $product->slug) . "</loc>\n";
-            $sitemap .= "    <lastmod>" . $product->updated_at->toAtomString() . "</lastmod>\n";
+            $sitemap .= '    <loc>'.$this->punycodeUrl('/opt/'.$product->slug)."</loc>\n";
+            $sitemap .= '    <lastmod>'.$product->updated_at->toAtomString()."</lastmod>\n";
             $sitemap .= "    <changefreq>weekly</changefreq>\n";
             $sitemap .= "    <priority>0.8</priority>\n";
             $sitemap .= "  </url>\n";

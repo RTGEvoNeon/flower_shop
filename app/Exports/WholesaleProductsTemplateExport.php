@@ -7,6 +7,7 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class WholesaleProductsTemplateExport implements FromArray, WithHeadings, WithStyles
@@ -25,7 +26,7 @@ class WholesaleProductsTemplateExport implements FromArray, WithHeadings, WithSt
                 47.00,
                 45.00,
                 1000,
-                1
+                1,
             ],
             [
                 '',
@@ -35,7 +36,7 @@ class WholesaleProductsTemplateExport implements FromArray, WithHeadings, WithSt
                 45.00,
                 43.00,
                 1000,
-                1
+                1,
             ],
         ];
     }
@@ -53,7 +54,7 @@ class WholesaleProductsTemplateExport implements FromArray, WithHeadings, WithSt
             'price_tier_2 (5000-9999)',
             'price_tier_3 (10000+)',
             'min_quantity',
-            'is_available'
+            'is_available',
         ];
     }
 
@@ -66,9 +67,9 @@ class WholesaleProductsTemplateExport implements FromArray, WithHeadings, WithSt
             1 => [
                 'font' => ['bold' => true],
                 'fill' => [
-                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                    'color' => ['rgb' => 'E2E8F0']
-                ]
+                    'fillType' => Fill::FILL_SOLID,
+                    'color' => ['rgb' => 'E2E8F0'],
+                ],
             ],
         ];
     }

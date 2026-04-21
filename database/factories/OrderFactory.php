@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
+ * @extends Factory<Order>
  */
 class OrderFactory extends Factory
 {
@@ -17,7 +20,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         $statuses = ['pending', 'confirmed', 'preparing', 'ready', 'delivered', 'cancelled'];
-        
+
         return [
             'customer_name' => fake('ru_RU')->name(),
             'customer_phone' => fake('ru_RU')->phoneNumber(),

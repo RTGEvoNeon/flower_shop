@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Imports;
 
 use App\Models\WholesaleProduct;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class WholesaleProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
+class WholesaleProductsImport implements ToModel, WithCalculatedFormulas, WithHeadingRow
 {
     /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|null
      */
     public function model(array $row): ?WholesaleProduct
     {
@@ -33,7 +32,7 @@ class WholesaleProductsImport implements ToModel, WithHeadingRow, WithCalculated
         $counter = 1;
 
         while (WholesaleProduct::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
 

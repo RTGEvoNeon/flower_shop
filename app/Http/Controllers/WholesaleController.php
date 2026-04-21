@@ -6,12 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Facades\Seo;
 use App\Models\WholesaleProduct;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class WholesaleController extends Controller
 {
-
     /**
      * Отображение каталога оптовых тюльпанов.
      */
@@ -36,15 +36,15 @@ class WholesaleController extends Controller
             ->firstOrFail();
 
         // SEO для страницы товара
-        $title = $product->name . ' — оптовая продажа в Брянске';
+        $title = $product->name.' — оптовая продажа в Брянске';
         $minPrice = number_format($product->min_price, 0, '', ' ');
-        
+
         $description = "Оптовая продажа тюльпанов {$product->name} от {$minPrice}₽/шт. Минимальный заказ: {$product->min_quantity} шт. Доставка по Брянску.";
 
         Seo::setTitle($title)
             ->setDescription($description)
             ->setKeywords([
-                $product->name . ' опт',
+                $product->name.' опт',
                 'оптовая продажа тюльпанов',
                 'тюльпаны опт Брянск',
                 'купить тюльпаны оптом',
@@ -77,7 +77,7 @@ class WholesaleController extends Controller
     /**
      * Получить отфильтрованные товары с пагинацией.
      */
-    private function getFilteredProducts(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    private function getFilteredProducts(): LengthAwarePaginator
     {
         return WholesaleProduct::available()
             ->orderBy('name')

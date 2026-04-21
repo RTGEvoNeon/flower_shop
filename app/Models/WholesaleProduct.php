@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class WholesaleProduct extends Model
@@ -40,7 +40,6 @@ class WholesaleProduct extends Model
     {
         return $query->where('is_available', true);
     }
-
 
     /**
      * Получить цену для указанного количества
@@ -101,7 +100,7 @@ class WholesaleProduct extends Model
         return Attribute::make(
             get: function () {
                 $filesystemImages = $this->getFilesystemImages();
-                if (!empty($filesystemImages)) {
+                if (! empty($filesystemImages)) {
                     return $filesystemImages[0];
                 }
 
@@ -129,7 +128,7 @@ class WholesaleProduct extends Model
     {
         $directory = "wholesales/{$this->id}";
 
-        if (!Storage::disk('public')->exists($directory)) {
+        if (! Storage::disk('public')->exists($directory)) {
             return [];
         }
 

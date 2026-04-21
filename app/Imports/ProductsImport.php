@@ -1,25 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Imports;
 
 use App\Models\Product;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
+class ProductsImport implements ToModel, WithCalculatedFormulas, WithHeadingRow
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @return Model|null
+     */
     public function model(array $row)
     {
         $id = $row['id'] ?? null;
         $name = $row['name'] ?? null;
-        $price = $row['price'] ?? null;
+        $price = $this->roundedPriceToHundreds($row['price'] ?? null);
         $category = $row['category'] ?? null;
 
         // Пропускаем пустые строки
@@ -28,7 +29,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
         }
 
         // Если указан ID, пытаемся обновить существующий товар
-        if (!empty($id)) {
+        if (! empty($id)) {
             $product = Product::find($id);
 
             if ($product) {
@@ -38,7 +39,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
                     'description' => $row['description'] ?? null,
                     'price' => $price,
                     'category' => $category,
-                    'is_available' => isset($row['is_available']) ? (bool)$row['is_available'] : true,
+                    'is_available' => isset($row['is_available']) ? (bool) $row['is_available'] : true,
                 ]);
 
                 return null; // Возвращаем null, так как товар уже обновлен
@@ -53,7 +54,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
 
         // Проверяем уникальность slug
         while (Product::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
 
@@ -63,14 +64,26 @@ class ProductsImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
             'description' => $row['description'] ?? null,
             'price' => $price,
             'category' => $category,
-            'is_available' => isset($row['is_available']) ? (bool)$row['is_available'] : true,
+            'is_available' => isset($row['is_available']) ? (bool) $row['is_available'] : true,
         ];
 
         // Если указан ID при создании нового товара, добавляем его
-        if (!empty($id)) {
+        if (! empty($id)) {
             $productData['id'] = $id;
         }
 
         return new Product($productData);
+    }
+
+    /**
+     * Округление до ближайших 100 ₽ при импорте (как в миграции данных).
+     */
+    private function roundedPriceToHundreds(mixed $value): ?float
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return round((float) $value / 100.0) * 100.0;
     }
 }

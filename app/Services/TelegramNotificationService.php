@@ -12,6 +12,7 @@ use TelegramBot\Api\Exception;
 class TelegramNotificationService
 {
     private BotApi $telegram;
+
     private string $chatId;
 
     public function __construct()
@@ -56,14 +57,14 @@ class TelegramNotificationService
 
         $message = "🌷 <b>НОВЫЙ ОПТОВЫЙ ЗАКАЗ</b>\n\n";
         $message .= "<b>Товар:</b> {$product->name}\n";
-        $message .= "<b>Количество:</b> " . number_format($quantity, 0, '', ' ') . " шт\n";
+        $message .= '<b>Количество:</b> '.number_format($quantity, 0, '', ' ')." шт\n";
         $message .= "<b>Цена за шт:</b> {$formattedPrice}₽\n";
         $message .= "<b>Итого:</b> {$formattedTotal}₽\n\n";
 
         $message .= "👤 <b>Клиент:</b> {$customerData['name']}\n";
         $message .= "📞 <b>Телефон:</b> {$customerData['phone']}\n";
 
-        if (!empty($customerData['notes'])) {
+        if (! empty($customerData['notes'])) {
             $message .= "\n💬 <b>Комментарий:</b> {$customerData['notes']}\n";
         }
 
@@ -79,15 +80,17 @@ class TelegramNotificationService
             Log::warning('Telegram chat_id not configured. Message not sent.', [
                 'message' => $message,
             ]);
+
             return false;
         }
 
         try {
             $this->telegram->sendMessage($this->chatId, $message, 'HTML');
-            
+
             Log::info('Telegram notification sent successfully', [
                 'chat_id' => $this->chatId,
             ]);
+
             return true;
 
         } catch (Exception $e) {
@@ -95,6 +98,7 @@ class TelegramNotificationService
                 'error' => $e->getMessage(),
                 'code' => $e->getCode(),
             ]);
+
             return false;
 
         } catch (\Exception $e) {
@@ -102,6 +106,7 @@ class TelegramNotificationService
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
+
             return false;
         }
     }
@@ -111,6 +116,6 @@ class TelegramNotificationService
      */
     public function isConfigured(): bool
     {
-        return !empty($this->chatId) && !empty(config('services.telegram.bot_token'));
+        return ! empty($this->chatId) && ! empty(config('services.telegram.bot_token'));
     }
 }

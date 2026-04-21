@@ -25,7 +25,7 @@ class WholesaleOrderController extends Controller
     {
         try {
             $validated = $request->validated();
-            
+
             // Получаем товар
             $product = WholesaleProduct::where('slug', $validated['product_slug'])
                 ->available()
@@ -52,7 +52,7 @@ class WholesaleOrderController extends Controller
                 $customerData
             );
 
-            if (!$sent) {
+            if (! $sent) {
                 Log::warning('Telegram notification failed for wholesale order', [
                     'product' => $product->slug,
                     'customer' => $customerData['name'],

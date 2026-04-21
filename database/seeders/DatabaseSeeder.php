@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Product;
+use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -113,7 +115,7 @@ class DatabaseSeeder extends Seeder
         foreach ($products as $productData) {
             Product::create($productData);
         }
-        
+
         // Примечание: Изображения товаров хранятся в файловой системе в папке storage/app/public/products/{id}/
     }
 }

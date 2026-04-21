@@ -26,7 +26,6 @@ class WholesaleControllerTest extends TestCase
         $response->assertViewHas('products');
     }
 
-
     public function test_wholesale_show_page_displays_product(): void
     {
         // Arrange
@@ -37,7 +36,7 @@ class WholesaleControllerTest extends TestCase
         ]);
 
         // Act
-        $response = $this->get('/opt/' . $product->slug);
+        $response = $this->get('/opt/'.$product->slug);
 
         // Assert
         $response->assertStatus(200);
@@ -55,7 +54,7 @@ class WholesaleControllerTest extends TestCase
         ]);
 
         // Act
-        $response = $this->get('/opt/' . $product->slug);
+        $response = $this->get('/opt/'.$product->slug);
 
         // Assert
         $response->assertStatus(404);

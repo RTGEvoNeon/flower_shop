@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +25,7 @@ return new class extends Migration
                 'confirmed',
                 'in_progress',
                 'delivered',
-                'cancelled'
+                'cancelled',
             ])->default('pending');
             $table->datetime('delivery_date');
             $table->text('notes')->nullable();

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Facades\Seo;
-use App\Models\Product;
 use App\Models\Order;
-use Illuminate\View\View;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class PageController extends Controller
 {

@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Facades\Seo;
+use Illuminate\Support\Facades\Route;
+
 return [
 
     /*
@@ -135,8 +140,8 @@ return [
     */
 
     'aliases' => [
-        'Seo' => App\Facades\Seo::class,
-        'Route' => Illuminate\Support\Facades\Route::class,
+        'Seo' => Seo::class,
+        'Route' => Route::class,
     ],
 
 ];
