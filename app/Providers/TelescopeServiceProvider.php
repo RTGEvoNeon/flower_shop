@@ -21,6 +21,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $isLocal = $this->app->environment('local');
 
+        Gate::define('viewTelescope', function (User $user) {
+            return in_array($user->email, [
+                'mat8765@mail.ru',
+            ]);
+        });
+
         Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
             return $isLocal ||
                    $entry->isReportableException() ||
