@@ -23,7 +23,6 @@ class Order extends Model
         'status',
         'delivery_date',
         'notes',
-        'product_url',
     ];
 
     protected $casts = [
