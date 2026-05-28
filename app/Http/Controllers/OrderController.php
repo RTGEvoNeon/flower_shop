@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewOrderMail;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -21,16 +24,32 @@ class OrderController extends Controller
             'product_url' => 'nullable|string|max:2000',
         ]);
 
+        $rawProductUrl = $validated['product_url'] ?? null;
+        unset($validated['product_url']);
+
+        $productUrl = is_string($rawProductUrl) && $rawProductUrl !== ''
+            ? $rawProductUrl
+            : url('/');
+
         $user = Auth::user();
         if ($user) {
             $validated['user_id'] = $user->id;
         }
 
-        $productUrl = $validated['product_url'] ?? $request->input('product_url');
-        $validated['product_url'] = is_string($productUrl) && $productUrl !== '' ? $productUrl : url('/');
-
         $order = new Order($validated);
         $order->save();
+
+        $adminEmail = config('mail.admin_email');
+        if (is_string($adminEmail) && $adminEmail !== '') {
+            try {
+                Mail::to($adminEmail)->send(new NewOrderMail($order, $productUrl));
+            } catch (\Throwable $e) {
+                Log::error('Не удалось отправить письмо о новом заказе', [
+                    'order_id' => $order->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
 
         return response()->json([
             'success' => true,
