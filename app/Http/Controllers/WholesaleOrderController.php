@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WholesaleOrderRequest;
 use App\Models\WholesaleProduct;
-use App\Services\TelegramNotificationService;
 use App\Services\WholesalePriceCalculator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +14,6 @@ class WholesaleOrderController extends Controller
 {
     public function __construct(
         private readonly WholesalePriceCalculator $priceCalculator,
-        private readonly TelegramNotificationService $telegramService
     ) {}
 
     /**
@@ -43,29 +41,12 @@ class WholesaleOrderController extends Controller
                 'notes' => $validated['notes'] ?? '',
             ];
 
-            // Отправляем в Telegram
-            $sent = $this->telegramService->sendWholesaleOrder(
-                $product,
-                $quantity,
-                $pricePerUnit,
-                $total,
-                $customerData
-            );
-
-            if (! $sent) {
-                Log::warning('Telegram notification failed for wholesale order', [
-                    'product' => $product->slug,
-                    'customer' => $customerData['name'],
-                ]);
-            }
-
             // Логируем успешный заказ
             Log::info('Wholesale order submitted', [
                 'product' => $product->name,
                 'quantity' => $quantity,
                 'total' => $total,
                 'customer' => $customerData['name'],
-                'telegram_sent' => $sent,
             ]);
 
             return response()->json([
