@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'customer_name',
@@ -27,7 +32,7 @@ class Order extends Model
     ];
 
     // Получить товары в заказе
-    public function orderItems()
+    public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
@@ -35,6 +40,6 @@ class Order extends Model
     // Получить общую сумму заказа
     public function calculateTotal()
     {
-        return $this->orderItems()->sum(\DB::raw('price * quantity'));
+        return $this->orderItems()->sum(DB::raw('price * quantity'));
     }
 }

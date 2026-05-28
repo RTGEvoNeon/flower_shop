@@ -10,6 +10,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property float $price
+ * @property string $category
+ * @property bool $is_available
+ * @property-read string $main_image
+ * @property-read array<int, string> $image_urls
+ */
 class Product extends Model
 {
     use HasFactory;

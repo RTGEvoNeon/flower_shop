@@ -5,19 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Services\VKService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    protected VKService $vkService;
-
-    public function __construct(VKService $vkService)
-    {
-        $this->vkService = $vkService;
-    }
-
     public function submit(Request $request)
     {
         $validated = $request->validate([

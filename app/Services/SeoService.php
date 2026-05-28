@@ -230,13 +230,10 @@ class SeoService
             'openingHours' => $options['openingHours'] ?? 'Mo-Su 09:00-21:00',
         ];
 
-        // Удаляем null значения
-        $schema = array_filter($schema, fn ($value) => ! is_null($value));
-        if (isset($schema['geo'])) {
-            $schema['geo'] = array_filter($schema['geo'], fn ($value) => ! is_null($value));
-            if (count($schema['geo']) <= 1) {
-                unset($schema['geo']);
-            }
+        // Удаляем null-координаты из geo и сам блок, если координат не осталось
+        $schema['geo'] = array_filter($schema['geo'], fn ($value) => ! is_null($value));
+        if (count($schema['geo']) <= 1) {
+            unset($schema['geo']);
         }
 
         $this->addSchema($schema);
