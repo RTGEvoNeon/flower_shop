@@ -4,6 +4,9 @@
         "actions": [
             {
                 "action": "./vendor/bin/pint --test"
+            },
+            {
+                "action": "./vendor/bin/phpstan analyse --memory-limit=1G --no-progress"
             }
         ]
     }

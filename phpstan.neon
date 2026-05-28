@@ -1,0 +1,15 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    paths:
+        - app/
+        - database/
+        - routes/
+
+    excludePaths:
+        - database/migrations/*_create_pulse_tables.php
+        - database/migrations/*_create_telescope_entries_table.php
+
+    level: 5
