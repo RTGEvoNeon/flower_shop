@@ -42,4 +42,8 @@ return [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
     ],
 
+    'pulse' => [
+        'allowed_ips' => env('PULSE_ALLOWED_IPS', ''),
+    ],
+
 ];

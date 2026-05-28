@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Imports;
 
 use App\Models\WholesaleProduct;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
@@ -13,9 +12,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class WholesaleProductsImport implements ToModel, WithCalculatedFormulas, WithHeadingRow
 {
-    /**
-     * @return Model|null
-     */
     public function model(array $row): ?WholesaleProduct
     {
         $id = isset($row['id']) && $row['id'] !== '' ? (int) $row['id'] : null;

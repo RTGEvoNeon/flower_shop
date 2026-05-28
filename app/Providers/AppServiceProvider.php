@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -29,12 +30,8 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
 
-            if ($user !== null && method_exists($user, 'getAuthIdentifierName')) {
-                $email = (string) ($user->email ?? '');
-
-                if ($email === 'mat8765@mail.ru') {
-                    return true;
-                }
+            if ($user instanceof User && $user->email === 'mat8765@mail.ru') {
+                return true;
             }
 
             $request ??= request();
@@ -44,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
 
-            $allowedIps = collect(explode(',', (string) env('PULSE_ALLOWED_IPS', '')))
+            $allowedIps = collect(explode(',', (string) config('services.pulse.allowed_ips', '')))
                 ->map(static fn (string $ip): string => trim($ip))
                 ->filter();
 

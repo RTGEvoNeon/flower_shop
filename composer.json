@@ -19,7 +19,10 @@
         "telegram-bot/api": "^2.5"
     },
     "require-dev": {
+        "captainhook/captainhook": "^5.29",
+        "captainhook/hook-installer": "^1.0",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.9",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
@@ -65,7 +68,13 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
-        ]
+        ],
+        "format": [
+            "./vendor/bin/pint"
+        ],
+        "format:test": "./vendor/bin/pint --test",
+        "analyse": "./vendor/bin/phpstan analyse --memory-limit=1G",
+        "analyse:baseline": "./vendor/bin/phpstan analyse --memory-limit=1G --generate-baseline=phpstan-baseline.neon"
     },
     "extra": {
         "laravel": {
@@ -77,6 +86,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
+            "captainhook/hook-installer": true,
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }
