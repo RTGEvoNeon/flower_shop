@@ -39,13 +39,14 @@ class OrderController extends Controller
         $order = new Order($validated);
         $order->save();
 
-        $adminEmail = config('mail.admin_email');
-        if (is_string($adminEmail) && $adminEmail !== '') {
+        $adminEmails = (array) config('mail.admin_emails', []);
+        if ($adminEmails !== []) {
             try {
-                Mail::to($adminEmail)->send(new NewOrderMail($order, $productUrl));
+                Mail::to($adminEmails)->send(new NewOrderMail($order, $productUrl));
             } catch (\Throwable $e) {
                 Log::error('Не удалось отправить письмо о новом заказе', [
                     'order_id' => $order->id,
+                    'recipients' => $adminEmails,
                     'error' => $e->getMessage(),
                 ]);
             }
