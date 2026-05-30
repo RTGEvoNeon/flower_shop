@@ -17,7 +17,7 @@ class OrderControllerTest extends TestCase
     public function test_submit_creates_order_and_sends_email_to_admin(): void
     {
         Mail::fake();
-        config(['mail.admin_email' => 'admin@example.com']);
+        config(['mail.admin_emails' => ['admin@example.com']]);
 
         $response = $this->postJson('/order/submit', [
             'customer_name' => 'Иван Иванов',
@@ -44,10 +44,32 @@ class OrderControllerTest extends TestCase
         });
     }
 
+    public function test_submit_sends_email_to_multiple_admins(): void
+    {
+        Mail::fake();
+        config(['mail.admin_emails' => [
+            'manager1@example.com',
+            'manager2@example.com',
+            'manager3@example.com',
+        ]]);
+
+        $this->postJson('/order/submit', [
+            'customer_name' => 'Иван',
+            'customer_phone' => '+7 999 000 00 00',
+            'total_amount' => 100,
+        ])->assertOk();
+
+        Mail::assertSent(NewOrderMail::class, function (NewOrderMail $mail) {
+            return $mail->hasTo('manager1@example.com')
+                && $mail->hasTo('manager2@example.com')
+                && $mail->hasTo('manager3@example.com');
+        });
+    }
+
     public function test_submit_uses_site_root_when_product_url_is_empty(): void
     {
         Mail::fake();
-        config(['mail.admin_email' => 'admin@example.com']);
+        config(['mail.admin_emails' => ['admin@example.com']]);
 
         $this->postJson('/order/submit', [
             'customer_name' => 'Иван',
@@ -63,7 +85,7 @@ class OrderControllerTest extends TestCase
     public function test_submit_does_not_send_email_when_admin_email_is_empty(): void
     {
         Mail::fake();
-        config(['mail.admin_email' => '']);
+        config(['mail.admin_emails' => []]);
 
         $response = $this->postJson('/order/submit', [
             'customer_name' => 'Иван',
@@ -79,7 +101,7 @@ class OrderControllerTest extends TestCase
 
     public function test_submit_returns_success_even_if_mail_sending_fails(): void
     {
-        config(['mail.admin_email' => 'admin@example.com']);
+        config(['mail.admin_emails' => ['admin@example.com']]);
 
         Mail::shouldReceive('to')->once()->andThrow(new \RuntimeException('SMTP недоступен'));
 

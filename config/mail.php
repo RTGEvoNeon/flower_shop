@@ -119,13 +119,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Admin Email
+    | Admin Emails
     |--------------------------------------------------------------------------
     |
-    | Адрес, на который отправляются уведомления о новых заказах с сайта.
+    | Адреса, на которые отправляются уведомления о новых заказах с сайта.
+    | В .env можно указать один адрес или несколько через запятую:
+    |   ADMIN_EMAIL=manager1@example.com,manager2@example.com
     |
     */
 
-    'admin_email' => env('ADMIN_EMAIL', 'ilyakondryukov8765@gmail.com'),
+    'admin_emails' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env('ADMIN_EMAIL', 'ilyakondryukov8765@gmail.com'))
+    ))),
 
 ];
