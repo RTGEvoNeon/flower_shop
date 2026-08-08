@@ -54,7 +54,7 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('main_image')
                     ->label('Фото')
-                    ->checkFileExistence(false),
+                    ->state(fn (Product $record) => url($record->main_image)),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
