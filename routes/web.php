@@ -47,8 +47,8 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap')
 //     return redirect('/custom-bouquet')->with('success', 'Спасибо! Мы скоро с вами свяжемся!');
 // })->name('custom-bouquet.submit');
 
-// Импорт товаров из Excel
-Route::prefix('admin')->name('admin.')->group(function () {
+// Старая самописная админка импорта Excel (список и toggle товаров переехали в Filament-панель /admin)
+Route::prefix('admin-old')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     // Розничные товары
     Route::get('/products/import', [ProductImportController::class, 'showForm'])->name('products.import');
     Route::post('/products/import', [ProductImportController::class, 'import'])->name('products.import.process');

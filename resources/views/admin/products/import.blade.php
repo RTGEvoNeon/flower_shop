@@ -4,9 +4,14 @@
 <div class="max-w-4xl mx-auto px-6 lg:px-8 py-12">
     <div class="bg-white rounded-2xl shadow-lg border border-accent-200 overflow-hidden">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-primary-500 to-gold-600 px-8 py-6">
-            <h1 class="text-3xl font-display font-semibold text-white">Импорт товаров из Excel</h1>
-            <p class="text-white/80 mt-2">Загрузите Excel файл с товарами для добавления в каталог</p>
+        <div class="bg-gradient-to-r from-primary-500 to-gold-600 px-8 py-6 flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-display font-semibold text-white">Импорт товаров из Excel</h1>
+                <p class="text-white/80 mt-2">Загрузите Excel файл с товарами для добавления в каталог</p>
+            </div>
+            <a href="{{ route('admin.products.index') }}" class="text-white/90 hover:text-white underline text-sm">
+                Список товаров
+            </a>
         </div>
 
         <div class="p-8">
