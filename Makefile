@@ -4,7 +4,7 @@
 # Настройки сервера
 REMOTE_HOST = 185.119.59.195
 REMOTE_USER = root
-REMOTE_PATH = /var/www/mindale.ru
+REMOTE_PATH = /var/www/edem
 
 # Локальные пути
 LOCAL_PRODUCTS = ./storage/app/public/products/
@@ -94,7 +94,7 @@ deploy-develop: deploy-branch
 
 # Подключение к серверу
 ssh:
-	ssh $(REMOTE_USER)@$(REMOTE_HOST)
+	ssh -t $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && exec \$$SHELL"
 
 # Логи Docker на сервере
 logs:
