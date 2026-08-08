@@ -53,7 +53,8 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('main_image')
-                    ->label('Фото'),
+                    ->label('Фото')
+                    ->checkFileExistence(false),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
