@@ -45,6 +45,17 @@ class ProductResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_available')
                     ->required(),
+                Forms\Components\FileUpload::make('photos')
+                    ->label('Фото')
+                    ->multiple()
+                    ->image()
+                    ->disk('public')
+                    ->directory(fn (?Product $record) => $record ? "products/{$record->id}" : 'products/tmp')
+                    ->visibility('public')
+                    ->reorderable()
+                    ->appendFiles()
+                    ->columnSpanFull()
+                    ->dehydrated(false),
             ]);
     }
 
