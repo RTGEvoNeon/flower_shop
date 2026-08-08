@@ -1,4 +1,4 @@
-# Makefile для itulip
+# Makefile для edem
 # Использование: make <команда>
 
 # Настройки сервера
@@ -110,7 +110,7 @@ storage-link:
 db-tunnel:
 	@echo "🔌 Создание SSH туннеля к MySQL..."
 	@echo "📍 Подключайтесь к: localhost:3307"
-	@echo "🔐 Credentials: itulip / itulip / itulip"
+	@echo "🔐 Credentials: edem / edem / edem"
 	@echo "⚠️  Нажмите Ctrl+C для остановки туннеля"
 	@echo ""
 	ssh -L 3307:localhost:3306 $(REMOTE_USER)@$(REMOTE_HOST) -N

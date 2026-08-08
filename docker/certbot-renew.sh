@@ -2,7 +2,7 @@
 # Продление Let's Encrypt сертификата и перезагрузка nginx.
 # Предполагается запуск на проде из директории с docker-compose.prod.yml,
 # например через cron:
-#   0 3 * * * cd /path/to/itulip && ./docker/certbot-renew.sh >> /var/log/certbot-renew.log 2>&1
+#   0 3 * * * cd /path/to/edem && ./docker/certbot-renew.sh >> /var/log/certbot-renew.log 2>&1
 
 set -e
 

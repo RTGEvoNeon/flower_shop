@@ -41,9 +41,9 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: Admin1337
-      MYSQL_DATABASE: itulip
-      MYSQL_USER: itulip
-      MYSQL_PASSWORD: itulip
+      MYSQL_DATABASE: edem
+      MYSQL_USER: edem
+      MYSQL_PASSWORD: edem
     volumes:
       - db_data:/var/lib/mysql
     networks:
