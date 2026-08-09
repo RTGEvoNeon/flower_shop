@@ -20,9 +20,11 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $categories = ['bouquets', 'wedding', 'seasonal', 'luxury'];
+        $name = 'Букет "'.fake()->unique()->words(2, true).'"';
 
         return [
-            'name' => 'Букет "'.fake()->words(2, true).'"',
+            'name' => $name,
+            'slug' => str($name)->slug(),
             'description' => fake()->paragraph(3),
             'price' => fake()->numberBetween(10, 150) * 100,
             'category' => fake()->randomElement($categories),

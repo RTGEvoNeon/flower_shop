@@ -25,7 +25,7 @@ class OrderControllerTest extends TestCase
             'delivery_address' => 'г. Москва, ул. Тестовая, д. 1',
             'notes' => 'Позвонить после 18:00',
             'total_amount' => 1500,
-            'product_url' => 'https://itulip.ru/product/test',
+            'product_url' => 'https://эдемский-сад.рф/product/test',
         ]);
 
         $response->assertOk()->assertJson(['success' => true]);
@@ -39,7 +39,7 @@ class OrderControllerTest extends TestCase
 
         Mail::assertSent(NewOrderMail::class, function (NewOrderMail $mail) use ($order) {
             return $mail->order->is($order)
-                && $mail->productUrl === 'https://itulip.ru/product/test'
+                && $mail->productUrl === 'https://эдемский-сад.рф/product/test'
                 && $mail->hasTo('admin@example.com');
         });
     }
@@ -135,7 +135,7 @@ class OrderControllerTest extends TestCase
         $order->id = 42;
         $order->created_at = now();
 
-        $mailable = new NewOrderMail($order, 'https://itulip.ru/product/x');
+        $mailable = new NewOrderMail($order, 'https://эдемский-сад.рф/product/x');
 
         $mailable->assertHasSubject('Новая заявка с сайта №42');
         $mailable->assertSeeInHtml('Пётр Петров');
@@ -143,6 +143,6 @@ class OrderControllerTest extends TestCase
         $mailable->assertSeeInHtml('СПб, Невский 1');
         $mailable->assertSeeInHtml('Хрупкое');
         $mailable->assertSeeInHtml('2500.00');
-        $mailable->assertSeeInHtml('https://itulip.ru/product/x');
+        $mailable->assertSeeInHtml('https://эдемский-сад.рф/product/x');
     }
 }

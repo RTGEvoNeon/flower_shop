@@ -2,9 +2,9 @@ FROM php:8.3-fpm
 
 # Устанавливаем расширения
 RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev zip git unzip curl \
+    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libicu-dev zip git unzip curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql gd zip
+    && docker-php-ext-install pdo pdo_mysql gd zip intl exif
 
 # Установка Xdebug
 RUN pecl install xdebug-3.3.2 \

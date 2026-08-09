@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -21,9 +23,29 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string $main_image
  * @property-read array<int, string> $image_urls
  */
-class Product extends Model
+class Product extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
+
+    public const PHOTOS_COLLECTION = 'photos';
+
+    /**
+     * Доступные категории товара.
+     */
+    public const CATEGORIES = [
+        'mono' => 'Монобукеты',
+        'mix' => 'Микс букеты',
+        'tulip' => 'Тюльпаны',
+        'winter' => 'Зима',
+        'wedding' => 'Свадебные',
+        'premium' => 'Премиум',
+    ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::PHOTOS_COLLECTION);
+    }
 
     protected $fillable = [
         'id',
@@ -57,11 +79,11 @@ class Product extends Model
     }
 
     /**
-     * Scope: с изображениями (для совместимости, изображения загружаются из файловой системы)
+     * Scope: с изображениями (для совместимости, изображения загружаются через MediaLibrary)
      */
     public function scopeWithImages(Builder $query): Builder
     {
-        return $query; // Изображения загружаются напрямую из файловой системы через accessors
+        return $query->with('media');
     }
 
     /**
@@ -70,58 +92,19 @@ class Product extends Model
     protected function mainImage(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                // Проверяем файловую систему products/{id}/
-                $filesystemImages = $this->getFilesystemImages();
-                if (! empty($filesystemImages)) {
-                    return $filesystemImages[0];
-                }
-
-                return '/images/placeholder.jpg';
-            }
+            get: fn () => $this->getFirstMediaUrl(self::PHOTOS_COLLECTION) ?: '/images/placeholder.jpg'
         );
     }
 
     /**
-     * Accessor: все активные изображения как URL
+     * Accessor: все изображения как URL
      */
     protected function imageUrls(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                // Проверяем файловую систему
-                $filesystemImages = $this->getFilesystemImages();
-
-                return $filesystemImages;
-            }
+            get: fn () => $this->getMedia(self::PHOTOS_COLLECTION)
+                ->map(fn (Media $media) => $media->getUrl())
+                ->all()
         );
-    }
-
-    /**
-     * Получить изображения из файловой системы products/{id}/
-     */
-    private function getFilesystemImages(): array
-    {
-        $directory = "products/{$this->id}";
-
-        if (! Storage::disk('public')->exists($directory)) {
-            return [];
-        }
-
-        $files = Storage::disk('public')->files($directory);
-        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-        $images = [];
-
-        foreach ($files as $file) {
-            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-            if (in_array($extension, $imageExtensions)) {
-                $images[] = Storage::url($file);
-            }
-        }
-
-        // Сортируем по имени файла
-        sort($images);
-
-        return $images;
     }
 }

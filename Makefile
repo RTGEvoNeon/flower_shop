@@ -1,10 +1,10 @@
-# Makefile для itulip
+# Makefile для edem
 # Использование: make <команда>
 
 # Настройки сервера
 REMOTE_HOST = 185.119.59.195
 REMOTE_USER = root
-REMOTE_PATH = /var/www/mindale.ru
+REMOTE_PATH = /var/www/edem
 
 # Локальные пути
 LOCAL_PRODUCTS = ./storage/app/public/products/
@@ -58,19 +58,19 @@ sync-dry:
 	@echo "🌷 Проверка оптовых товаров..."
 	rsync -avz --dry-run --progress $(LOCAL_WHOLESALES) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_WHOLESALES)/
 
-# Деплой всего проекта (git pull + composer + миграции + сборка + рестарт)
+# Деплой всего проекта (git pull + сборка образа + composer + миграции + рестарт)
 deploy:
 	@echo "🚀 Деплой на сервер..."
 	@echo "📥 Получение изменений из Git..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git pull"
+	@echo "🐳 Пересборка образа app и пересоздание контейнера (на случай изменений в Dockerfile.prod)..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml up -d --build app"
 	@echo "📚 Установка PHP зависимостей (composer install) и обновление package manifest..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app sh -lc 'rm -f bootstrap/cache/packages.php bootstrap/cache/services.php && composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader --no-scripts && php artisan package:discover --ansi && php artisan config:clear && php artisan clear-compiled'"
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app sh -lc 'rm -f bootstrap/cache/packages.php bootstrap/cache/services.php && composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader --no-scripts && php artisan package:discover --ansi && php artisan filament:assets && php artisan config:clear && php artisan clear-compiled'"
 	@echo "🗃️  Выполнение миграций..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force"
 	@echo "🔨 Сборка фронтенда..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && npm run build"
-	@echo "🔄 Перезапуск приложения..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml restart app"
 	@echo "✅ Деплой завершён!"
 
 # Деплой выбранной ветки (по умолчанию develop)
@@ -78,14 +78,14 @@ deploy-branch:
 	@echo "🚀 Деплой ветки '$(if $(BRANCH),$(BRANCH),develop)' на сервер..."
 	@echo "📥 Переключение и обновление ветки..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && git fetch origin && git checkout $(if $(BRANCH),$(BRANCH),develop) && git pull origin $(if $(BRANCH),$(BRANCH),develop)"
+	@echo "🐳 Пересборка образа app и пересоздание контейнера (на случай изменений в Dockerfile.prod)..."
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml up -d --build app"
 	@echo "📚 Установка PHP зависимостей (composer install) и обновление package manifest..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app sh -lc 'rm -f bootstrap/cache/packages.php bootstrap/cache/services.php && composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader --no-scripts && php artisan package:discover --ansi && php artisan config:clear && php artisan clear-compiled'"
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app sh -lc 'rm -f bootstrap/cache/packages.php bootstrap/cache/services.php && composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader --no-scripts && php artisan package:discover --ansi && php artisan filament:assets && php artisan config:clear && php artisan clear-compiled'"
 	@echo "🗃️  Выполнение миграций..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force"
 	@echo "🔨 Сборка фронтенда..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && npm run build"
-	@echo "🔄 Перезапуск приложения..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml restart app"
 	@echo "✅ Деплой ветки завершён!"
 
 # Быстрый алиас для deploy develop
@@ -94,7 +94,7 @@ deploy-develop: deploy-branch
 
 # Подключение к серверу
 ssh:
-	ssh $(REMOTE_USER)@$(REMOTE_HOST)
+	ssh -t $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && exec \$$SHELL"
 
 # Логи Docker на сервере
 logs:
@@ -110,7 +110,7 @@ storage-link:
 db-tunnel:
 	@echo "🔌 Создание SSH туннеля к MySQL..."
 	@echo "📍 Подключайтесь к: localhost:3307"
-	@echo "🔐 Credentials: itulip / itulip / itulip"
+	@echo "🔐 Credentials: edem / edem / edem"
 	@echo "⚠️  Нажмите Ctrl+C для остановки туннеля"
 	@echo ""
 	ssh -L 3307:localhost:3306 $(REMOTE_USER)@$(REMOTE_HOST) -N
