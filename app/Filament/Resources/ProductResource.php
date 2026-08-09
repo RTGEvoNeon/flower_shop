@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -45,17 +46,14 @@ class ProductResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_available')
                     ->required(),
-                Forms\Components\FileUpload::make('photos')
+                SpatieMediaLibraryFileUpload::make('photos')
                     ->label('Фото')
+                    ->collection(Product::PHOTOS_COLLECTION)
                     ->multiple()
                     ->image()
-                    ->disk('public')
-                    ->directory(fn (?Product $record) => $record ? "products/{$record->id}" : 'products/tmp')
-                    ->visibility('public')
                     ->reorderable()
                     ->appendFiles()
-                    ->columnSpanFull()
-                    ->dehydrated(false),
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -63,9 +61,9 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('main_image')
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('photos')
                     ->label('Фото')
-                    ->state(fn (Product $record) => url($record->main_image)),
+                    ->collection(Product::PHOTOS_COLLECTION),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
