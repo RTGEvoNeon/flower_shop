@@ -30,6 +30,18 @@ class Product extends Model implements HasMedia
 
     public const PHOTOS_COLLECTION = 'photos';
 
+    /**
+     * Доступные категории товара.
+     */
+    public const CATEGORIES = [
+        'mono' => 'Монобукеты',
+        'mix' => 'Микс букеты',
+        'tulip' => 'Тюльпаны',
+        'winter' => 'Зима',
+        'wedding' => 'Свадебные',
+        'premium' => 'Премиум',
+    ];
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::PHOTOS_COLLECTION);

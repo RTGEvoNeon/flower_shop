@@ -46,9 +46,10 @@ class ProductResource extends Resource
                     ->required()
                     ->numeric()
                     ->prefix('₽'),
-                Forms\Components\TextInput::make('category')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('category')
+                    ->label('Категория')
+                    ->options(Product::CATEGORIES)
+                    ->required(),
                 Forms\Components\Toggle::make('is_available')
                     ->required(),
                 SpatieMediaLibraryFileUpload::make('photos')
@@ -74,6 +75,7 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->label('Категория')
+                    ->formatStateUsing(fn (string $state) => Product::CATEGORIES[$state] ?? $state)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Цена')
@@ -85,11 +87,7 @@ class ProductResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->label('Категория')
-                    ->options(fn () => Product::query()
-                        ->distinct()
-                        ->orderBy('category')
-                        ->pluck('category', 'category')
-                        ->all()),
+                    ->options(Product::CATEGORIES),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

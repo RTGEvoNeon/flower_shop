@@ -15,14 +15,7 @@ class ProductController extends Controller
     /**
      * Доступные категории для фильтрации.
      */
-    private const CATEGORIES = [
-        'all' => 'Все букеты',
-        'mono' => 'Монобукеты',
-        'mix' => 'Микс букеты',
-        'tulip' => 'Тюльпаны',
-        'winter' => 'Зима',
-        'wedding' => 'Свадебные',
-    ];
+    private const CATEGORIES = ['all' => 'Все букеты'] + Product::CATEGORIES;
 
     /**
      * Display a listing of the resource.
@@ -37,9 +30,24 @@ class ProductController extends Controller
 
         return view('products.index', [
             'products' => $products,
-            'categories' => self::CATEGORIES,
+            'categories' => $this->getAvailableCategories(),
             'currentCategory' => $category,
         ]);
+    }
+
+    /**
+     * Категории, в которых есть хотя бы один доступный товар.
+     */
+    private function getAvailableCategories(): array
+    {
+        $categoriesWithProducts = Product::available()
+            ->distinct()
+            ->pluck('category');
+
+        return ['all' => self::CATEGORIES['all']] + array_intersect_key(
+            Product::CATEGORIES,
+            array_flip($categoriesWithProducts->all())
+        );
     }
 
     /**
