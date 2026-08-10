@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\NewOrderMail;
 use App\Models\Order;
+use App\Services\YooKassaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    public function __construct(private readonly YooKassaService $yooKassa) {}
+
     public function submit(Request $request)
     {
         $validated = $request->validate([
@@ -47,6 +50,22 @@ class OrderController extends Controller
                 Log::error('Не удалось отправить письмо о новом заказе', [
                     'order_id' => $order->id,
                     'recipients' => $adminEmails,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        if ($this->yooKassa->isPaymentEnabled()) {
+            try {
+                $confirmationUrl = $this->yooKassa->createPayment($order);
+
+                return response()->json([
+                    'success' => true,
+                    'payment_url' => $confirmationUrl,
+                ]);
+            } catch (\Throwable $e) {
+                Log::error('Не удалось создать платёж ЮKassa', [
+                    'order_id' => $order->id,
                     'error' => $e->getMessage(),
                 ]);
             }
