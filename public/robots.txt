@@ -11,8 +11,15 @@ Allow: /privacy
 
 # Запретить служебные страницы
 Disallow: /admin
+Disallow: /admin-old
 Disallow: /api
 Disallow: /*.json$
+Disallow: /cart
+Disallow: /dashboard
+Disallow: /order/submit
+Disallow: /opt/order/submit
+Disallow: /login
+Disallow: /register
 
 # Разрешить изображения
 Allow: /images/

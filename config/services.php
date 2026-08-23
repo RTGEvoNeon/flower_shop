@@ -46,4 +46,12 @@ return [
         'allowed_ips' => env('PULSE_ALLOWED_IPS', ''),
     ],
 
+    'yandex_webmaster' => [
+        'verification' => env('YANDEX_VERIFICATION_CODE'),
+    ],
+
+    'google_search_console' => [
+        'verification' => env('GOOGLE_SITE_VERIFICATION_CODE'),
+    ],
+
 ];

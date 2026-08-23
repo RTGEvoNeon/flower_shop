@@ -23,8 +23,9 @@ class ProductController extends Controller
     public function index(Request $request): View
     {
         $category = $this->validateCategory($request->query('category'));
+        $page = max(1, (int) $request->query('page', 1));
 
-        $this->setSeoForCatalog($category);
+        $this->setSeoForCatalog($category, $page);
 
         $products = $this->getFilteredProducts($category);
 
@@ -79,7 +80,7 @@ class ProductController extends Controller
     /**
      * Установить SEO-данные для каталога.
      */
-    private function setSeoForCatalog(string $category): void
+    private function setSeoForCatalog(string $category, int $page): void
     {
         $categoryName = self::CATEGORIES[$category] ?? 'Каталог';
         $isFiltered = $category !== 'all';
@@ -88,13 +89,20 @@ class ProductController extends Controller
             ? "{$categoryName} — купить в Брянске"
             : 'Каталог букетов';
 
+        if ($page > 1) {
+            $title .= " — страница {$page}";
+        }
+
         $description = $isFiltered
             ? "{$categoryName} от цветочной мастерской Эдемский сад. Доставка по Брянску бесплатно."
             : 'Каталог свежих букетов от цветочной мастерской Эдемский сад. Монобукеты и миксы от 2000₽. Доставка по Брянску бесплатно. Более 50 вариантов букетов.';
 
-        $canonicalUrl = $isFiltered
-            ? route('products.index', ['category' => $category])
-            : route('products.index');
+        $canonicalParams = $isFiltered ? ['category' => $category] : [];
+        if ($page > 1) {
+            $canonicalParams['page'] = $page;
+        }
+
+        $canonicalUrl = route('products.index', $canonicalParams);
 
         Seo::setTitle($title)
             ->setDescription($description)
@@ -104,6 +112,10 @@ class ProductController extends Controller
                 ['name' => 'Главная', 'url' => url('/')],
                 ['name' => 'Каталог', 'url' => route('products.index')],
             ]);
+
+        if ($page > 1) {
+            Seo::setRobots('noindex, follow');
+        }
     }
 
     /**
@@ -127,7 +139,7 @@ class ProductController extends Controller
      */
     public function show(string $slug): View
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
+        $product = Product::where('slug', $slug)->available()->firstOrFail();
 
         // SEO для страницы товара
         $title = $product->name.' — купить в Брянске';

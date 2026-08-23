@@ -52,6 +52,8 @@ class SeoService
         $this->twitter = [
             'twitter:card' => 'summary_large_image',
         ];
+
+        $this->setImage('/images/logo.jpg', 'Эдемский сад — Цветочная мастерская');
     }
 
     /**
