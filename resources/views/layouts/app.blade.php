@@ -7,6 +7,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#e96d3f">
 
+    @if($yandexVerification = config('services.yandex_webmaster.verification'))
+        <meta name="yandex-verification" content="{{ $yandexVerification }}">
+    @endif
+    @if($googleVerification = config('services.google_search_console.verification'))
+        <meta name="google-site-verification" content="{{ $googleVerification }}">
+    @endif
+
     @stack('head')
     @stack('seo')
 

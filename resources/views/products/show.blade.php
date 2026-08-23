@@ -587,13 +587,13 @@
                             @endif
 
                             @if($hasImages)
-                                <img
-                                    src="{{ $images[0] }}"
-                                    alt="{{ $product->name }} — фото букета, купить в Брянске"
+                                <x-product-image
+                                    :src="$images[0]"
+                                    :alt="$product->name . ' — фото букета, купить в Брянске'"
+                                    loading="eager"
                                     class="w-full h-full object-cover custom-cursor-zoom"
                                     id="main-image"
-                                    onclick="openZoom(this.src)"
-                                >
+                                    onclick="openZoom(this.src)" />
                             @else
                                 <div class="w-full h-full flex items-center justify-center">
                                     <svg class="w-32 h-32 text-accent-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -635,13 +635,11 @@
                                     class="thumbnail-organic flex-shrink-0 w-20 h-20 lg:w-24 lg:h-24 overflow-hidden {{ $index === 0 ? 'active' : '' }}"
                                     aria-label="Показать изображение {{ $index + 1 }}"
                                 >
-                                    <img
-                                        src="{{ $imageUrl }}"
-                                        alt="{{ $product->name }} — вид {{ $index + 1 }}"
-                                        loading="lazy"
+                                    <x-product-image
+                                        :src="$imageUrl"
+                                        :alt="$product->name . ' — вид ' . ($index + 1)"
                                         class="w-full h-full object-cover"
-                                        style="object-position: center;"
-                                    >
+                                        style="object-position: center;" />
                                 </button>
                             @endforeach
                         </div>
@@ -681,6 +679,60 @@
                             Прекрасный букет, созданный с любовью и вниманием к деталям нашими флористами. Каждый цветок подобран вручную, чтобы создать гармоничную композицию, которая будет радовать вас своей красотой.
                         </div>
                     @endif
+
+                    <!-- Характеристики: состав, размер, уход -->
+                    <div class="mb-10 space-y-4">
+                        <details class="group/spec rounded-2xl border-2 border-gray-200 bg-white overflow-hidden" open>
+                            <summary class="flex items-center justify-between gap-4 cursor-pointer px-6 py-4 select-none">
+                                <span class="flex items-center gap-3 font-display text-lg font-semibold text-gray-900">
+                                    <svg class="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12z"/>
+                                    </svg>
+                                    Состав букета
+                                </span>
+                                <svg class="w-5 h-5 text-gray-400 transition-transform group-open/spec:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </summary>
+                            <div class="px-6 pb-5 text-gray-700 leading-relaxed">
+                                {{ $product->composition }}
+                            </div>
+                        </details>
+
+                        <details class="group/spec rounded-2xl border-2 border-gray-200 bg-white overflow-hidden">
+                            <summary class="flex items-center justify-between gap-4 cursor-pointer px-6 py-4 select-none">
+                                <span class="flex items-center gap-3 font-display text-lg font-semibold text-gray-900">
+                                    <svg class="w-5 h-5 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                    </svg>
+                                    Размер
+                                </span>
+                                <svg class="w-5 h-5 text-gray-400 transition-transform group-open/spec:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </summary>
+                            <div class="px-6 pb-5 text-gray-700 leading-relaxed">
+                                {{ $product->size }}
+                            </div>
+                        </details>
+
+                        <details class="group/spec rounded-2xl border-2 border-gray-200 bg-white overflow-hidden">
+                            <summary class="flex items-center justify-between gap-4 cursor-pointer px-6 py-4 select-none">
+                                <span class="flex items-center gap-3 font-display text-lg font-semibold text-gray-900">
+                                    <svg class="w-5 h-5 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                    Уход за букетом
+                                </span>
+                                <svg class="w-5 h-5 text-gray-400 transition-transform group-open/spec:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </summary>
+                            <div class="px-6 pb-5 text-gray-700 leading-relaxed">
+                                {{ $product->care_instructions }}
+                            </div>
+                        </details>
+                    </div>
 
                     <!-- Действия -->
                     <div class="flex flex-col sm:flex-row gap-4 mb-12">
@@ -776,6 +828,18 @@
                         <p class="text-sm text-gray-600">Учтем все ваши пожелания</p>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- SEO-текст под карточкой -->
+        <div class="p-8 animate-fade-in-up stagger-3">
+            <div class="max-w-4xl mx-auto">
+                <article class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                    <h2 class="font-display text-2xl font-semibold text-gray-900 mb-4">
+                        {{ $product->name }} — доставка цветов в Брянске
+                    </h2>
+                    <p>{{ $product->seo_text }}</p>
+                </article>
             </div>
         </div>
     </div>
@@ -879,6 +943,7 @@
 <script>
     // Галерея изображений
     const images = @json($product->image_urls);
+    const imagesWebp = @json($product->image_urls_webp);
     const productName = @json($product->name);
     let currentImageIndex = 0;
 
@@ -886,6 +951,14 @@
     function setMainImage(src, alt, index) {
         const mainImage = document.getElementById('main-image');
         const currentCounter = document.getElementById('current-image');
+
+        // Обновляем WebP-источник в <picture>, чтобы при смене фото не показывался webp первого слайда
+        const webpSource = mainImage.parentElement?.querySelector('source[type="image/webp"]');
+        if (webpSource && imagesWebp[index] && imagesWebp[index] !== images[index]) {
+            webpSource.srcset = imagesWebp[index];
+        } else if (webpSource) {
+            webpSource.srcset = src;
+        }
 
         mainImage.src = src;
         mainImage.alt = alt;
