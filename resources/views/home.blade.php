@@ -187,11 +187,10 @@
             <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg flex flex-col">
                 <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 shrink-0 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
                     @if($product->main_image)
-                        <img
-                            src="{{ $product->main_image }}"
-                            alt="{{ $product->name }} — купить букет в Брянске"
-                            loading="lazy"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <x-product-image
+                            :src="$product->main_image"
+                            :alt="$product->name . ' — купить букет в Брянске'"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                     @else
                         <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-7xl">🌸</div>
                     @endif
@@ -274,6 +273,23 @@
         </p>
     </div>
 </section>
+
+<!-- SEO-текст -->
+@php($seoBlock = config('seo_texts.home'))
+@if($seoBlock)
+<section class="py-16 sm:py-20 bg-accent-50/40">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+            <h2 class="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 mb-6">
+                {{ $seoBlock['heading'] }}
+            </h2>
+            @foreach($seoBlock['body'] as $paragraph)
+                <p class="mb-4">{{ $paragraph }}</p>
+            @endforeach
+        </article>
+    </div>
+</section>
+@endif
 
 <!-- TODO: Call to Action для кастомного букета (временно отключена) -->
 <!-- <section class="relative py-24 overflow-hidden">

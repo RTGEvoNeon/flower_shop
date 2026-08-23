@@ -76,10 +76,10 @@
                     <!-- Изображение товара -->
                     <div class="relative h-44 sm:h-80 overflow-hidden bg-gradient-to-br {{ $bgGradient }}">
                         @if($product->main_image && $product->main_image !== '/images/placeholder.jpg')
-                            <img src="{{ $product->main_image }}"
-                                 alt="{{ $product->name }} — свежие цветы с доставкой"
-                                 loading="lazy"
-                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <x-product-image
+                                :src="$product->main_image"
+                                :alt="$product->name . ' — свежие цветы с доставкой'"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                         @else
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <span class="text-5xl sm:text-7xl opacity-40">
@@ -219,6 +219,23 @@
         @endif
     </div>
 </section>
+
+<!-- SEO-текст под каталогом -->
+@php($seoBlock = config('seo_texts.'.$currentCategory) ?? config('seo_texts.all'))
+@if($seoBlock)
+<section class="py-12 sm:py-16 bg-accent-50/40">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+            <h2 class="font-display text-2xl sm:text-3xl font-semibold text-gray-900 mb-6">
+                {{ $seoBlock['heading'] }}
+            </h2>
+            @foreach($seoBlock['body'] as $paragraph)
+                <p class="mb-4">{{ $paragraph }}</p>
+            @endforeach
+        </article>
+    </div>
+</section>
+@endif
 
 <!-- Призыв к действию -->
 <section class="relative py-24 overflow-hidden bg-gradient-to-br from-primary-600 via-primary-500 to-gold-600">
