@@ -18,11 +18,6 @@ class OptimizeImages extends Command
 
     protected $description = 'Генерирует .webp рядом с каждым .jpg/.jpeg/.png в storage/app/public';
 
-    /**
-     * Каталоги (диск public), в которых ищем изображения.
-     */
-    private const DIRECTORIES = ['products', 'wholesales'];
-
     public function handle(): int
     {
         $disk = Storage::disk('public');
@@ -35,38 +30,32 @@ class OptimizeImages extends Command
         $failed = 0;
         $savedBytes = 0;
 
-        foreach (self::DIRECTORIES as $directory) {
-            if (! $disk->exists($directory)) {
+        foreach ($disk->allFiles() as $file) {
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+            if (! in_array($extension, ['jpg', 'jpeg', 'png'], true)) {
                 continue;
             }
 
-            foreach ($disk->allFiles($directory) as $file) {
-                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            $webpPath = preg_replace('/\.(jpe?g|png)$/i', '.webp', $file);
 
-                if (! in_array($extension, ['jpg', 'jpeg', 'png'], true)) {
-                    continue;
-                }
+            if (! $force && $disk->exists($webpPath)) {
+                $skipped++;
 
-                $webpPath = preg_replace('/\.(jpe?g|png)$/i', '.webp', $file);
+                continue;
+            }
 
-                if (! $force && $disk->exists($webpPath)) {
-                    $skipped++;
+            try {
+                $originalSize = $disk->size($file);
 
-                    continue;
-                }
+                $encoded = $manager->decodePath($disk->path($file))->encode(new WebpEncoder($quality));
+                $disk->put($webpPath, (string) $encoded);
 
-                try {
-                    $originalSize = $disk->size($file);
-
-                    $encoded = $manager->decodePath($disk->path($file))->encode(new WebpEncoder($quality));
-                    $disk->put($webpPath, (string) $encoded);
-
-                    $savedBytes += max(0, $originalSize - $disk->size($webpPath));
-                    $converted++;
-                } catch (\Throwable $e) {
-                    $this->error("Ошибка для {$file}: {$e->getMessage()}");
-                    $failed++;
-                }
+                $savedBytes += max(0, $originalSize - $disk->size($webpPath));
+                $converted++;
+            } catch (\Throwable $e) {
+                $this->error("Ошибка для {$file}: {$e->getMessage()}");
+                $failed++;
             }
         }
 
