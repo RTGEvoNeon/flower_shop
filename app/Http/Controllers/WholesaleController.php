@@ -17,7 +17,9 @@ class WholesaleController extends Controller
      */
     public function index(Request $request): View
     {
-        $this->setSeoForCatalog();
+        $page = max(1, (int) $request->query('page', 1));
+
+        $this->setSeoForCatalog($page);
 
         $products = $this->getFilteredProducts();
 
@@ -88,18 +90,31 @@ class WholesaleController extends Controller
     /**
      * Установить SEO-данные для каталога.
      */
-    private function setSeoForCatalog(): void
+    private function setSeoForCatalog(int $page): void
     {
         $title = 'Оптовая продажа тюльпанов — каталог';
+
+        if ($page > 1) {
+            $title .= " — страница {$page}";
+        }
+
         $description = 'Оптовая продажа тюльпанов от производителя. Минимальный заказ от 1000 шт. Цены от 45₽/шт при заказе от 10000 шт. Доставка по Брянску и области.';
+
+        $canonicalUrl = $page > 1
+            ? route('wholesale.index', ['page' => $page])
+            : route('wholesale.index');
 
         Seo::setTitle($title)
             ->setDescription($description)
             ->setKeywords(['тюльпаны опт', 'оптовая продажа тюльпанов', 'тюльпаны оптом Брянск', 'купить тюльпаны оптом'])
-            ->setCanonical(route('wholesale.index'))
+            ->setCanonical($canonicalUrl)
             ->setBreadcrumbSchema([
                 ['name' => 'Главная', 'url' => url('/')],
                 ['name' => 'Оптовые продажи', 'url' => route('wholesale.index')],
             ]);
+
+        if ($page > 1) {
+            Seo::setRobots('noindex, follow');
+        }
     }
 }
