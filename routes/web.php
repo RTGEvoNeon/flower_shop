@@ -20,6 +20,7 @@ Route::get('/delivery', [PageController::class, 'delivery'])->name('delivery');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/oferta', [PageController::class, 'oferta'])->name('oferta');
 
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 // Каталог товаров

@@ -140,7 +140,7 @@
                         © 2026 Эдемский сад. Все права защищены.
                     </p>
                     <p class="text-xs text-gray-500 leading-relaxed">
-                        ИП Редин Дмитрий Витальевич
+                        ИП Редин Дмитрий Витальевич · ИНН 323200777288 · ОГРНИП 304325504400052
                     </p>
                 </div>
 
@@ -148,9 +148,9 @@
                     <a href="/privacy" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
                         Политика конфиденциальности
                     </a>
-                    <!-- <a href="/terms" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
+                    <a href="/oferta" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
                         Публичная оферта
-                    </a> -->
+                    </a>
                 </div>
             </div>
 
