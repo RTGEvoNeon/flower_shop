@@ -26,19 +26,6 @@ class ProductResource extends Resource
 
     protected static ?string $pluralModelLabel = 'товары';
 
-    /**
-     * Временная копия удалённой Product::CATEGORIES (Task 4 плана мультикатегорийности) —
-     * заменяется мультивыбором категорий через таблицу categories в Task 7.
-     */
-    private const CATEGORIES = [
-        'mono' => 'Монобукеты',
-        'mix' => 'Микс букеты',
-        'tulip' => 'Тюльпаны',
-        'winter' => 'Зима',
-        'wedding' => 'Свадебные',
-        'premium' => 'Премиум',
-    ];
-
     public static function form(Form $form): Form
     {
         return $form
@@ -59,9 +46,11 @@ class ProductResource extends Resource
                     ->required()
                     ->numeric()
                     ->prefix('₽'),
-                Forms\Components\Select::make('category')
-                    ->label('Категория')
-                    ->options(self::CATEGORIES)
+                Forms\Components\Select::make('categories')
+                    ->label('Категории')
+                    ->relationship('categories', 'name')
+                    ->multiple()
+                    ->preload()
                     ->required(),
                 Forms\Components\Toggle::make('is_available')
                     ->required(),
@@ -86,10 +75,10 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category')
-                    ->label('Категория')
-                    ->formatStateUsing(fn (string $state) => self::CATEGORIES[$state] ?? $state)
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('categories.name')
+                    ->label('Категории')
+                    ->badge()
+                    ->separator(','),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Цена')
                     ->money('RUB')
@@ -98,9 +87,9 @@ class ProductResource extends Resource
                     ->label('Доступен'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('category')
+                Tables\Filters\SelectFilter::make('categories')
                     ->label('Категория')
-                    ->options(self::CATEGORIES),
+                    ->relationship('categories', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
