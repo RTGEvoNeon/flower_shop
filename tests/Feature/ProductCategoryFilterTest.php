@@ -56,4 +56,18 @@ class ProductCategoryFilterTest extends TestCase
         $response->assertOk();
         $response->assertSee('Видимый везде');
     }
+
+    public function test_product_card_shows_category_name_from_relation(): void
+    {
+        // Ключ 'mono' конфликтует с baseline-сидом data-migration (2026_08_26_100002),
+        // используем свободный тестовый ключ с суффиксом -test.
+        $category = Category::factory()->create(['key' => 'mono-test', 'name' => 'Монобукеты']);
+        $product = Product::factory()->create(['is_available' => true, 'name' => 'Карточный букет']);
+        $product->categories()->attach($category->id);
+
+        $response = $this->get('/products');
+
+        $response->assertOk();
+        $response->assertSee('Монобукеты');
+    }
 }

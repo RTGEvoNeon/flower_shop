@@ -38,6 +38,7 @@ class PageController extends Controller
 
         $randomProducts = Product::available()
             ->withImages()
+            ->with('categories')
             ->inRandomOrder()
             ->limit(3)
             ->get();

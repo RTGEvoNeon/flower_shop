@@ -105,18 +105,11 @@
                         </div>
 
                         <!-- Категория -->
+                        @if($product->categories->isNotEmpty())
                         <div class="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 bg-white/95 backdrop-blur-sm px-2 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium text-gray-700 shadow-md">
-                            @php
-                                $categoryLabels = [
-                                    'mono' => 'Монобукет',
-                                    'mix' => 'Микс',
-                                    'tulip' => 'Тюльпаны',
-                                    'winter' => 'Зима',
-                                    'wedding' => 'Свадебные',
-                                ];
-                            @endphp
-                            {{ $categoryLabels[$product->category] ?? ucfirst($product->category) }}
+                            {{ $product->categories->first()->name }}
                         </div>
+                        @endif
 
                         <!-- Кнопка быстрого просмотра (только на десктопе) -->
                         <a href="/product/{{ $product->slug }}"
