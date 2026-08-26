@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Filament\Resources\CategoryResource\Pages\CreateCategory;
 use App\Filament\Resources\ProductResource\Pages\EditProduct;
 use App\Models\Category;
 use App\Models\Product;
@@ -22,4 +23,30 @@ test('admin can attach multiple categories to a product via the form', function 
 
     expect($product->refresh()->categories->pluck('id')->sort()->values()->all())
         ->toBe([$mono->id, $wedding->id]);
+});
+
+test('admin can see category list', function () {
+    $admin = User::factory()->create(['is_admin' => true]);
+    Category::factory()->create(['name' => 'Тестовая категория']);
+
+    $response = test()->actingAs($admin)->get('/admin/categories');
+
+    $response->assertOk();
+    $response->assertSee('Тестовая категория');
+});
+
+test('admin can create a new category', function () {
+    $admin = User::factory()->create(['is_admin' => true]);
+
+    Livewire::actingAs($admin)
+        ->test(CreateCategory::class)
+        ->fillForm([
+            'key' => 'newyear',
+            'name' => 'Новый год',
+            'sort_order' => 5,
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors();
+
+    expect(Category::where('key', 'newyear')->exists())->toBeTrue();
 });
