@@ -69,7 +69,7 @@ class ProductController extends Controller
      */
     private function getFilteredProducts(string $category): LengthAwarePaginator
     {
-        $query = Product::available()->withImages();
+        $query = Product::available()->withImages()->with('categories');
 
         if ($category !== 'all') {
             $query->whereHas('categories', fn ($q) => $q->where('key', $category));

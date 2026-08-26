@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ProductCategoryFilterTest extends TestCase
@@ -76,5 +77,24 @@ class ProductCategoryFilterTest extends TestCase
         // на карточке товара (Task 6) — ровно 2 раза.
         $occurrences = substr_count($response->getContent(), $categoryName);
         $this->assertSame(2, $occurrences, 'Название категории должно быть и во вкладке фильтра, и на карточке товара');
+    }
+
+    public function test_catalog_page_does_not_n_plus_one_on_categories(): void
+    {
+        $category = Category::factory()->create(['key' => 'n-plus-one-test', 'name' => 'Тест N+1']);
+        Product::factory()->count(5)->create(['is_available' => true])->each(
+            fn ($product) => $product->categories()->attach($category->id)
+        );
+
+        DB::enableQueryLog();
+        $this->get('/products')->assertOk();
+        $queries = DB::getQueryLog();
+        DB::disableQueryLog();
+
+        $categoryQueries = collect($queries)->filter(
+            fn ($q) => str_contains($q['query'], 'category_product')
+        );
+
+        $this->assertLessThanOrEqual(2, $categoryQueries->count(), 'Ожидается не более 2 запросов к category_product (eager-load + whereHas), а не по одному на товар');
     }
 }
