@@ -5,29 +5,16 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Facades\Seo;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    /**
-     * Доступные категории для фильтрации.
-     *
-     * Временная копия удалённой Product::CATEGORIES (Task 4 плана мультикатегорийности) —
-     * заменяется работой через таблицу categories в Task 5.
-     */
-    private const CATEGORIES = [
-        'all' => 'Все букеты',
-        'mono' => 'Монобукеты',
-        'mix' => 'Микс букеты',
-        'tulip' => 'Тюльпаны',
-        'winter' => 'Зима',
-        'wedding' => 'Свадебные',
-        'premium' => 'Премиум',
-    ];
-
     /**
      * Display a listing of the resource.
      */
@@ -49,17 +36,18 @@ class ProductController extends Controller
 
     /**
      * Категории, в которых есть хотя бы один доступный товар.
+     *
+     * @return Collection<int, Category>
      */
-    private function getAvailableCategories(): array
+    private function getAvailableCategories(): Collection
     {
-        $categoriesWithProducts = Product::available()
-            ->distinct()
-            ->pluck('category');
-
-        return ['all' => self::CATEGORIES['all']] + array_intersect_key(
-            array_diff_key(self::CATEGORIES, ['all' => true]),
-            array_flip($categoriesWithProducts->all())
-        );
+        return Category::query()
+            ->whereHas('products', function (Builder $query): Builder {
+                /** @var Builder<Product> $query */
+                return $query->available();
+            })
+            ->orderBy('sort_order')
+            ->get();
     }
 
     /**
@@ -67,11 +55,13 @@ class ProductController extends Controller
      */
     private function validateCategory(?string $category): string
     {
-        if ($category === null || $category === 'all' || ! array_key_exists($category, self::CATEGORIES)) {
+        if ($category === null || $category === 'all') {
             return 'all';
         }
 
-        return $category;
+        $exists = Category::query()->where('key', $category)->exists();
+
+        return $exists ? $category : 'all';
     }
 
     /**
@@ -82,7 +72,7 @@ class ProductController extends Controller
         $query = Product::available()->withImages();
 
         if ($category !== 'all') {
-            $query->where('category', $category);
+            $query->whereHas('categories', fn ($q) => $q->where('key', $category));
         }
 
         return $query->paginate(18)->withQueryString();
@@ -93,7 +83,10 @@ class ProductController extends Controller
      */
     private function setSeoForCatalog(string $category, int $page): void
     {
-        $categoryName = self::CATEGORIES[$category] ?? 'Каталог';
+        $categoryName = $category === 'all'
+            ? 'Каталог'
+            : (Category::query()->where('key', $category)->value('name') ?? 'Каталог');
+
         $isFiltered = $category !== 'all';
 
         $title = $isFiltered
@@ -158,13 +151,8 @@ class ProductController extends Controller
             ? mb_substr($product->description, 0, 140).'... Цена: '.number_format((float) $product->price, 0, '', ' ').'₽. Доставка по Брянску бесплатно.'
             : "Букет {$product->name} от цветочной мастерской Эдемский сад. Цена: ".number_format((float) $product->price, 0, '', ' ').'₽. Свежие цветы, бесплатная доставка по Брянску.';
 
-        $categoryKeywords = [
-            'mono' => 'монобукет',
-            'mix' => 'букет микс',
-            'tulip' => 'тюльпаны',
-            'winter' => 'зимний букет',
-            'wedding' => 'свадебный букет',
-        ];
+        $firstCategory = $product->categories->first();
+        $categoryKeyword = $firstCategory instanceof Category ? $firstCategory->name : 'букет';
 
         Seo::setTitle($title)
             ->setDescription($description)
@@ -173,7 +161,7 @@ class ProductController extends Controller
                 "купить {$product->name}",
                 "{$product->name} Брянск",
                 "букет {$product->name}",
-                $categoryKeywords[$product->category] ?? 'букет',
+                $categoryKeyword,
             ])
             ->setCanonical(route('products.show', $product->slug))
             ->setType('product')

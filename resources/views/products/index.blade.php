@@ -36,11 +36,16 @@
 
         <!-- Фильтры -->
         <nav class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-16 animate-fade-in-up stagger-3" aria-label="Фильтры по категориям">
-            @foreach($categories as $key => $label)
-                <a href="{{ route('products.index', $key === 'all' ? [] : ['category' => $key]) }}"
-                   class="filter-btn {{ $currentCategory === $key ? 'active' : '' }} px-3 py-2 sm:px-6 sm:py-3 rounded-full font-medium text-xs sm:text-sm transition-all hover:scale-105 shadow-sm"
-                   @if($currentCategory === $key) aria-current="page" @endif>
-                    {{ $label }}
+            <a href="{{ route('products.index') }}"
+               class="filter-btn {{ $currentCategory === 'all' ? 'active' : '' }} px-3 py-2 sm:px-6 sm:py-3 rounded-full font-medium text-xs sm:text-sm transition-all hover:scale-105 shadow-sm"
+               @if($currentCategory === 'all') aria-current="page" @endif>
+                Все букеты
+            </a>
+            @foreach($categories as $category)
+                <a href="{{ route('products.index', ['category' => $category->key]) }}"
+                   class="filter-btn {{ $currentCategory === $category->key ? 'active' : '' }} px-3 py-2 sm:px-6 sm:py-3 rounded-full font-medium text-xs sm:text-sm transition-all hover:scale-105 shadow-sm"
+                   @if($currentCategory === $category->key) aria-current="page" @endif>
+                    {{ $category->name }}
                 </a>
             @endforeach
         </nav>
