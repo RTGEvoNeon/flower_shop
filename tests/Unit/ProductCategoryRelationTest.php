@@ -16,14 +16,14 @@ class ProductCategoryRelationTest extends TestCase
     public function test_product_can_be_attached_to_multiple_categories(): void
     {
         $product = Product::factory()->create();
-        $mono = Category::factory()->create(['key' => 'mono', 'name' => 'Монобукеты']);
-        $wedding = Category::factory()->create(['key' => 'wedding', 'name' => 'Свадебные']);
+        $mono = Category::factory()->create(['key' => 'mono-test', 'name' => 'Монобукеты тест']);
+        $wedding = Category::factory()->create(['key' => 'wedding-test', 'name' => 'Свадебные тест']);
 
         $product->categories()->attach([$mono->id, $wedding->id]);
 
         $this->assertCount(2, $product->refresh()->categories);
-        $this->assertTrue($product->categories->contains('key', 'mono'));
-        $this->assertTrue($product->categories->contains('key', 'wedding'));
+        $this->assertTrue($product->categories->contains('key', 'mono-test'));
+        $this->assertTrue($product->categories->contains('key', 'wedding-test'));
     }
 
     public function test_category_can_have_multiple_products(): void
