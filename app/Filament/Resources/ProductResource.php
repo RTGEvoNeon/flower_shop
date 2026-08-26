@@ -26,6 +26,19 @@ class ProductResource extends Resource
 
     protected static ?string $pluralModelLabel = 'товары';
 
+    /**
+     * Временная копия удалённой Product::CATEGORIES (Task 4 плана мультикатегорийности) —
+     * заменяется мультивыбором категорий через таблицу categories в Task 7.
+     */
+    private const CATEGORIES = [
+        'mono' => 'Монобукеты',
+        'mix' => 'Микс букеты',
+        'tulip' => 'Тюльпаны',
+        'winter' => 'Зима',
+        'wedding' => 'Свадебные',
+        'premium' => 'Премиум',
+    ];
+
     public static function form(Form $form): Form
     {
         return $form
@@ -48,7 +61,7 @@ class ProductResource extends Resource
                     ->prefix('₽'),
                 Forms\Components\Select::make('category')
                     ->label('Категория')
-                    ->options(Product::CATEGORIES)
+                    ->options(self::CATEGORIES)
                     ->required(),
                 Forms\Components\Toggle::make('is_available')
                     ->required(),
@@ -75,7 +88,7 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->label('Категория')
-                    ->formatStateUsing(fn (string $state) => Product::CATEGORIES[$state] ?? $state)
+                    ->formatStateUsing(fn (string $state) => self::CATEGORIES[$state] ?? $state)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Цена')
@@ -87,7 +100,7 @@ class ProductResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->label('Категория')
-                    ->options(Product::CATEGORIES),
+                    ->options(self::CATEGORIES),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

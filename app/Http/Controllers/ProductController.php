@@ -14,8 +14,19 @@ class ProductController extends Controller
 {
     /**
      * Доступные категории для фильтрации.
+     *
+     * Временная копия удалённой Product::CATEGORIES (Task 4 плана мультикатегорийности) —
+     * заменяется работой через таблицу categories в Task 5.
      */
-    private const CATEGORIES = ['all' => 'Все букеты'] + Product::CATEGORIES;
+    private const CATEGORIES = [
+        'all' => 'Все букеты',
+        'mono' => 'Монобукеты',
+        'mix' => 'Микс букеты',
+        'tulip' => 'Тюльпаны',
+        'winter' => 'Зима',
+        'wedding' => 'Свадебные',
+        'premium' => 'Премиум',
+    ];
 
     /**
      * Display a listing of the resource.
@@ -46,7 +57,7 @@ class ProductController extends Controller
             ->pluck('category');
 
         return ['all' => self::CATEGORIES['all']] + array_intersect_key(
-            Product::CATEGORIES,
+            array_diff_key(self::CATEGORIES, ['all' => true]),
             array_flip($categoriesWithProducts->all())
         );
     }
@@ -71,7 +82,7 @@ class ProductController extends Controller
         $query = Product::available()->withImages();
 
         if ($category !== 'all') {
-            $query->byCategory($category);
+            $query->where('category', $category);
         }
 
         return $query->paginate(18)->withQueryString();
