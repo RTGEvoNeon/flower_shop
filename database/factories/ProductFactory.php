@@ -19,7 +19,6 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $categories = ['bouquets', 'wedding', 'seasonal', 'luxury'];
         $name = 'Букет "'.fake()->unique()->words(2, true).'"';
 
         return [
@@ -27,7 +26,6 @@ class ProductFactory extends Factory
             'slug' => str($name)->slug(),
             'description' => fake()->paragraph(3),
             'price' => fake()->numberBetween(10, 150) * 100,
-            'category' => fake()->randomElement($categories),
             'is_available' => fake()->boolean(90), // 90% доступны
         ];
     }

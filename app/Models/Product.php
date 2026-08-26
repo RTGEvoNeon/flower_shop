@@ -6,8 +6,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -28,6 +30,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read string $size
  * @property-read string $care_instructions
  * @property-read string $seo_text
+ * @property-read Collection<int, Category> $categories
  */
 class Product extends Model implements HasMedia
 {
@@ -35,35 +38,6 @@ class Product extends Model implements HasMedia
     use InteractsWithMedia;
 
     public const PHOTOS_COLLECTION = 'photos';
-
-    /**
-     * Доступные категории товара.
-     */
-    public const CATEGORIES = [
-        'mono' => 'Монобукеты',
-        'mix' => 'Микс букеты',
-        'tulip' => 'Тюльпаны',
-        'winter' => 'Зима',
-        'wedding' => 'Свадебные',
-        'premium' => 'Премиум',
-    ];
-
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection(self::PHOTOS_COLLECTION);
-    }
-
-    /**
-     * Человекочитаемые названия категорий (в единственном числе, для текстов).
-     */
-    private const CATEGORY_LABELS = [
-        'mono' => 'монобукет',
-        'mix' => 'букет-микс',
-        'tulip' => 'букет из тюльпанов',
-        'winter' => 'зимний букет',
-        'wedding' => 'свадебный букет',
-        'bouquets' => 'букет',
-    ];
 
     protected $fillable = [
         'id',
@@ -84,20 +58,22 @@ class Product extends Model implements HasMedia
         'price' => 'float',
     ];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::PHOTOS_COLLECTION);
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     /**
      * Scope: только доступные товары
      */
     public function scopeAvailable(Builder $query): Builder
     {
         return $query->where('is_available', true);
-    }
-
-    /**
-     * Scope: по категории
-     */
-    public function scopeByCategory(Builder $query, string $category): Builder
-    {
-        return $query->where('category', $category);
     }
 
     /**
@@ -188,7 +164,14 @@ class Product extends Model implements HasMedia
      */
     private function categoryLabel(): string
     {
-        return self::CATEGORY_LABELS[$this->category] ?? 'букет';
+        /** @var Category|null $category */
+        $category = $this->categories->first();
+
+        if ($category instanceof Category) {
+            return $category->label_singular ?? mb_strtolower($category->name);
+        }
+
+        return 'букет';
     }
 
     /**

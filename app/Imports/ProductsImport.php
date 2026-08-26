@@ -4,15 +4,29 @@ declare(strict_types=1);
 
 namespace App\Imports;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductsImport implements ToModel, WithCalculatedFormulas, WithHeadingRow
+class ProductsImport implements ToModel, WithCalculatedFormulas, WithEvents, WithHeadingRow
 {
+    use RegistersEventListeners;
+
+    /**
+     * Отложенные привязки категорий: slug товара => ключ категории.
+     * Заполняется в model() и применяется после сохранения всех строк в afterImport(),
+     * т.к. ToModel не даёт доступа к сохранённому instance для новых строк.
+     *
+     * @var array<string, string>
+     */
+    private array $pendingCategoryLinks = [];
+
     /**
      * @return Model|null
      */
@@ -45,6 +59,10 @@ class ProductsImport implements ToModel, WithCalculatedFormulas, WithHeadingRow
                     'category' => $category,
                     'is_available' => isset($row['is_available']) ? (bool) $row['is_available'] : true,
                 ]);
+
+                if (! empty($category)) {
+                    $this->pendingCategoryLinks[$product->slug] = $category;
+                }
 
                 return null; // Возвращаем null, так как товар уже обновлен
             }
@@ -80,7 +98,42 @@ class ProductsImport implements ToModel, WithCalculatedFormulas, WithHeadingRow
             $productData['id'] = $id;
         }
 
+        if (! empty($category)) {
+            $this->pendingCategoryLinks[$slug] = $category;
+        }
+
         return new Product($productData);
+    }
+
+    /**
+     * После сохранения всех строк — привязываем реальные категории (таблица categories)
+     * к импортированным/обновлённым товарам по значению legacy-колонки category.
+     * sync (а не attach) гарантирует отсутствие дублей при повторном импорте и корректную
+     * замену категории при повторном импорте той же строки с другим значением.
+     */
+    public function afterImport(): void
+    {
+        if ($this->pendingCategoryLinks === []) {
+            return;
+        }
+
+        $categoryIds = Category::query()
+            ->whereIn('key', array_unique(array_values($this->pendingCategoryLinks)))
+            ->pluck('id', 'key');
+
+        foreach ($this->pendingCategoryLinks as $slug => $categoryKey) {
+            $categoryId = $categoryIds->get($categoryKey);
+
+            if ($categoryId === null) {
+                continue;
+            }
+
+            $product = Product::where('slug', $slug)->first();
+
+            $product?->categories()->sync([$categoryId]);
+        }
+
+        $this->pendingCategoryLinks = [];
     }
 
     /**
