@@ -60,14 +60,21 @@ class ProductCategoryFilterTest extends TestCase
     public function test_product_card_shows_category_name_from_relation(): void
     {
         // Ключ 'mono' конфликтует с baseline-сидом data-migration (2026_08_26_100002),
-        // используем свободный тестовый ключ с суффиксом -test.
-        $category = Category::factory()->create(['key' => 'mono-test', 'name' => 'Монобукеты']);
+        // используем свободный тестовый ключ с суффиксом -test. Название категории
+        // тоже должно быть уникальным на странице — обычное "Монобукеты" совпадает
+        // с текстом статичного SEO-description каталога ("Монобукеты и миксы от
+        // 2000₽"), из-за чего assertSee проходил бы даже без рендера бейджа карточки.
+        $categoryName = 'УникальнаяТестКатегория137';
+        $category = Category::factory()->create(['key' => 'mono-test', 'name' => $categoryName]);
         $product = Product::factory()->create(['is_available' => true, 'name' => 'Карточный букет']);
         $product->categories()->attach($category->id);
 
         $response = $this->get('/products');
 
         $response->assertOk();
-        $response->assertSee('Монобукеты');
+        // Название должно встретиться и во вкладке фильтра (Task 5), и в бейдже
+        // на карточке товара (Task 6) — ровно 2 раза.
+        $occurrences = substr_count($response->getContent(), $categoryName);
+        $this->assertSame(2, $occurrences, 'Название категории должно быть и во вкладке фильтра, и на карточке товара');
     }
 }
