@@ -37,6 +37,10 @@ class CategoryResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('label_singular')
+                    ->label('Название в единственном числе (для текстов)')
+                    ->helperText('Например: "монобукет". Если не заполнено, используется название категории в нижнем регистре.')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('sort_order')
                     ->label('Порядок сортировки')
                     ->numeric()

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id
  * @property string $key
  * @property string $name
+ * @property string|null $label_singular
  * @property int $sort_order
  */
 class Category extends Model
@@ -21,6 +22,7 @@ class Category extends Model
     protected $fillable = [
         'key',
         'name',
+        'label_singular',
         'sort_order',
     ];
 

@@ -24,6 +24,22 @@ return new class extends Migration
         'luxury' => 'Премиум (legacy)',
     ];
 
+    /**
+     * @var array<string, string>
+     */
+    private array $labelsSingular = [
+        'mono' => 'монобукет',
+        'mix' => 'букет-микс',
+        'tulip' => 'букет из тюльпанов',
+        'winter' => 'зимний букет',
+        'wedding' => 'свадебный букет',
+        'premium' => 'премиальный букет',
+        'september1' => 'букет к 1 сентября',
+        'bouquets' => 'букет',
+        'seasonal' => 'сезонный букет',
+        'luxury' => 'премиальный букет',
+    ];
+
     public function up(): void
     {
         $categoryIds = [];
@@ -33,9 +49,17 @@ return new class extends Migration
 
             $existingId = DB::table('categories')->where('key', $key)->value('id');
 
+            if ($existingId !== null) {
+                DB::table('categories')->where('id', $existingId)->update([
+                    'label_singular' => $this->labelsSingular[$key] ?? null,
+                    'updated_at' => now(),
+                ]);
+            }
+
             $categoryIds[$key] = $existingId ?? DB::table('categories')->insertGetId([
                 'key' => $key,
                 'name' => $name,
+                'label_singular' => $this->labelsSingular[$key] ?? null,
                 'sort_order' => $index,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -62,7 +86,11 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::table('category_product')->truncate();
-        DB::table('categories')->whereIn('key', array_keys($this->categories))->delete();
+        $categoryIds = DB::table('categories')
+            ->whereIn('key', array_keys($this->categories))
+            ->pluck('id');
+
+        DB::table('category_product')->whereIn('category_id', $categoryIds)->delete();
+        DB::table('categories')->whereIn('id', $categoryIds)->delete();
     }
 };

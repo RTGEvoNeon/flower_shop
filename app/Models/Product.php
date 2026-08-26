@@ -168,7 +168,7 @@ class Product extends Model implements HasMedia
         $category = $this->categories->first();
 
         if ($category instanceof Category) {
-            return $category->name;
+            return $category->label_singular ?? mb_strtolower($category->name);
         }
 
         return 'букет';
