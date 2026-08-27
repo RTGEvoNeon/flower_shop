@@ -202,17 +202,9 @@
                         </span>
                     </div>
                     <!-- Category badge -->
-                    @if($product->category)
+                    @if($product->categories->isNotEmpty())
                     <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700">
-                        @php
-                            $categoryLabels = [
-                                'mono' => 'Монобукет',
-                                'mix' => 'Микс',
-                                'winter' => 'Зима',
-                                'wedding' => 'Свадебные',
-                            ];
-                        @endphp
-                        {{ $categoryLabels[$product->category] ?? ucfirst($product->category) }}
+                        {{ $product->categories->first()->name }}
                     </div>
                     @endif
                 </a>

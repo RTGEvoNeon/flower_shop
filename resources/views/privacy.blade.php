@@ -320,10 +320,10 @@
             <div class="space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed">
                 <div class="p-4 sm:p-5 md:p-6 bg-gradient-to-br from-primary-100 to-gold-100 rounded-xl sm:rounded-2xl border-2 border-primary-300">
                     <p class="font-display text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 sm:mb-3">Основная цель обработки:</p>
-                    <p class="text-sm sm:text-base text-gray-800">Информирование Пользователя посредством отправки электронных писем</p>
+                    <p class="text-sm sm:text-base text-gray-800">Оформление и доставка заказа, связь с Пользователем по вопросам заказа, информирование о статусе заказа посредством телефона, электронной почты и мессенджеров</p>
                 </div>
                 <div class="p-4 sm:p-5 bg-white border-2 border-accent-200/50 rounded-xl">
-                    <p class="text-sm sm:text-base"><span class="font-semibold text-gray-900">Персональные данные:</span> философские убеждения</p>
+                    <p class="text-sm sm:text-base"><span class="font-semibold text-gray-900">Обрабатываемые персональные данные:</span> имя, номер телефона, адрес доставки, адрес электронной почты</p>
                 </div>
             </div>
         </div>
@@ -424,7 +424,7 @@
                         </svg>
                         <span>Гарантия конфиденциальности:</span>
                     </p>
-                    <p class="text-sm sm:text-base text-gray-800">Персональные данные Пользователя <span class="font-semibold">никогда</span> не будут переданы третьим лицам, за исключением случаев, связанных с исполнением действующего законодательства.</p>
+                    <p class="text-sm sm:text-base text-gray-800">Персональные данные Пользователя не передаются третьим лицам, за исключением случаев, необходимых для обработки платежа (платёжный сервис ЮKassa) или доставки заказа, а также случаев, связанных с исполнением действующего законодательства.</p>
                 </div>
 
                 <div class="p-4 sm:p-5 md:p-6 bg-white border-2 border-accent-200/50 rounded-xl sm:rounded-2xl mt-4 sm:mt-6">
@@ -666,6 +666,7 @@
                     <div class="p-4 sm:p-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl">
                         <p class="text-lg sm:text-xl font-semibold mb-3">ИП Редин Дмитрий Витальевич</p>
                         <div class="space-y-2 text-sm sm:text-base text-white/90">
+                            <p>ИНН 323200777288 · ОГРНИП 304325504400052</p>
                             <p>г. Брянск, ул. Академика Сахарова, 5</p>
                             <p>Телефон: <a href="tel:+79532929246" class="hover:text-white transition-colors break-all">+7 (953) 292-92-46</a></p>
                             <p class="break-words">Email для вопросов о персональных данных: <a href="mailto:edemskisadprivacy@yandex.ru" class="hover:text-white transition-colors underline">edemskisadprivacy@yandex.ru</a></p>

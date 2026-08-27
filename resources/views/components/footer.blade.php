@@ -64,22 +64,17 @@
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Все букеты
                     </a></li>
-                    <li><a href="/products?category=bouquets" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
-                        <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                        Букеты
-                    </a></li>
                     <li><a href="/products?category=wedding" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Свадебные
                     </a></li>
-                    <!-- TODO: Страница "Сезонные" временно отключена -->
-                    <!-- <li><a href="/products?category=seasonal" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
-                        <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                        Сезонные
-                    </a></li> -->
-                    <li><a href="/products?category=luxury" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
+                    <li><a href="/products?category=premium" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
                         <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                         Премиум
+                    </a></li>
+                    <li><a href="/products?category=september1" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
+                        <span class="w-1.5 h-1.5 bg-primary-400 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                        1 сентября
                     </a></li>
                     <!-- TODO: Страница "Собери свой букет" временно отключена -->
                     <!-- <li><a href="/custom-bouquet" class="text-gray-300 hover:text-primary-400 transition-colors inline-flex items-center group">
@@ -140,7 +135,7 @@
                         © 2026 Эдемский сад. Все права защищены.
                     </p>
                     <p class="text-xs text-gray-500 leading-relaxed">
-                        ИП Редин Дмитрий Витальевич
+                        ИП Редин Дмитрий Витальевич · ИНН 323200777288 · ОГРНИП 304325504400052
                     </p>
                 </div>
 
@@ -148,9 +143,9 @@
                     <a href="/privacy" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
                         Политика конфиденциальности
                     </a>
-                    <!-- <a href="/terms" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
+                    <a href="/oferta" class="text-sm text-gray-400 hover:text-primary-400 transition-colors">
                         Публичная оферта
-                    </a> -->
+                    </a>
                 </div>
             </div>
 

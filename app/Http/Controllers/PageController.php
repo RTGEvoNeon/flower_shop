@@ -38,6 +38,7 @@ class PageController extends Controller
 
         $randomProducts = Product::available()
             ->withImages()
+            ->with('categories')
             ->inRandomOrder()
             ->limit(3)
             ->get();
@@ -107,6 +108,19 @@ class PageController extends Controller
             ->setCanonical(route('privacy'));
 
         return view('privacy');
+    }
+
+    /**
+     * Страница публичной оферты
+     */
+    public function oferta(): View
+    {
+        Seo::setTitle('Публичная оферта')
+            ->setDescription('Публичная оферта цветочной мастерской Эдемский сад. Условия оформления и оплаты заказа, доставки, возврата и реквизиты продавца.')
+            ->setRobots('noindex, follow') // Служебная страница, не индексируем
+            ->setCanonical(route('oferta'));
+
+        return view('oferta');
     }
 
     /**

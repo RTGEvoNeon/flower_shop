@@ -378,6 +378,9 @@
 
     <!-- ReviewLab Widget Script -->
     <script src="https://app.reviewlab.ru/widget/index-es2015.js" defer></script>
+
+    <!-- Cookie consent -->
+    @include('components.cookie-consent')
 </body>
 
 </html>

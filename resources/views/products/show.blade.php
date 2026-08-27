@@ -651,11 +651,13 @@
             <div class="animate-fade-in-up stagger-2">
                 <div class="decorative-frame">
                 <!-- Категория -->
+                    @if($product->categories->isNotEmpty())
                     <div class="mb-4">
                         <span class="inline-block px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-primary-100 to-gold-100 text-primary-700 border border-primary-200">
-                            {{ ucfirst($product->category) }}
+                            {{ $product->categories->first()->name }}
                         </span>
                     </div>
+                    @endif
 
                     <!-- Название -->
                     <h1 class="display-xl font-display font-semibold text-gray-900 mb-6 text-balance">

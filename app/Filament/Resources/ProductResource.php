@@ -46,9 +46,11 @@ class ProductResource extends Resource
                     ->required()
                     ->numeric()
                     ->prefix('₽'),
-                Forms\Components\Select::make('category')
-                    ->label('Категория')
-                    ->options(Product::CATEGORIES)
+                Forms\Components\Select::make('categories')
+                    ->label('Категории')
+                    ->relationship('categories', 'name')
+                    ->multiple()
+                    ->preload()
                     ->required(),
                 Forms\Components\Toggle::make('is_available')
                     ->required(),
@@ -73,10 +75,10 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category')
-                    ->label('Категория')
-                    ->formatStateUsing(fn (string $state) => Product::CATEGORIES[$state] ?? $state)
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('categories.name')
+                    ->label('Категории')
+                    ->badge()
+                    ->separator(','),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Цена')
                     ->money('RUB')
@@ -85,9 +87,9 @@ class ProductResource extends Resource
                     ->label('Доступен'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('category')
+                Tables\Filters\SelectFilter::make('categories')
                     ->label('Категория')
-                    ->options(Product::CATEGORIES),
+                    ->relationship('categories', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
