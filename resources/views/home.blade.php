@@ -157,7 +157,7 @@
     </div>
 </section>
 
-<!-- Популярные букеты -->
+<!-- Блоки по категориям -->
 <section id="catalog" class="py-24 bg-gradient-to-b from-white to-accent-50 relative overflow-hidden">
     <!-- Background decoration -->
     <div class="absolute inset-0 opacity-5">
@@ -165,73 +165,64 @@
         <div class="absolute bottom-20 right-20 w-96 h-96 bg-gold-400 rounded-full blur-3xl"></div>
     </div>
 
-    <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <!-- Section Header -->
-        <div class="text-center mb-16 space-y-4">
-            <div class="inline-block">
-                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 text-primary-700 font-medium text-sm">
-                    ⭐ Бестселлеры
-                </span>
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-8 space-y-20">
+        @foreach($categoryBlocks as $block)
+        @php($category = $block['category'])
+        <div>
+            <!-- Section Header -->
+            <div class="text-center mb-16 space-y-4">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900 text-balance">
+                    {{ $category->name }}
+                </h2>
             </div>
-            <h2 class="font-display text-4xl lg:text-5xl font-bold text-gray-900 text-balance">
-                Букеты, которые заказывают чаще всего
-            </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                Проверенные временем композиции, которые дарят радость
-            </p>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach($randomProducts as $index => $product)
-            <!-- Карточка букета -->
-            <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg flex flex-col">
-                <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 shrink-0 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
-                    @if($product->main_image)
-                        <x-product-image
-                            :src="$product->main_image"
-                            :alt="$product->name . ' — купить букет в Брянске'"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                    @else
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-7xl">🌸</div>
-                    @endif
-                    <!-- Price badge -->
-                    <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                        <span class="text-2xl font-bold tabular-nums bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent inline-flex items-baseline gap-0.5">
-                            <span>{{ number_format($product->price, 0, ',', ' ') }}</span>
-                            <span class="price-currency" aria-hidden="true">₽</span>
-                        </span>
-                    </div>
-                    <!-- Category badge -->
-                    @if($product->categories->isNotEmpty())
-                    <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700">
-                        {{ $product->categories->first()->name }}
-                    </div>
-                    @endif
-                </a>
-                <div class="p-6 flex flex-col flex-1 min-h-0">
-                    <h3 class="font-display text-2xl font-semibold text-gray-900 mb-2">{{ $product->name }}</h3>
-                    <p class="text-gray-600 leading-relaxed line-clamp-2 flex-1 min-h-0">{{ $product->description ?? 'Прекрасный букет для особого случая' }}</p>
-                    <a href="{{ route('products.show', $product->slug) }}" class="block w-full mt-4 group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]" onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'click_product_card');">
-                        <span class="relative z-10 flex items-center justify-center gap-2">
-                            <span>Заказать букет</span>
-                            <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($block['products'] as $product)
+                <!-- Карточка букета -->
+                <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg flex flex-col">
+                    <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 shrink-0 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+                        @if($product->main_image)
+                            <x-product-image
+                                :src="$product->main_image"
+                                :alt="$product->name . ' — купить букет в Брянске'"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                        @else
+                            <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-7xl">🌸</div>
+                        @endif
+                        <!-- Price badge -->
+                        <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+                            <span class="text-2xl font-bold tabular-nums bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent inline-flex items-baseline gap-0.5">
+                                <span>{{ number_format($product->price, 0, ',', ' ') }}</span>
+                                <span class="price-currency" aria-hidden="true">₽</span>
+                            </span>
+                        </div>
                     </a>
+                    <div class="p-6 flex flex-col flex-1 min-h-0">
+                        <h3 class="font-display text-2xl font-semibold text-gray-900 mb-2">{{ $product->name }}</h3>
+                        <p class="text-gray-600 leading-relaxed line-clamp-2 flex-1 min-h-0">{{ $product->description ?? 'Прекрасный букет для особого случая' }}</p>
+                        <a href="{{ route('products.show', $product->slug) }}" class="block w-full mt-4 group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]" onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'click_product_card');">
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                                <span>Заказать букет</span>
+                                <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
-        </div>
 
-        <div class="text-center mt-16">
-            <a href="/products" class="group inline-flex items-center gap-3 px-8 py-4 border-2 border-primary-400 text-primary-700 rounded-full font-semibold hover:bg-primary-50 transition-all hover:scale-105 shadow-sm">
-                <span>Смотреть все букеты</span>
-                <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                </svg>
-            </a>
+            <div class="text-center mt-12">
+                <a href="{{ route('products.index', ['category' => $category->key]) }}" class="group inline-flex items-center gap-3 px-8 py-4 border-2 border-primary-400 text-primary-700 rounded-full font-semibold hover:bg-primary-50 transition-all hover:scale-105 shadow-sm">
+                    <span>Смотреть все: {{ $category->name }}</span>
+                    <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
         </div>
+        @endforeach
     </div>
 </section>
 

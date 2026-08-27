@@ -85,6 +85,14 @@ class Product extends Model implements HasMedia
     }
 
     /**
+     * Scope: случайная выборка ограниченного количества товаров.
+     */
+    public function scopeRandomLimit(Builder $query, int $limit): Builder
+    {
+        return $query->inRandomOrder()->limit($limit);
+    }
+
+    /**
      * Accessor: главное изображение или fallback
      */
     protected function mainImage(): Attribute

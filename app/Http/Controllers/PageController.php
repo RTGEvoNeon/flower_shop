@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Facades\Seo;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -36,14 +37,22 @@ class PageController extends Controller
                 ['name' => 'Главная', 'url' => url('/')],
             ]);
 
-        $randomProducts = Product::available()
-            ->withImages()
-            ->with('categories')
-            ->inRandomOrder()
-            ->limit(3)
-            ->get();
+        $categoryBlocks = Category::query()
+            ->orderBy('sort_order')
+            ->get()
+            ->map(fn (Category $category): array => [
+                'category' => $category,
+                'products' => Product::available()
+                    ->withImages()
+                    ->with('categories')
+                    ->whereHas('categories', fn ($query) => $query->where('key', $category->key))
+                    ->randomLimit(3)
+                    ->get(),
+            ])
+            ->filter(fn (array $block): bool => $block['products']->isNotEmpty())
+            ->values();
 
-        return view('home', compact('randomProducts'));
+        return view('home', compact('categoryBlocks'));
     }
 
     /**
