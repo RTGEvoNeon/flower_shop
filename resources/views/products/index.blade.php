@@ -82,7 +82,7 @@
                     <div class="relative h-44 sm:h-80 overflow-hidden bg-gradient-to-br {{ $bgGradient }}">
                         @if($product->main_image && $product->main_image !== '/images/placeholder.jpg')
                             <x-product-image
-                                :src="$product->main_image"
+                                :src="$product->mainImageUrl('thumb')"
                                 :alt="$product->name . ' — свежие цветы с доставкой'"
                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                         @else

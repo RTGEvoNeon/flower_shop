@@ -188,7 +188,7 @@
                 <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 shrink-0 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
                     @if($product->main_image)
                         <x-product-image
-                            :src="$product->main_image"
+                            :src="$product->mainImageUrl('medium')"
                             :alt="$product->name . ' — купить букет в Брянске'"
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                     @else

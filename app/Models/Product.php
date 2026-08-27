@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -63,6 +64,17 @@ class Product extends Model implements HasMedia
         $this->addMediaCollection(self::PHOTOS_COLLECTION);
     }
 
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->nonQueued()
+            ->fit(Fit::Contain, 300, 300);
+
+        $this->addMediaConversion('medium')
+            ->nonQueued()
+            ->fit(Fit::Contain, 800, 800);
+    }
+
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
@@ -82,6 +94,24 @@ class Product extends Model implements HasMedia
     public function scopeWithImages(Builder $query): Builder
     {
         return $query->with('media');
+    }
+
+    /**
+     * URL главного изображения в заданной конверсии, либо оригинал/placeholder.
+     */
+    public function mainImageUrl(?string $conversion = null): string
+    {
+        $media = $this->getFirstMedia(self::PHOTOS_COLLECTION);
+
+        if ($media === null) {
+            return '/images/placeholder.jpg';
+        }
+
+        if ($conversion !== null && $media->hasGeneratedConversion($conversion)) {
+            return $media->getUrl($conversion);
+        }
+
+        return $media->getUrl();
     }
 
     /**
