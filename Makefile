@@ -72,7 +72,7 @@ deploy:
 	@echo "🖼️  Генерация webp для новых изображений..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan images:optimize"
 	@echo "🔨 Сборка фронтенда..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && npm run build"
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && npm install && npm run build"
 	@echo "✅ Деплой завершён!"
 
 # Деплой выбранной ветки (по умолчанию develop)
@@ -89,7 +89,7 @@ deploy-branch:
 	@echo "🖼️  Генерация webp для новых изображений..."
 	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && docker compose -f docker-compose.prod.yml exec -T app php artisan images:optimize"
 	@echo "🔨 Сборка фронтенда..."
-	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && npm run build"
+	ssh $(REMOTE_USER)@$(REMOTE_HOST) "cd $(REMOTE_PATH) && npm install && npm run build"
 	@echo "✅ Деплой ветки завершён!"
 
 # Быстрый алиас для deploy develop
