@@ -1,5 +1,7 @@
 import './bootstrap';
 import './mobile-menu';
+import './category-carousels';
+import 'swiper/css';
 
 import Alpine from 'alpinejs';
 

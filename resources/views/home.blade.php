@@ -176,41 +176,45 @@
                 </h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($block['products'] as $product)
-                <!-- Карточка букета -->
-                <div class="group hover-lift bg-white rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg flex flex-col">
-                    <a href="{{ route('products.show', $product->slug) }}" class="block relative h-80 shrink-0 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
-                        @if($product->main_image)
-                            <x-product-image
-                                :src="$product->main_image"
-                                :alt="$product->name . ' — купить букет в Брянске'"
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                        @else
-                            <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-7xl">🌸</div>
-                        @endif
-                        <!-- Price badge -->
-                        <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                            <span class="text-2xl font-bold tabular-nums bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent inline-flex items-baseline gap-0.5">
-                                <span>{{ number_format($product->price, 0, ',', ' ') }}</span>
-                                <span class="price-currency" aria-hidden="true">₽</span>
-                            </span>
-                        </div>
-                    </a>
-                    <div class="p-6 flex flex-col flex-1 min-h-0">
-                        <h3 class="font-display text-2xl font-semibold text-gray-900 mb-2">{{ $product->name }}</h3>
-                        <p class="text-gray-600 leading-relaxed line-clamp-2 flex-1 min-h-0">{{ $product->description ?? 'Прекрасный букет для особого случая' }}</p>
-                        <a href="{{ route('products.show', $product->slug) }}" class="block w-full mt-4 group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-6 py-3.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]" onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'click_product_card');">
-                            <span class="relative z-10 flex items-center justify-center gap-2">
-                                <span>Заказать букет</span>
-                                <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                                </svg>
-                            </span>
-                        </a>
+            <div class="category-carousel overflow-hidden">
+                <div class="swiper-wrapper">
+                    @foreach($block['products'] as $product)
+                    <!-- Карточка букета -->
+                    <div class="swiper-slide h-auto">
+                        <article class="group hover-lift bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-accent-200/50 shadow-lg flex flex-col h-full">
+                            <a href="{{ route('products.show', $product->slug) }}" class="block relative h-44 sm:h-80 shrink-0 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
+                                @if($product->main_image)
+                                    <x-product-image
+                                        :src="$product->main_image"
+                                        :alt="$product->name . ' — купить букет в Брянске'"
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                @else
+                                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-5xl sm:text-7xl">🌸</div>
+                                @endif
+                                <!-- Price badge -->
+                                <div class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-white/95 backdrop-blur-sm px-2 py-1 sm:px-4 sm:py-2 rounded-full shadow-lg">
+                                    <span class="text-sm sm:text-2xl font-bold tabular-nums bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent inline-flex items-baseline gap-0.5">
+                                        <span>{{ number_format($product->price, 0, ',', ' ') }}</span>
+                                        <span class="price-currency" aria-hidden="true">₽</span>
+                                    </span>
+                                </div>
+                            </a>
+                            <div class="p-3 sm:p-6 flex flex-col flex-1 min-h-0">
+                                <h3 class="font-display text-sm sm:text-2xl font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2">{{ $product->name }}</h3>
+                                <p class="hidden sm:block text-gray-600 leading-relaxed line-clamp-2 flex-1 min-h-0">{{ $product->description ?? 'Прекрасный букет для особого случая' }}</p>
+                                <a href="{{ route('products.show', $product->slug) }}" class="block w-full mt-2 sm:mt-4 group/btn relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 text-white px-3 py-2 sm:px-6 sm:py-3.5 rounded-full font-semibold text-xs sm:text-base shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]" onclick="if(typeof ym !== 'undefined') ym(104582209, 'reachGoal', 'click_product_card');">
+                                    <span class="relative z-10 flex items-center justify-center gap-1 sm:gap-2">
+                                        <span>Заказать букет</span>
+                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </div>
+                        </article>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
 
             <div class="text-center mt-12">

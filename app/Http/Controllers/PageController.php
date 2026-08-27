@@ -46,7 +46,7 @@ class PageController extends Controller
                     ->withImages()
                     ->with('categories')
                     ->whereHas('categories', fn ($query) => $query->where('key', $category->key))
-                    ->randomLimit(3)
+                    ->randomLimit(12)
                     ->get(),
             ])
             ->filter(fn (array $block): bool => $block['products']->isNotEmpty())
